@@ -1,5 +1,6 @@
 <template>
   <div class="Customer">
+     <headertitle :titles="'个人中心'"></headertitle>
     客服
     <tabbar :actives="2"></tabbar>
   </div>
@@ -7,15 +8,19 @@
 
 <script>
 import tabbar from '../../components/tabbar'
+import headertitle from '../../components/headertitle'
 export default {
  components:{
-   tabbar
+   tabbar,
+   headertitle
  }
 }
 </script>
 
 
 
-<style>
-
+<style lang='less' scoped>
+.Customer{
+  padding-top: 1rem;
+}
 </style>

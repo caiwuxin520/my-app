@@ -16,6 +16,6 @@ export default {
 
 
 
-<style>
+<style lang='less' scoped>
 
 </style>
