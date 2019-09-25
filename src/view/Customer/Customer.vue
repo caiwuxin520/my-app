@@ -1,6 +1,6 @@
 <template>
   <div class="Customer">
-     <headertitle :titles="'个人中心'"></headertitle>
+     <headertitle :titles="'个人中心'" :tabfalg="false"></headertitle>
     客服
     <tabbar :actives="2"></tabbar>
   </div>

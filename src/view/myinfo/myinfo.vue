@@ -1,6 +1,6 @@
 <template>
   <div class="myinfo">
-    <headertitle :titles="'个人中心'"></headertitle>
+    <headertitle :titles="'个人中心'" :tabfalg="false"></headertitle>
     <div class="myinfobox">
       <div class="myinfoitem">
         <van-icon class-prefix="my-icon" name="ziliaoduibi" color="#f66012" size="0.54rem" />

@@ -1,5 +1,6 @@
 <template>
   <div class="headertitle">
+      <van-icon name="arrow-left" size="0.40rem" v-if="tabfalg" @click="$router.go(-1)"/>
       <div class="box">{{title}}</div>
   </div>
 </template>
@@ -8,10 +9,10 @@
 export default {
   data() {
     return {
-      title: ''
+      title: '',
     };
   },
-  props:['titles'],
+  props:['titles','tabfalg'],
   created(){
       this.title = this.titles
   },
@@ -28,13 +29,17 @@ export default {
     left: 0;
     width: 100%;
     z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #fff;
+    .van-icon{
+      position: absolute;
+      left: 0.4rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
     .box{
-        width: 100%;
-        height: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         font-size: 0.36rem;
         color: #000;
     }

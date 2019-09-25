@@ -6,19 +6,24 @@
 </template>
 
 <script>
-import tabbar from '../../components/tabbar'
+import tabbar from "../../components/tabbar";
 export default {
- components:{
-   tabbar
- }
-}
+  data(){
+    return {
+      value:''
+    }
+  },
+  components: {
+    tabbar
+  }
+};
 </script>
 
 
 
 <style lang='less' scoped>
-.index{
-  p{
+.index {
+  p {
     color: red;
   }
 }
