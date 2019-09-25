@@ -1,12 +1,16 @@
 <template>
   <div class="myinfo">
-    3
+    我的
+   <tabbar :actives="3"></tabbar>
   </div>
 </template>
 
 <script>
+import tabbar from '../../components/tabbar'
 export default {
- 
+ components:{
+   tabbar
+ }
 }
 </script>
 

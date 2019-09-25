@@ -1,0 +1,37 @@
+{
+  "id": "1110383",
+  "name": "myicon",
+  "font_family": "myicon",
+  "css_prefix_text": "myicon-",
+  "description": "...",
+  "glyphs": [
+    {
+      "icon_id": "376212",
+      "name": "钱包",
+      "font_class": "qianbao",
+      "unicode": "e64f",
+      "unicode_decimal": 58959
+    },
+    {
+      "icon_id": "856395",
+      "name": "客服",
+      "font_class": "kefu",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "1263285",
+      "name": "借款",
+      "font_class": "jiekuan",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "7366875",
+      "name": "我的",
+      "font_class": "wode",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    }
+  ]
+}

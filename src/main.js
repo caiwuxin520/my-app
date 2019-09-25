@@ -6,6 +6,9 @@ import router from './router'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 
+//引入字体图标
+import './assets/fonts/iconfont.css'
+
 Vue.use(Vant);
 
 Vue.config.productionTip = false
