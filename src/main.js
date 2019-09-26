@@ -16,6 +16,9 @@ Vue.prototype.getLocalStorage = getLocalStorage
 //设置localstorage
 Vue.prototype.setLocalStorage = setLocalStorage
 
+//引入axios
+import axios from 'axios'
+Vue.prototype.$axios = axios
 
 Vue.use(Vant);
 
