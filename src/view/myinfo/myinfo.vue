@@ -76,6 +76,15 @@
 import tabbar from "../../components/tabbar";
 import headertitle from "../../components/headertitle";
 export default {
+  methods:{
+    wkfclick(){
+      this.$toast({
+        type:'fail',
+        message:'暂未开放该功能',
+        duration:1000
+      });
+    }
+  },
   components: {
     tabbar,
     headertitle
