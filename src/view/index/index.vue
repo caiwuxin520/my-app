@@ -2,7 +2,7 @@
   <div>
     <!-- 首页头部 -->
     <div class="banner">
-      <p class="title">您最高可借款额度（元）：30万</p>
+      <p class="title">您最高可借款额度（元）：{{personmoney.loanMax}}</p>
       <van-slider v-model="value">
         
         <div slot="button" class="custom-button"><span>{{ value }}</span></div>
@@ -57,7 +57,8 @@ export default {
       ],
       number: 0,
       value: 50,
-      checked: true
+      checked: true,
+      personmoney:[]
     };
   },
   components: {
@@ -74,6 +75,7 @@ export default {
   mounted() {
     this.startMove();
     this.getmsg();
+    this.getmoney();
   },
 
   methods: {
@@ -92,9 +94,17 @@ export default {
     onChange(value) {
       this.$toast("当前值：" + value);
     },
+    //根据贷款期限 获取贷款信息
     getmsg(){
-      this.$axios.get('http://39.98.251.244/loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=1&loanMoney=1&loanMonth=1').then(res =>{
+      this.$axios.get('http://39.98.251.244/loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=2&loanMoney=1&loanMonth=1').then(res =>{
         console.log(res.data)
+      })
+    },
+    //根据个人信息查询可贷款金额
+    getmoney(){
+      this.$axios.get('http://39.98.251.244/loan/backend/companySettingLoan/queryCompanySettingLoanVo?page=1&limit=1&id=1&comId=2').then(res =>{
+        this.personmoney = res.data.data[0]
+        console.log(this.personmoney)
       })
     }
   }
