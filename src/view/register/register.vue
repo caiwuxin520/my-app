@@ -193,6 +193,7 @@ export default {
         responseType: "arraybuffer"
       })
         .then(response => {
+          console.log(response)
           return (
             "data:image/png;base64," +
             btoa(

@@ -5,25 +5,25 @@
       <div class="myinfobox1">
         <div class="box1top">我的资料</div>
         <div class="box1banner">
-          <div class="box1item">
+          <div class="box1item" @click="gopath('./idcardinfo')">
             <div class="iconbox" :style="{'background':'#67a9fd'}">
               <van-icon class-prefix="my-icon" name="credentials_icon" />
             </div>
             <p>身份证信息</p>
           </div>
-          <div class="box1item">
+          <div class="box1item" @click="gopath('./workinfo')">
             <div class="iconbox" :style="{'background':'#e96b56'}">
               <van-icon class-prefix="my-icon" name="danwei" />
             </div>
             <p>单位信息</p>
           </div>
-          <div class="box1item">
+          <div class="box1item" @click="gopath('./blankcard')">
             <div class="iconbox" :style="{'background':'#f8a724'}">
               <van-icon class-prefix="my-icon" name="shuaqiaqiapianyinhangqia" />
             </div>
             <p>收款银行卡</p>
           </div>
-          <div class="box1item">
+          <div class="box1item" @click="gopath('./mobileinfo')">
             <div class="iconbox" :style="{'background':'#ca8c59'}">
               <van-icon class-prefix="my-icon" name="shouji1" />
             </div>
@@ -76,12 +76,18 @@
 import tabbar from "../../components/tabbar";
 import headertitle from "../../components/headertitle";
 export default {
-  methods:{
-    wkfclick(){
+  methods: {
+    wkfclick() {
       this.$toast({
-        type:'fail',
-        message:'暂未开放该功能',
-        duration:1000
+        type: "fail",
+        message: "暂未开放该功能",
+        duration: 1000
+      });
+    },
+    //跳转
+    gopath(path) {
+      this.$router.push({
+        path: path
       });
     }
   },
@@ -196,7 +202,7 @@ export default {
         font-size: 0.28rem;
         color: #333;
       }
-      .box3top:last-child{
+      .box3top:last-child {
         border-bottom: none;
       }
     }
