@@ -73,6 +73,7 @@ export default {
   },
   mounted() {
     this.startMove();
+    this.getmsg();
   },
 
   methods: {
@@ -90,6 +91,11 @@ export default {
     // 滑块
     onChange(value) {
       this.$toast("当前值：" + value);
+    },
+    getmsg(){
+      this.$axios.get('http://39.98.251.244/loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=1&loanMoney=1&loanMonth=1').then(res =>{
+        console.log(res.data)
+      })
     }
   }
 };
