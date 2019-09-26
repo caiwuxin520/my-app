@@ -102,9 +102,13 @@ export default {
     //下拉刷新
     onRefresh() {
       setTimeout(() => {
-        this.$toast('刷新成功');
+        this.phone = ""
+        this.yqcode = ""
+        this.code = ""
+        this.sms = ""
+        this.password = ""
+        this.checked = false
         this.isLoading = false;
-        this.count++;
       }, 500);
     },
     //切换密码是否显示
