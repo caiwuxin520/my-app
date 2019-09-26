@@ -45,7 +45,20 @@
           <div class="bannerinput">
             <div class="inputbox">
               <van-field v-model="sms" center clearable type="number" placeholder="请输入短信验证码">
-                <van-button slot="button" size="small" type="primary">获取验证码</van-button>
+                <van-button
+                  slot="button"
+                  size="small"
+                  type="primary"
+                  v-if="!btnflag"
+                  @click="fscode"
+                >获取验证码</van-button>
+                <van-button
+                  slot="button"
+                  size="small"
+                  type="primary"
+                  v-else
+                  :disabled="flag"
+                >{{timer}}</van-button>
               </van-field>
             </div>
           </div>
@@ -92,7 +105,9 @@ export default {
       type: "password",
       checked: false,
       codeimg: "",
-      isLoading: false
+      isLoading: false,
+      btnflag: false,
+      timer: 60
     };
   },
   created() {
@@ -102,14 +117,57 @@ export default {
     //下拉刷新
     onRefresh() {
       setTimeout(() => {
-        this.phone = ""
-        this.yqcode = ""
-        this.code = ""
-        this.sms = ""
-        this.password = ""
-        this.checked = false
+        this.phone = "";
+        this.yqcode = "";
+        this.code = "";
+        this.sms = "";
+        this.password = "";
+        this.checked = false;
         this.isLoading = false;
       }, 500);
+    },
+    //发送验证码
+    fscode() {
+      let reg = /^1[3456789]\d{9}$/;
+      if (!reg.test(this.phone)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的手机号",
+          duration: 1000
+        });
+        return;
+      }
+      this.$axios({
+        method: "get",
+        url: " http://39.98.251.244/loan/backend/systemsms/sendSmsCode",
+        params: {
+          phoneNumber: this.phone
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.btnflag = true;
+          let auth_timer = setInterval(() => {
+            //定时器设置每秒递减
+            this.timer--; //递减时间
+            if (this.timer <= 0) {
+              this.btnflag = false; //60s时间结束还原v-show状态并清除定时器
+              this.timer = 60;
+              clearInterval(auth_timer);
+            }
+          }, 1000);
+          this.$toast({
+            type: "success",
+            message: "发送成功",
+            duration: 1000
+          });
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
     },
     //切换密码是否显示
     changgeicon() {
@@ -146,8 +204,8 @@ export default {
           );
         })
         .then(data => {
-          if(data){
-            this.codeimg = data
+          if (data) {
+            this.codeimg = data;
           }
         });
     },
@@ -176,7 +234,7 @@ export default {
   height: 100%;
   box-sizing: border-box;
   background-color: #fff;
-  .van-pull-refresh{
+  .van-pull-refresh {
     height: 100%;
   }
   .banner {
