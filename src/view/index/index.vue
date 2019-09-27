@@ -4,8 +4,9 @@
     <div class="banner">
       <p class="title">您最高可借款额度（元）：{{personmoney.loanMax}}</p>
       <van-slider v-model="value">
-        
-        <div slot="button" class="custom-button"><span>{{ value }}</span></div>
+        <div slot="button" class="custom-button">
+          <span>{{ value }}</span>
+        </div>
       </van-slider>
     </div>
     <!-- 借款期限 -->
@@ -58,7 +59,7 @@ export default {
       number: 0,
       value: 50,
       checked: true,
-      personmoney:[]
+      personmoney: []
     };
   },
   components: {
@@ -76,6 +77,7 @@ export default {
     this.startMove();
     this.getmsg();
     this.getmoney();
+    // this.getseesionid()
   },
 
   methods: {
@@ -95,18 +97,39 @@ export default {
       this.$toast("当前值：" + value);
     },
     //根据贷款期限 获取贷款信息
-    getmsg(){
-      this.$axios.get('http://39.98.251.244/loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=2&loanMoney=1&loanMonth=1').then(res =>{
-        console.log(res.data)
-      })
+    getmsg() {
+      this.$axios
+        .get(
+          "http://39.98.251.244/loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=2&loanMoney=1&loanMonth=1"
+        )
+        .then(res => {
+          console.log(res.data);
+        });
     },
     //根据个人信息查询可贷款金额
-    getmoney(){
-      this.$axios.get('http://39.98.251.244/loan/backend/companySettingLoan/queryCompanySettingLoanVo?page=1&limit=1&id=1&comId=2').then(res =>{
-        this.personmoney = res.data.data[0]
-        console.log(this.personmoney)
-      })
-    }
+    getmoney() {
+      this.$axios
+        .get(
+          "http://39.98.251.244/loan/backend/companySettingLoan/queryCompanySettingLoanVo?page=1&limit=1&id=1&comId=2"
+        )
+        .then(res => {
+          this.personmoney = res.data.data[0];
+          console.log(this.personmoney);
+        });
+    },
+    // getseesionid() {
+    //   //获取session
+    //   let session = null;
+    //   this.$axios({
+    //     method: "post",
+    //     url: "http://39.98.251.244/loan/backend/systemuser/getSessionId"
+    //   }).then(res => {
+    //     if (res.data.code == 0) {
+    //       session = res.data.data;
+    //       this.setLocalStorage('session',session)
+    //     }
+    //   });
+    // }
   }
 };
 </script>
@@ -114,8 +137,8 @@ export default {
 
 
 <style lang='less' scoped>
-.custom-button{
-  background: url('../../assets/img/jinbi.png') 100% 100% no-repeat;
+.custom-button {
+  background: url("../../assets/img/jinbi.png") 100% 100% no-repeat;
   background-size: 100% 100%;
   width: 0.6rem;
   height: 0.6rem;

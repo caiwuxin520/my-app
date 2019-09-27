@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import './assets/js/rem'
+import "./assets/js/rem";
 export default {
-  name: 'App'
-}
+  name: "App",
+};
 //ios禁止缩放
 window.onload = function() {
   document.addEventListener("touchstart", function(event) {
