@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { getLocalStorage } from '../assets/js/common'
+import axios from 'axios'
 
 const index = () => import('@/view/index/index')//首页
 const myinfo = () => import('@/view/myinfo/myinfo')//我的
@@ -111,6 +112,38 @@ const router = new Router({
       y: 0
     }
   }
+})
+
+let arrpath = [
+  '/idcardinfo',
+  '/workinfo',
+  '/blankcard',
+  '/mobileinfo',
+  '/updatapassword',
+  '/myorder'
+]
+router.beforeEach((to, from, next) => {
+  //如果去的路由需要登陆
+  if (arrpath.includes(to.path)) {
+    axios({
+      method: "post",
+      url: "http://39.98.251.244/loan/backend/systemuser/checkLogin",
+    }).then(res => {
+      if(res.data.code == 0){
+        next()
+        return
+      }else{
+        next({
+          path:'/login',
+          query:{
+            path:from.path
+          }
+        })
+        return
+      }
+    })
+  }
+  next()
 })
 
 export default router

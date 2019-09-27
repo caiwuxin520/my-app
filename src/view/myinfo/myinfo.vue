@@ -29,7 +29,7 @@
             </div>
             <p>手机号认证</p>
           </div>
-          <div class="box1item" @click="gopath('./updatapassword')">
+          <div class="box1item" @click="gopath('./updatapassword')" v-if="islogin">
             <div class="iconbox" :style="{'background':'#FFA500'}">
               <van-icon class-prefix="my-icon" name="suo" />
             </div>
@@ -46,7 +46,7 @@
               <van-icon class-prefix="my-icon" name="xiangji" />
             </div>
             <p>其他资质证明</p>
-          </div> -->
+          </div>-->
         </div>
       </div>
       <div class="myinfobox2" @click="gopath('./myorder')">
@@ -69,8 +69,10 @@
           </div>
         </div>
       </div>
-      <div class="myinfobox3">
-        <van-button type="default"><van-icon class-prefix="my-icon" name="guanji" />退出登录</van-button>
+      <div class="myinfobox3" v-if="islogin">
+        <van-button type="default" @click="tuichu">
+          <van-icon class-prefix="my-icon" name="guanji" />退出登录
+        </van-button>
       </div>
     </div>
     <tabbar :actives="3"></tabbar>
@@ -81,6 +83,14 @@
 import tabbar from "../../components/tabbar";
 import headertitle from "../../components/headertitle";
 export default {
+  data() {
+    return {
+      islogin: false
+    };
+  },
+  created() {
+    this.jclogin();
+  },
   methods: {
     wkfclick() {
       this.$toast({
@@ -93,6 +103,48 @@ export default {
     gopath(path) {
       this.$router.push({
         path: path
+      });
+    },
+    //检查登陆状态
+    jclogin() {
+      this.$axios({
+        method: "post",
+        url: "http://39.98.251.244/loan/backend/systemuser/checkLogin"
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.islogin = true;
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    //退出登陆
+    tuichu() {
+      console.log(1);
+      this.$axios({
+        method: "post",
+        url: "http://39.98.251.244/loan/backend/systemuser/logout"
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.$toast({
+            type: "success",
+            message: res.data.msg,
+            duration: 1000
+          });
+          setTimeout(() => {
+            this.$router.push("./login");
+          }, 500);
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
       });
     }
   },
@@ -198,13 +250,13 @@ export default {
     .myinfobox3 {
       border-radius: 0.1rem;
       margin-bottom: 0.3rem;
-      .van-button{
+      .van-button {
         width: 100%;
         height: 50px;
         border-radius: 25px;
         color: #999;
         font-size: 16px;
-        .my-icon{
+        .my-icon {
           margin-right: 5px;
         }
       }

@@ -1,6 +1,9 @@
 <template>
   <div class="login">
-    <headertitle :titles="'登录'" :tabfalg="true"></headertitle>
+    <headertitle :titles="'登录'" :tabfalg="false"></headertitle>
+    <div class="tj">
+      <van-icon name="arrow-left" color="#fff" size="0.40rem" @click="gopath('./index')" />
+    </div>
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <div class="logingimg">
         <img src="@/assets/img/login-banner.png" />
@@ -144,11 +147,16 @@ export default {
       btnflag: false,
       timer: 60,
       okflag: false,
-      codeimg: ""
+      codeimg: "",
+      formPath: ""
     };
   },
   created() {
     this.vercode();
+  },
+  mounted() {
+    let query = this.$route.query;
+    this.formPath = query.path;
   },
   methods: {
     //下拉刷新
@@ -284,6 +292,23 @@ export default {
           verCode: this.code,
           smsCode: this.sms
         }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.$toast({
+            type: "success",
+            message: res.data.msg,
+            duration: 1000
+          });
+          setTimeout(() => {
+            this.$router.push(this.formPath);
+          }, 500);
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
       });
       // this.gopath('./index')
     },
@@ -326,6 +351,23 @@ export default {
           password: this.password,
           verCode: this.code1
         }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.$toast({
+            type: "success",
+            message: res.data.msg,
+            duration: 1000
+          });
+          setTimeout(() => {
+            this.$router.push(this.formPath);
+          }, 500);
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
       });
     }
   },
@@ -343,6 +385,13 @@ export default {
   min-height: 100vh;
   box-sizing: border-box;
   background-color: #fff;
+  .tj {
+    position: fixed;
+    color: #fff;
+    top: 0.3rem;
+    left: 0.3rem;
+    z-index: 1000;
+  }
   .van-pull-refresh {
     min-height: 80vh;
   }

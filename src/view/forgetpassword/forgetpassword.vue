@@ -225,6 +225,23 @@ export default {
           smsCode: this.sms,
           password:this.password
         }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.$toast({
+            type: "success",
+            message: res.data.msg,
+            duration: 1000
+          });
+          setTimeout(() => { 
+            this.$router.push('./login')
+          },500)
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
       });
     }
   },
