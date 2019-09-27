@@ -9,6 +9,7 @@ const Customer = () => import('@/view/Customer/Customer')//客服
 const login = () => import('@/view/login/login')//登录
 const forgetpassword = () => import('@/view/forgetpassword/forgetpassword')//忘记密码
 const register = () => import('@/view/register/register')//注册
+const jkxy = () => import('../view/jkxy/jkxy') //借款协议
 const agreement = () => import('@/view/agreement/agreement') //注册协议
 const idcardinfo = () => import('@/view/idcardinfo/idcardinfo') //身份证信息
 const workinfo = () => import('@/view/workinfo/workinfo') //单位信息
@@ -65,6 +66,9 @@ const router = new Router({
       component: agreement,
     },
     {
+      path: '/jkxy',
+      name: 'jkxy',
+      component: jkxy,
       path: '/idcardinfo',
       name: 'idcardinfo',
       component: idcardinfo,
