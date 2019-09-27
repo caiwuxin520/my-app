@@ -2,32 +2,31 @@
   <div>
     <!-- 首页头部 -->
     <div class="banner">
-      
-    </div>
-    <!-- 借款期限 -->
-    <div class="qx">
-      
-      <div class="qx_money">
-        <div class="left">
-          <span>账户余额（元）</span>
-          <span class="dash">0</span>
+        <div class="title">
+          <span>账户余额</span>
+          <span>50000</span>
         </div>
-        <div class="right">
-          <span>待还余额（元）</span>
-          <span class="dash">0</span>
-        </div>
-        
+    </div>
+    <!-- 实名认证 -->
+    <div class="rz">
+      <img src="../../assets/img/user_tx.png" alt="">
+      <span>15500000001</span>
+      <span>--已实名制认证</span>
+    </div>
+    <!-- 账户余额 -->
+    <div class="ye">
+      <div class="left">
+        <span class="top">账户余额</span>
+        <span class="bottom">50741.00</span>
       </div>
-      
-      <div class="btn">
-        <button>立即提现</button>
+      <div class="right" @click="checktx">
+        <span>取现</span>
       </div>
     </div>
-    <div class="msg">
-      <img src="../../assets/img/icon.png" alt="">
+    <div class="xz">
+      <van-icon class-prefix="my-icon" name="dunpai" />
       <span>账户资金安全由银行保障</span>
     </div>
-   
     <!-- 封装底部组件 -->
     <tabbar :actives="1"></tabbar>
   </div>
@@ -39,240 +38,119 @@ export default {
   name: "scroll",
   data() {
     return {
-      // value: "",
-      arr: [
-        "不是被郭德纲发现的，也不是一开始就收为徒弟。",
-        "现在雅阁这个状态像极了新A4L上市那段日子。",
-        "低配太寒碜，各种需要加装，中配定价过高，又没啥特色",
-        "然后各种机油门、经销商造反什么的幺蛾子。",
-        "看五月销量，建议参考A4，打8折吧。",
-        "不是被郭德纲发现的，也不是一开始就收为徒弟。"
-      ],
-      number: 0,
-      value: 50,
-      checked: true
+      
     };
   },
   components: {
     tabbar
   },
   computed: {
-    text() {
-      return {
-        id: this.number,
-        val: this.arr[this.number]
-      };
-    }
+    
   },
   mounted() {
-    this.startMove();
+    this.getmsg();
   },
 
   methods: {
-    // 滚动定时器
-    startMove() {
-      let timer = setTimeout(() => {
-        if (this.number === 5) {
-          this.number = 0;
-        } else {
-          this.number += 1;
-        }
-        this.startMove();
-      });
+    //查询借款人信息以及余额
+    getmsg(){
+      this.$axios.get('http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo?page=1&limit=1&id=1&comId=1&userId=1&realName=1&phoneNumber=1&idcardNumber=1&provinceId=1&cityId=1&regionId=1&address=1&zfbAccount=1&companyPhone=1&companyProvinceId=1&companyCityId=1&companyRegionId=1&companyAddress=1&bankAccount=1').then(res =>{
+        
+      })
     },
-    // 滑块
-    onChange(value) {
-      this.$toast("当前值：" + value);
+    
+    //点击提现
+    checktx(){
+      let data = {
+        comId: 2,//跟在地址栏后面的
+        customerId: 1,//登录后才有的
+        cashoutMoney:''//需要提现的金额
+      }
+      this.$axios.post('http://39.98.251.244/loan/backend/recordCashout/insertRecordCashout',data).then(res =>{
+
+      })
     }
   }
 };
 </script>
 
 
-
 <style lang='less' scoped>
-.custom-button{
-  background: url('../../assets/img/jinbi.png') 100% 100% no-repeat;
-  background-size: 100% 100%;
-  width: 0.6rem;
-  height: 0.6rem;
-}
-.banner {
-  background: url("../../assets/img/bg.png") 100% 100% no-repeat;
-  background-size: 100% 100%;
-  text-align: center;
-  // margin-bottom:1rem;
-  height: 4rem;
-  line-height: 2.5rem;
-  padding: 0 1rem;
-  color: #fff;
-}
-.qx {
-  background-color: #fff;
-  .qx_title {
-    line-height: 1rem;
-    padding-left: 0.2rem;
-    color: #848484;
-    font-size: 0.32rem;
-    margin-top: 0.1rem;
-  }
-  .qx_money {
-    display: flex;
-    justify-content: center;
-    // line-height: 1.5rem;
-    border-top: 1px solid #efefed;
-    border-bottom: 1px solid #efefed;
-    padding: 0.4rem 0;
-    color: #bdbdbb;
-    .left{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-right:0.8rem;
-      border-right:1px dashed #eeeeee;
-      padding-right:0.8rem;
-      font-size:0.28rem;
-      .dash{
-        color:red;
-        font-size:0.48rem;
-        padding-top:0.2rem;
-      }
-    }
-    .right{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-     font-size:0.28rem;
-      .dash{
-        color:red;
-         font-size:0.48rem;
-         padding-top:0.2rem;
-      }
-    }
-  }
-  .xy {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 0.5rem;
-    span {
-      color: #fc6f08;
-      font-size: 0.32rem;
-    }
-  }
-  .btn {
-    padding: 0 0.22rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
-    border-bottom:1px solid #efefed;
-    // padding-bottom: 0.4rem;
-    button {
-      background-color: #5789ea;
-      border-radius: 0.4rem;
-      color: #fff;
-      font-size: 0.32rem;
-      height: 0.8rem;
-      line-height: 0.8rem;
-      width: 100%;
-      padding: 0 0.22rem;
-      margin: 0 auto;
 
-      // margin:0 0.22rem;
-    }
+.banner {
+  background: url("../../assets/img/bg2.png") no-repeat;
+  background-size:cover;
+  // text-align: center;
+  // margin-bottom:1rem;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 0.8rem;
+    color:#fff;
   }
+  
 }
-.msg{
-  text-align: center;
+.rz{
+  display: flex;
+  align-items: center;
   background-color: #fff;
-  line-height: 1.3rem;
+  line-height: 1.2rem;
+  padding-left:0.3rem;
+  border-bottom:1px solid #eee;
+  img{
+    width: 0.6rem;
+    height: 0.6rem;
+    padding-right:0.2rem;
+    
+  }
   span{
-    vertical-align: middle;
     color:#999;
   }
-  img{
-    display:inline-block;
-    vertical-align: middle;
-    // width: 0.42rem;
-    height: 0.36rem;
-    margin-right:0.1rem;
-  }
 }
-.text-container {
-  // width: 500px;
-  margin-top: 0.4rem;
-  margin-bottom: 0.4rem;
-  margin-left: 0.5rem;
-  height: 0.6rem;
-  line-height: 0.6rem;
-  // margin: 10px auto;
-  // border: 1px solid cornflowerblue;
-  overflow: hidden;
-}
-.bb {
-  height: 0.8rem;
+.ye{
+  display: flex;
+  justify-content: space-between;
   background-color: #fff;
-}
-.text,
-.text2 {
-  margin: 0;
-}
-.inner-container {
-  animation: myMove 10s linear infinite;
-  animation-fill-mode: forwards;
-}
-/*文字无缝滚动*/
-@keyframes myMove {
-  0% {
-    transform: translateY(0);
+  // line-height: 0.8rem;
+  align-items: center;
+  padding:0.4rem 0.4rem;
+  
+  .left{
+    display: flex;
+    flex-direction: column;
+    line-height: 0.6rem;
+    // align-items: center;
+    .top{
+      color:#999;
+      font-size:0.12rem;
+    }
+    .bottom{
+      color:black;
+      font-weight: bold;
+      font-size: 0.36rem;
+    }
   }
-  100% {
-    transform: translateY(-150px);
-  }
-}
-/*文字停顿滚动*/
-@keyframes myMove2 {
-  0% {
-    transform: translateY(0);
-  }
-  10% {
-    transform: translateY(-30px);
-  }
-  20% {
-    transform: translateY(-30px);
-  }
-  30% {
-    transform: translateY(-60px);
-  }
-  40% {
-    transform: translateY(-60px);
-  }
-  50% {
-    transform: translateY(-90px);
-  }
-  60% {
-    transform: translateY(-90px);
-  }
-  70% {
-    transform: translateY(-120px);
-  }
-  80% {
-    transform: translateY(-120px);
-  }
-  90% {
-    transform: translateY(-150px);
-  }
-  100% {
-    transform: translateY(-150px);
+  .right{
+    width: 2rem;
+    border:1px solid #349aff;
+    border-radius: 0.4rem;
+    text-align: center;
+    line-height: 0.6rem;
+    color:#349aff
   }
 }
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 3s linear;
+.xz{
+  text-align: center;
+  color:#aaa;
+  font-size:0.12rem;
+  margin-top:0.6rem;
 }
-.slide-leave-to {
-  transform: translateY(-50px);
-}
-.slide-enter {
-  transform: translateY(50px);
-}
+
 </style>
 

@@ -10,7 +10,7 @@ const login = () => import('@/view/login/login')//登录
 const forgetpassword = () => import('@/view/forgetpassword/forgetpassword')//忘记密码
 const register = () => import('@/view/register/register')//注册
 const agreement = () => import('../view/agreement/agreement') //注册协议
-
+const jkxy = () => import('../view/jkxy/jkxy') //借款协议
 Vue.use(Router)
 
 const router = new Router({
@@ -58,6 +58,11 @@ const router = new Router({
       path: '/agreement',
       name: 'agreement',
       component: agreement,
+    },
+    {
+      path: '/jkxy',
+      name: 'jkxy',
+      component: jkxy,
     },
   ],
   //解决跳转滚动条不在顶部问题.
