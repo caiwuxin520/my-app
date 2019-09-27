@@ -25,7 +25,7 @@ export default {
 <style lang='less' scoped>
 .agreement {
   padding-top: 1rem;
-  height: 100%;
+  min-height: 100vh;
   box-sizing: border-box;
   background-color: #fff;
   .agreebanner{

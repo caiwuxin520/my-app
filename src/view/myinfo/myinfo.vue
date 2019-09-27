@@ -5,31 +5,37 @@
       <div class="myinfobox1">
         <div class="box1top">我的资料</div>
         <div class="box1banner">
-          <div class="box1item">
+          <div class="box1item" @click="gopath('./idcardinfo')">
             <div class="iconbox" :style="{'background':'#67a9fd'}">
               <van-icon class-prefix="my-icon" name="credentials_icon" />
             </div>
             <p>身份证信息</p>
           </div>
-          <div class="box1item">
+          <div class="box1item" @click="gopath('./workinfo')">
             <div class="iconbox" :style="{'background':'#e96b56'}">
               <van-icon class-prefix="my-icon" name="danwei" />
             </div>
             <p>单位信息</p>
           </div>
-          <div class="box1item">
+          <div class="box1item" @click="gopath('./blankcard')">
             <div class="iconbox" :style="{'background':'#f8a724'}">
               <van-icon class-prefix="my-icon" name="shuaqiaqiapianyinhangqia" />
             </div>
             <p>收款银行卡</p>
           </div>
-          <div class="box1item">
+          <div class="box1item" @click="gopath('./mobileinfo')">
             <div class="iconbox" :style="{'background':'#ca8c59'}">
               <van-icon class-prefix="my-icon" name="shouji1" />
             </div>
             <p>手机号认证</p>
           </div>
-          <div class="box1item" @click="wkfclick">
+          <div class="box1item" @click="gopath('./updatapassword')">
+            <div class="iconbox" :style="{'background':'#FFA500'}">
+              <van-icon class-prefix="my-icon" name="suo" />
+            </div>
+            <p>修改密码</p>
+          </div>
+          <!-- <div class="box1item" @click="wkfclick">
             <div class="iconbox" :style="{'background':'#3cc2ca'}">
               <van-icon class-prefix="my-icon" name="zmxy" />
             </div>
@@ -40,7 +46,7 @@
               <van-icon class-prefix="my-icon" name="xiangji" />
             </div>
             <p>其他资质证明</p>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="myinfobox2">
@@ -64,8 +70,7 @@
         </div>
       </div>
       <div class="myinfobox3">
-        <div class="box3top">修改密码</div>
-        <div class="box3top">退出登录</div>
+        <van-button type="default"><van-icon class-prefix="my-icon" name="guanji" />退出登录</van-button>
       </div>
     </div>
     <tabbar :actives="3"></tabbar>
@@ -76,12 +81,18 @@
 import tabbar from "../../components/tabbar";
 import headertitle from "../../components/headertitle";
 export default {
-  methods:{
-    wkfclick(){
+  methods: {
+    wkfclick() {
       this.$toast({
-        type:'fail',
-        message:'暂未开放该功能',
-        duration:1000
+        type: "fail",
+        message: "暂未开放该功能",
+        duration: 1000
+      });
+    },
+    //跳转
+    gopath(path) {
+      this.$router.push({
+        path: path
       });
     }
   },
@@ -185,19 +196,17 @@ export default {
       }
     }
     .myinfobox3 {
-      background-color: #fff;
       border-radius: 0.1rem;
       margin-bottom: 0.3rem;
-      .box3top {
-        height: 1rem;
-        line-height: 1rem;
-        padding-left: 0.3rem;
-        border-bottom: 0.02rem solid #eee;
-        font-size: 0.28rem;
-        color: #333;
-      }
-      .box3top:last-child{
-        border-bottom: none;
+      .van-button{
+        width: 100%;
+        height: 50px;
+        border-radius: 25px;
+        color: #999;
+        font-size: 16px;
+        .my-icon{
+          margin-right: 5px;
+        }
       }
     }
   }

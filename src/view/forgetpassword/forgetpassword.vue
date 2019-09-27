@@ -95,7 +95,7 @@ export default {
 <style lang='less' scoped>
 .forgetpassword {
   padding-top: 1rem;
-  height: 100%;
+  min-height: 100vh;
   box-sizing: border-box;
   background-color: #fff;
   .banner {
@@ -144,8 +144,8 @@ export default {
           height: 40px;
       }
       .van-button--primary{
-          background-color: #7654e7;
-          border: 1px solid #7654e7;
+          background-color: #349aff;
+          border: 1px solid #349aff;
       }
   }
 }

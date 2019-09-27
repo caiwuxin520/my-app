@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import './assets/js/rem'
+import "./assets/js/rem";
 export default {
-  name: 'App'
-}
+  name: "App",
+};
 //ios禁止缩放
 window.onload = function() {
   document.addEventListener("touchstart", function(event) {
@@ -31,17 +31,17 @@ window.onload = function() {
   padding: 0;
 }
 html {
-  height: 100%;
+  min-height: 100vh;
 }
 #app {
-  height: 100%;
+  min-height: 100vh;
   font-size: 0.28rem;
   background-color: #f1f1f1;
 }
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100vh;
 }
 /* 淘宝初始化样式 */
 body {

@@ -1,6 +1,6 @@
 <template>
   <div class="tabbar">
-    <van-tabbar v-model="active"  active-color="#7654E7"	>
+    <van-tabbar v-model="active"  active-color="#349aff"	>
       <van-tabbar-item to="./index">
         <span>首页</span>
         <van-icon class-prefix="my-icon" size="25px" name="jiekuan" slot="icon" />

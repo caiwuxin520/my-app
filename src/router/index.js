@@ -9,8 +9,13 @@ const Customer = () => import('@/view/Customer/Customer')//客服
 const login = () => import('@/view/login/login')//登录
 const forgetpassword = () => import('@/view/forgetpassword/forgetpassword')//忘记密码
 const register = () => import('@/view/register/register')//注册
-const agreement = () => import('../view/agreement/agreement') //注册协议
 const jkxy = () => import('../view/jkxy/jkxy') //借款协议
+const agreement = () => import('@/view/agreement/agreement') //注册协议
+const idcardinfo = () => import('@/view/idcardinfo/idcardinfo') //身份证信息
+const workinfo = () => import('@/view/workinfo/workinfo') //单位信息
+const blankcard = () => import('@/view/blankcard/blankcard') //银行卡信息
+const mobileinfo = () => import('@/view/mobileinfo/mobileinfo') //手机号信息
+const updatapassword = () => import('@/view/updatapassword/updatapassword') //修改密码
 Vue.use(Router)
 
 const router = new Router({
@@ -63,6 +68,34 @@ const router = new Router({
       path: '/jkxy',
       name: 'jkxy',
       component: jkxy,
+      path: '/idcardinfo',
+      name: 'idcardinfo',
+      component: idcardinfo,
+    },
+    {
+      path: '/workinfo',
+      name: 'workinfo',
+      component: workinfo,
+    },
+    {
+      path: '/blankcard',
+      name: 'blankcard',
+      component: blankcard,
+    },
+    {
+      path: '/blankcard',
+      name: 'blankcard',
+      component: blankcard,
+    },
+    {
+      path: '/mobileinfo',
+      name: 'mobileinfo',
+      component: mobileinfo,
+    },
+    {
+      path: '/updatapassword',
+      name: 'updatapassword',
+      component: updatapassword,
     },
   ],
   //解决跳转滚动条不在顶部问题.

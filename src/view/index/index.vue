@@ -122,6 +122,7 @@ export default {
   created() {
     this.startMove();
     this.getmoney();
+    // this.getseesionid()
   },
 
   methods: {

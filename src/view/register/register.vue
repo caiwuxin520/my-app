@@ -57,7 +57,7 @@
                   size="small"
                   type="primary"
                   v-else
-                  :disabled="flag"
+                  :disabled="btnflag"
                 >{{timer}}</van-button>
               </van-field>
             </div>
@@ -85,7 +85,7 @@
         <span class="xyspan2" @click="gopath('./agreement')">《用户注册协议》</span>
       </div>
       <div class="bannerbtn">
-        <van-button type="primary" size="large">完成</van-button>
+        <van-button type="primary" size="large" @click="registers" :disabled="okflag">完成</van-button>
       </div>
     </van-pull-refresh>
   </div>
@@ -107,10 +107,13 @@ export default {
       codeimg: "",
       isLoading: false,
       btnflag: false,
-      timer: 60
+      timer: 60,
+      okflag: false,
+      comId:2
     };
   },
   created() {
+    //初次进入页面获得图形验证码
     this.vercode();
   },
   methods: {
@@ -211,13 +214,82 @@ export default {
     },
     //注册
     registers() {
-      // this.$axios({
-      //   method: "post",
-      //   url: 'http://39.98.251.244/loan/backend/customerInfo/insertCustomerInfo',
-      //   data: {
-      //     id: this.touristId
-      //   }
-      // });
+      this.okflag = true;
+      setTimeout(() => {
+        this.okflag = false;
+      }, 1000);
+      let reg = /^1[3456789]\d{9}$/;
+      if (!reg.test(this.phone)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的手机号",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.code) {
+        this.$toast({
+          type: "fail",
+          message: "请输入图形验证码",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.sms) {
+        this.$toast({
+          type: "fail",
+          message: "请输入短信验证码",
+          duration: 1000
+        });
+        return;
+      }
+      let reg1 = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
+      if (!reg1.test(this.password)) {
+        this.$toast({
+          type: "fail",
+          message: "密码的格式为6-16位字母数字组合",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.checked) {
+        this.$toast({
+          type: "fail",
+          message: "请同意用户注册协议",
+          duration: 1000
+        });
+        return;
+      }
+      let data = {
+        phoneNumber: this.phone,
+        password: this.password,
+        smsCode: this.sms,
+        verCode: this.code,
+        comId: this.comId
+      };
+      this.$axios({
+        method: "post",
+        url:
+          "http://39.98.251.244/loan/backend/customerInfo/insertCustomerInfo",
+        data: data
+      }).then(res => {
+        if (res.data.code == 0) {
+           this.$toast({
+            type: "success",
+            message: res.data.msg,
+            duration: 1000
+          });
+          setTimeout(() => {
+            this.$router.push('./login')
+          },1000)
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
     }
   },
   components: {
@@ -231,11 +303,11 @@ export default {
 <style lang='less' scoped>
 .register {
   padding-top: 1rem;
-  height: 100%;
+  min-height: 100vh;
   box-sizing: border-box;
   background-color: #fff;
   .van-pull-refresh {
-    height: 100%;
+    min-height: 80vh;
   }
   .banner {
     padding: 0 0.4rem;
@@ -254,7 +326,7 @@ export default {
         padding-left: 0.4rem;
         box-sizing: border-box;
         .inputbox {
-          border-bottom: 0.02rem solid #f7f7f7;
+          // border-bottom: 0.02rem solid #f7f7f7;
           .codeimg {
             width: 80px;
             height: 35px;
@@ -280,7 +352,7 @@ export default {
     display: flex;
     align-items: center;
     .xyspan2 {
-      color: #7654e7;
+      color: #349aff;
       margin-left: 0.2rem;
     }
   }
@@ -293,9 +365,15 @@ export default {
       height: 40px;
     }
     .van-button--primary {
-      background-color: #7654e7;
-      border: 1px solid #7654e7;
+      background-color: #349aff;
+      border: 1px solid #349aff;
     }
   }
+}
+</style>
+
+<style>
+.register .van-cell:not(:last-child)::after {
+  border-bottom: none;
 }
 </style>
