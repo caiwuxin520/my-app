@@ -359,7 +359,11 @@ export default {
             duration: 1000
           });
           setTimeout(() => {
-            this.$router.push(this.formPath);
+            if(this.formPath == '/register' || this.formPath == '/forgetpassword'){
+              this.$router.push('/index')
+            }else{
+               this.$router.push(this.formPath);
+            }
           }, 500);
         } else {
           this.$toast({
