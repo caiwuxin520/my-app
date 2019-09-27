@@ -4,7 +4,7 @@
     <div class="logingimg">
       <img src="@/assets/img/login-banner.png" />
     </div>
-    <van-tabs v-model="active" title-active-color="#7654E7">
+    <van-tabs v-model="active" title-active-color="#349aff">
       <van-tab title="手机号登录">
         <div class="banner">
           <div class="banneritem">
@@ -213,8 +213,8 @@ export default {
           border: 1px solid #999;
       }
       .van-button--primary{
-          background-color: #7654e7;
-          border: 1px solid #7654e7;
+          background-color: #349aff;
+          border: 1px solid #349aff;
       }
   }
   .bannertx{
@@ -231,7 +231,7 @@ export default {
 
 <style>
 .login .van-tabs .van-tabs__wrap .van-tabs__line {
-  background-color: #7654e7;
+  background-color: #349aff;
 }
 .login .van-cell:not(:last-child)::after{
     border-bottom: none;

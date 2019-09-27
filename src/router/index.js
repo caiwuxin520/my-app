@@ -13,7 +13,8 @@ const agreement = () => import('@/view/agreement/agreement') //注册协议
 const idcardinfo = () => import('@/view/idcardinfo/idcardinfo') //身份证信息
 const workinfo = () => import('@/view/workinfo/workinfo') //单位信息
 const blankcard = () => import('@/view/blankcard/blankcard') //银行卡信息
-const mobileinfo = () => import('@/view/mobileinfo/mobileinfo') //银行卡信息
+const mobileinfo = () => import('@/view/mobileinfo/mobileinfo') //手机号信息
+const updatapassword = () => import('@/view/updatapassword/updatapassword') //修改密码
 Vue.use(Router)
 
 const router = new Router({
@@ -86,6 +87,11 @@ const router = new Router({
       path: '/mobileinfo',
       name: 'mobileinfo',
       component: mobileinfo,
+    },
+    {
+      path: '/updatapassword',
+      name: 'updatapassword',
+      component: updatapassword,
     },
   ],
   //解决跳转滚动条不在顶部问题.

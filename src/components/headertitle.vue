@@ -28,20 +28,21 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 9999;
+    z-index: 999;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #fff;
+    background-color: #349aff;
     .van-icon{
       position: absolute;
       left: 0.4rem;
       top: 50%;
       transform: translateY(-50%);
+      color: #fff;
     }
     .box{
         font-size: 0.36rem;
-        color: #000;
+        color: #fff;
     }
 }
 </style>

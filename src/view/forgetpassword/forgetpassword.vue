@@ -144,8 +144,8 @@ export default {
           height: 40px;
       }
       .van-button--primary{
-          background-color: #7654e7;
-          border: 1px solid #7654e7;
+          background-color: #349aff;
+          border: 1px solid #349aff;
       }
   }
 }

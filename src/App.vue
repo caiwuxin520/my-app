@@ -31,17 +31,17 @@ window.onload = function() {
   padding: 0;
 }
 html {
-  height: 100%;
+  min-height: 100vh;
 }
 #app {
-  height: 100%;
+  min-height: 100vh;
   font-size: 0.28rem;
   background-color: #f1f1f1;
 }
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100vh;
 }
 /* 淘宝初始化样式 */
 body {

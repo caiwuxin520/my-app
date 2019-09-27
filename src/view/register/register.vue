@@ -281,7 +281,7 @@ export default {
     display: flex;
     align-items: center;
     .xyspan2 {
-      color: #7654e7;
+      color: #349aff;
       margin-left: 0.2rem;
     }
   }
@@ -294,8 +294,8 @@ export default {
       height: 40px;
     }
     .van-button--primary {
-      background-color: #7654e7;
-      border: 1px solid #7654e7;
+      background-color: #349aff;
+      border: 1px solid #349aff;
     }
   }
 }

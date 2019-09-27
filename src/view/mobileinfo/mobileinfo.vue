@@ -20,18 +20,14 @@
         </div>
       </div>
       <div class="banneritem">
-        <p class="ptext">图形验证码</p>
+        <p class="ptext">验证码</p>
         <div class="bannerinput">
           <div class="inputbox inputbox1">
-            <van-field v-model="code" placeholder="请输入图形验证码" type="number" clearable maxlength="4" />
+            <van-field v-model="code" placeholder="请输入右侧验证码" type="number" clearable maxlength="4" />
             <img :src="codeimg" class="codeimg" @click="vercode" />
           </div>
         </div>
       </div>
-    </div>
-    <div class="tx1">
-      温馨提示:
-      <br />手机服务密码是运营商网站登陆密码,若忘记密码,请您到运营商网站找回密码
     </div>
     <div class="bannerxy">
       <van-checkbox v-model="checked">同意</van-checkbox>
@@ -128,7 +124,7 @@ export default {
         padding-left: 0.4rem;
         box-sizing: border-box;
         .inputbox {
-          border-bottom: 1px solid #f7f7f7;
+          // border-bottom: 1px solid #f7f7f7;
           .codeimg {
             width: 80px;
             height: 35px;
@@ -154,21 +150,20 @@ export default {
     display: flex;
     align-items: center;
     .xyspan2 {
-      color: #7654e7;
+      color: #349aff;
       margin-left: 0.2rem;
     }
   }
   .bannerbtn {
     padding: 0 0.4rem;
     .van-button {
-      margin-top: 0.42rem;
       border-radius: 20px;
       line-height: 40px;
       height: 40px;
     }
     .van-button--primary {
-      background-color: #7654e7;
-      border: 1px solid #7654e7;
+      background-color: #349aff;
+      border: 1px solid #349aff;
     }
   }
 }
@@ -180,5 +175,8 @@ export default {
 }
 .mobileinfo .bannerxy .van-checkbox__icon--checked .van-icon{
     border-color: #1989fa;
+}
+.mobileinfo .van-cell:not(:last-child)::after{
+    border-bottom: none;
 }
 </style>
