@@ -21,6 +21,6 @@ axios.interceptors.request.use(function (config) {
   return Promise.reject(error);
 });
 
- axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true
 
 export default axios

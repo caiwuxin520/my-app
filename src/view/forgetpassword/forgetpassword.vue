@@ -1,60 +1,69 @@
 <template>
   <div class="forgetpassword">
     <headertitle :titles="'找回密码'" :tabfalg="true"></headertitle>
-        <div class="banner">
-          <div class="banneritem">
-            <p class="ptext">手机号</p>
-            <div class="bannerinput">
-              <div class="inputbox">
-                <van-field
-                  v-model="phone"
-                  placeholder="请输入手机号"
-                  type="number"
-                  clearable
-                  maxlength="11"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="banneritem">
-            <p class="ptext">图形验证码</p>
-            <div class="bannerinput">
-              <div class="inputbox inputbox1">
-                <van-field
-                  v-model="code"
-                  placeholder="请输入图形验证码"
-                  type="number"
-                  clearable
-                  maxlength="4"
-                />
-                <img src="../../assets/img/code.jpg" class="codeimg" />
-              </div>
-            </div>
-          </div>
-          <div class="banneritem">
-            <p class="ptext">短信验证码</p>
-            <div class="bannerinput">
-              <div class="inputbox">
-                <van-field v-model="sms" center clearable type="number" placeholder="请输入短信验证码">
-                  <van-button slot="button" size="small" type="primary">发送验证码</van-button>
-                </van-field>
-              </div>
-            </div>
-          </div>
-           <div class="banneritem">
-           <p class="ptext">新密码</p>
-            <div class="bannerinput">
-              <div class="inputbox">
-                <van-field v-model="password" center clearable :type="type" placeholder="请设置6-16位密码">
-                   <van-icon class-prefix="my-icon" :name="iconname"  slot="right-icon" @click="changgeicon" size="28px"/>
-                </van-field>
-              </div>
-            </div>
+     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+    <div class="banner">
+      <div class="banneritem">
+        <p class="ptext">手机号</p>
+        <div class="bannerinput">
+          <div class="inputbox">
+            <van-field v-model="phone" placeholder="请输入手机号" type="number" clearable maxlength="11" />
           </div>
         </div>
-        <div class="bannerbtn">
-            <van-button type="primary" size="large">完成</van-button>
+      </div>
+      <div class="banneritem">
+        <p class="ptext">图形验证码</p>
+        <div class="bannerinput">
+          <div class="inputbox inputbox1">
+            <van-field v-model="code" placeholder="请输入图形验证码" type="number" clearable maxlength="4" />
+            <img :src="codeimg" class="codeimg" @click="vercode" />
+          </div>
         </div>
+      </div>
+      <div class="banneritem">
+        <p class="ptext">短信验证码</p>
+        <div class="bannerinput">
+          <div class="inputbox">
+            <van-field v-model="sms" center clearable type="number" placeholder="请输入短信验证码">
+              <van-button
+                slot="button"
+                size="small"
+                type="primary"
+                v-if="!btnflag"
+                @click="fscode"
+              >获取验证码</van-button>
+              <van-button
+                slot="button"
+                size="small"
+                type="primary"
+                v-else
+                :disabled="btnflag"
+              >{{timer}}</van-button>
+            </van-field>
+          </div>
+        </div>
+      </div>
+      <div class="banneritem">
+        <p class="ptext">新密码</p>
+        <div class="bannerinput">
+          <div class="inputbox">
+            <van-field v-model="password" center clearable :type="type" placeholder="请设置6-16位密码">
+              <van-icon
+                class-prefix="my-icon"
+                :name="iconname"
+                slot="right-icon"
+                @click="changgeicon"
+                size="28px"
+              />
+            </van-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bannerbtn">
+      <van-button type="primary" size="large" @click="okpassword" :disabled="okflag">完成</van-button>
+    </div>
+     </van-pull-refresh>
   </div>
 </template>
 
@@ -66,23 +75,158 @@ export default {
       phone: "",
       code: "",
       sms: "",
-      password:"",
-      iconname:'biyan',
-      type:'password'
+      password: "",
+      iconname: "biyan",
+      type: "password",
+      btnflag: false,
+      timer: 60,
+      codeimg:"",
+      okflag:false,
+      isLoading: false,
     };
   },
-  methods:{
-      //切换密码是否显示
-      changgeicon(){
-          if(this.type == 'password'){
-              this.iconname = 'yanjing'
-              this.type = 'text'
-          }else{
-              this.iconname = 'biyan'
-                this.type = 'password'
+  created(){
+    this.vercode()
+  },
+  methods: {
+    //下拉刷新
+    onRefresh() {
+      setTimeout(() => {
+        this.phone = "";
+        this.sms = "";
+        this.code = "";
+        this.password = "";
+        this.isLoading = false;
+      }, 500);
+    },
+    //切换密码是否显示
+    changgeicon() {
+      if (this.type == "password") {
+        this.iconname = "yanjing";
+        this.type = "text";
+      } else {
+        this.iconname = "biyan";
+        this.type = "password";
+      }
+    },
+    //图形验证码
+     vercode() {
+      this.$axios({
+        method: "get",
+        url: "http://39.98.251.244/loan/backend/systemtool/defaultKaptcha",
+        responseType: "arraybuffer"
+      })
+        .then(response => {
+          return (
+            "data:image/png;base64," +
+            btoa(
+              new Uint8Array(response.data).reduce(
+                (data, byte) => data + String.fromCharCode(byte),
+                ""
+              )
+            )
+          );
+        })
+        .then(data => {
+          if (data) {
+            this.codeimg = data;
           }
-      },
-      
+        });
+    },
+    //发送验证码
+    fscode() {
+      let reg = /^1[3456789]\d{9}$/;
+      if (!reg.test(this.phone)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的手机号",
+          duration: 1000
+        });
+        return;
+      }
+      this.$axios({
+        method: "get",
+        url: "http://39.98.251.244/loan/backend/systemsms/sendSmsCode",
+        params: {
+          phoneNumber: this.phone
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.btnflag = true;
+          let auth_timer = setInterval(() => {
+            //定时器设置每秒递减
+            this.timer--; //递减时间
+            if (this.timer <= 0) {
+              this.btnflag = false; //60s时间结束还原v-show状态并清除定时器
+              this.timer = 60;
+              clearInterval(auth_timer);
+            }
+          }, 1000);
+          this.$toast({
+            type: "success",
+            message: "发送成功",
+            duration: 1000
+          });
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    //找回密码
+    okpassword(){
+       this.okflag = true;
+      setTimeout(() => {
+        this.okflag = false;
+      }, 1000);
+      let reg = /^1[3456789]\d{9}$/;
+      if (!reg.test(this.phone)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的手机号",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.code) {
+        this.$toast({
+          type: "fail",
+          message: "请输入图形验证码",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.sms) {
+        this.$toast({
+          type: "fail",
+          message: "请输入短信验证码",
+          duration: 1000
+        });
+        return;
+      }
+        let reg1 = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
+      if (!reg1.test(this.password)) {
+        this.$toast({
+          type: "fail",
+          message: "密码的格式为6-16位字母数字组合",
+          duration: 1000
+        });
+        return;
+      }
+      this.$axios({
+        method: "post",
+        url: "http://39.98.251.244/loan/backend/systemuser/findPassword",
+        data: {
+          mobile: this.phone,
+          verCode: this.code,
+          smsCode: this.sms,
+          password:this.password
+        }
+      });
+    }
   },
   components: {
     headertitle
@@ -98,13 +242,16 @@ export default {
   min-height: 100vh;
   box-sizing: border-box;
   background-color: #fff;
+  .van-pull-refresh {
+    min-height: 80vh;
+  }
   .banner {
     padding: 0 0.4rem;
     .banneritem {
       height: 1rem;
       display: flex;
       align-items: center;
-      .ptext{
+      .ptext {
         width: 20%;
         font-size: 0.28rem;
         color: #666;
@@ -122,10 +269,10 @@ export default {
             margin-right: 16px;
           }
           .van-button {
-              background-color: #fff;
-              border: 1px solid #dedede;
-              color: #666;
-              border-radius: 4px
+            background-color: #fff;
+            border: 1px solid #dedede;
+            color: #666;
+            border-radius: 4px;
           }
         }
         .inputbox1 {
@@ -135,18 +282,18 @@ export default {
       }
     }
   }
-  .bannerbtn{
-      padding:  0 0.4rem;
-      .van-button{
-          margin-top: 0.42rem;
-          border-radius: 20px;
-          line-height: 40px;
-          height: 40px;
-      }
-      .van-button--primary{
-          background-color: #349aff;
-          border: 1px solid #349aff;
-      }
+  .bannerbtn {
+    padding: 0 0.4rem;
+    .van-button {
+      margin-top: 0.42rem;
+      border-radius: 20px;
+      line-height: 40px;
+      height: 40px;
+    }
+    .van-button--primary {
+      background-color: #349aff;
+      border: 1px solid #349aff;
+    }
   }
 }
 </style>

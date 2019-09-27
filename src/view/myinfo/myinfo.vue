@@ -49,7 +49,7 @@
           </div> -->
         </div>
       </div>
-      <div class="myinfobox2">
+      <div class="myinfobox2" @click="gopath('./myorder')">
         <div class="box2top">
           <div class="box2text1">我的借款</div>
           <div class="box2text2">审核中</div>

@@ -176,7 +176,7 @@ export default {
       }
       this.$axios({
         method: "get",
-        url: " http://39.98.251.244/loan/backend/systemsms/sendSmsCode",
+        url: "http://39.98.251.244/loan/backend/systemsms/sendSmsCode",
         params: {
           phoneNumber: this.phone
         }
@@ -278,7 +278,7 @@ export default {
       }
       this.$axios({
         method: "post",
-        url: " http://39.98.251.244/loan/backend/systemuser/mobileLogin",
+        url: "http://39.98.251.244/loan/backend/systemuser/mobileLogin",
         data: {
           mobile: this.phone,
           verCode: this.code,
@@ -320,7 +320,7 @@ export default {
       }
       this.$axios({
         method: "post",
-        url: " http://39.98.251.244/loan/backend/systemuser/accountLogin",
+        url: "http://39.98.251.244/loan/backend/systemuser/accountLogin",
         data: {
           account: this.phone1,
           password: this.password,

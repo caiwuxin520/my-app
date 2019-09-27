@@ -15,6 +15,7 @@ const workinfo = () => import('@/view/workinfo/workinfo') //单位信息
 const blankcard = () => import('@/view/blankcard/blankcard') //银行卡信息
 const mobileinfo = () => import('@/view/mobileinfo/mobileinfo') //手机号信息
 const updatapassword = () => import('@/view/updatapassword/updatapassword') //修改密码
+const myorder = () => import('@/view/myorder/myorder') //修改密码
 Vue.use(Router)
 
 const router = new Router({
@@ -92,6 +93,11 @@ const router = new Router({
       path: '/updatapassword',
       name: 'updatapassword',
       component: updatapassword,
+    },
+    {
+      path: '/myorder',
+      name: 'myorder',
+      component: myorder,
     },
   ],
   //解决跳转滚动条不在顶部问题.
