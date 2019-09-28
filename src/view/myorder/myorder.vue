@@ -71,10 +71,60 @@
 import headertitle from "../../components/headertitle";
 export default {
   data() {
-    return {};
+    return {
+      comId: 2,
+      userId: this.getLocalStorage("userId").data || ""
+    };
   },
-  created() {},
-  methods: {},
+  created() {
+    this.queryjk()
+  },
+  methods: {
+     //查询借款人
+    queryjk() {
+      this.$axios({
+        method: "get",
+        url:
+          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+        params: {
+          comId: this.comId,
+          userId: this.userId
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          let customerId = res.data.data[0].id;
+          this.querymyjk(customerId)
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    //查询我的借款
+    querymyjk(id) {
+      this.$axios({
+        method: "get",
+        url: "http://39.98.251.244/loan/backend/recordLoan/queryRecordLoanVo",
+        params: {
+          comId: this.comId,
+          customerId: id
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    }
+  },
   components: {
     headertitle
   }

@@ -7,7 +7,7 @@
         <p class="ptext">姓名</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="name" placeholder="请输入您的真实姓名" clearable />
+            <van-field v-model="name" placeholder="请输入您的真实姓名" clearable :disabled="isws" />
           </div>
         </div>
       </div>
@@ -15,14 +15,20 @@
         <p class="ptext">身份证</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="idcard" placeholder="填写您的身份证号码" clearable />
+            <van-field v-model="idcard" placeholder="填写您的身份证号码" clearable :disabled="isws" />
           </div>
         </div>
       </div>
     </div>
     <div class="updata">
       <div v-if="!src1">
-        <van-uploader :after-read="afterRead1">
+        <van-uploader
+          :after-read="afterRead1"
+          :max-count="1"
+          :before-read="beforeRead"
+          :max-size="6000000"
+          @oversize="overSize"
+        >
           <div class="updata1">
             <div class="morenimg">
               <img src="../../assets/img/zheng.png" class="img1" />
@@ -31,12 +37,18 @@
         </van-uploader>
       </div>
       <div class="src1" v-else>
-        <img :src="src1">
+        <img :src="src1" />
       </div>
     </div>
     <div class="updata">
       <div v-if="!src2">
-        <van-uploader :after-read="afterRead2">
+        <van-uploader
+          :after-read="afterRead2"
+          :max-count="1"
+          :before-read="beforeRead"
+          :max-size="6000000"
+          @oversize="overSize"
+        >
           <div class="updata1">
             <div class="morenimg">
               <img src="../../assets/img/zheng.png" class="img1" />
@@ -45,12 +57,18 @@
         </van-uploader>
       </div>
       <div class="src1" v-else>
-        <img :src="src2">
+        <img :src="src2" />
       </div>
     </div>
     <div class="updata">
       <div v-if="!src3">
-        <van-uploader :after-read="afterRead3">
+        <van-uploader
+          :after-read="afterRead3"
+          :max-count="1"
+          :before-read="beforeRead"
+          :max-size="6000000"
+          @oversize="overSize"
+        >
           <div class="updata1">
             <div class="morenimg">
               <img src="../../assets/img/zheng.png" class="img1" />
@@ -59,7 +77,7 @@
         </van-uploader>
       </div>
       <div class="src1" v-else>
-        <img :src="src3">
+        <img :src="src3" />
       </div>
     </div>
   </div>
@@ -74,19 +92,155 @@ export default {
       idcard: "",
       src1: "",
       src2: "",
-      src3: ""
+      src3: "",
+      customerId: "",
+      comId: 2,
+      userId: this.getLocalStorage("userId").data || "",
+      isws: false,
+      imgid1: "",
+      imgid2: "",
+      imgid3: ""
     };
   },
-  created() {},
+  created() {
+    this.queryjk();
+  },
   methods: {
     afterRead1(file) {
-      this.src1 = file.content
+      this.src1 = file.content;
+      let img = new Image();
+      img.src = file.content;
+      this.dwimg = file.content;
+      let that = this;
+      img.onload = function() {
+        that.ontpys(img, 1);
+      };
     },
     afterRead2(file) {
-      this.src2 = file.content
+      this.src2 = file.content;
+      let img = new Image();
+      img.src = file.content;
+      this.dwimg = file.content;
+      let that = this;
+      img.onload = function() {
+        that.ontpys(img, 2);
+      };
     },
     afterRead3(file) {
-      this.src3 = file.content
+      this.src3 = file.content;
+      let img = new Image();
+      img.src = file.content;
+      this.dwimg = file.content;
+      let that = this;
+      img.onload = function() {
+        that.ontpys(img, 3);
+      };
+    },
+    //查询借款人
+    queryjk() {
+      this.$axios({
+        method: "get",
+        url:
+          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+        params: {
+          comId: this.comId,
+          userId: this.userId
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          let customerId = res.data.data[0].id;
+          if (res.data.data[0].isCompleteUser == 1) {
+            this.isws = true;
+            this.name = res.data.data[0].realName;
+            this.idcard = res.data.data[0].idcardNumber;
+            this.src1 = res.data.data[0].idcardFrontValue;
+            this.src2 = res.data.data[0].idcardBackValue;
+            this.src3 = res.data.data[0].idcardHandValue;
+          }
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    //上传校验
+    beforeRead(file) {
+      if (file.type == "image/jpeg" || file.type == "image/png") {
+        return true;
+      }
+      this.$toast({
+        type: "fail",
+        message: "请上传jpg,jepg,png图片",
+        duration: 1000
+      });
+      return false;
+    },
+    //超过大小
+    overSize() {
+      this.$toast({
+        type: "fail",
+        message: "上传的图片不能超过6M",
+        duration: 1000
+      });
+    },
+    //压缩图片的方法
+    ontpys(img, num) {
+      let originWidth = img.width, // 压缩后的宽
+        originHeight = img.height,
+        maxWidth = 400,
+        maxHeight = 400,
+        quality = 0.8, // 压缩质量
+        canvas = document.createElement("canvas"),
+        drawer = canvas.getContext("2d");
+      canvas.width = maxWidth;
+      canvas.height = (originHeight / originWidth) * maxWidth;
+      drawer.drawImage(img, 0, 0, canvas.width, canvas.height);
+      let base64 = canvas.toDataURL("image/jpeg", quality); // 压缩后的base64图片
+      let file = this.dataURLtoFile(base64, Date.parse(Date()) + ".jpg");
+      file = { content: base64, file: file };
+      this.onimg(file, num);
+    },
+    //base64转file
+    dataURLtoFile(dataurl, filename) {
+      let arr = dataurl.split(","),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    },
+    //图片上传
+    onimg(file, num) {
+      //console.log(file.content)
+      var formData = new FormData();
+      formData.append("file", file.file);
+      this.$axios({
+        method: "post",
+        url: "http://39.98.251.244/loan/backend/systemfile/uploadFileLocal",
+        data: formData
+      }).then(res => {
+        if (res.data.code == 0) {
+          if (num == 1) {
+            this.imgid1 = res.data.data.id;
+          } else if (num == 2) {
+            this.imgid2 = res.data.data.id;
+          } else {
+            this.imgid3 = res.data.data.id;
+          }
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
     }
   },
   components: {
@@ -103,7 +257,7 @@ export default {
   height: 100%;
   box-sizing: border-box;
   background-color: #fff;
-  .tj{
+  .tj {
     position: fixed;
     color: #fff;
     top: 0.3rem;
@@ -152,10 +306,11 @@ export default {
   .updata {
     padding: 0 0.4rem;
     margin-bottom: 0.4rem;
-    .src1{
+    .src1 {
       width: 100%;
-      img{
+      img {
         width: 100%;
+        height: 3.9rem;
       }
     }
     .van-uploader {
@@ -167,6 +322,7 @@ export default {
         width: 100%;
         img {
           width: 100%;
+          height: 3.9rem;
         }
       }
     }

@@ -85,11 +85,6 @@ const router = new Router({
       component: blankcard,
     },
     {
-      path: '/blankcard',
-      name: 'blankcard',
-      component: blankcard,
-    },
-    {
       path: '/mobileinfo',
       name: 'mobileinfo',
       component: mobileinfo,
@@ -134,14 +129,12 @@ router.beforeEach((to, from, next) => {
         return
       }else{
         next({
-          path:'/login',
-          query:{
-            path:from.path
-          }
+          path:'/login'
         })
         return
       }
     })
+    return
   }
   next()
 })

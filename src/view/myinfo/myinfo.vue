@@ -1,41 +1,50 @@
 <template>
   <div class="myinfo">
     <headertitle :titles="'个人中心'" :tabfalg="false"></headertitle>
-    <div class="box">
-      <div class="myinfobox1">
-        <div class="box1top">我的资料</div>
-        <div class="box1banner">
-          <div class="box1item" @click="gopath('./idcardinfo')">
-            <div class="iconbox" :style="{'background':'#67a9fd'}">
-              <van-icon class-prefix="my-icon" name="credentials_icon" />
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <div class="box">
+        <div class="myinfobox1">
+          <div class="box1top">我的资料</div>
+          <div class="box1banner">
+            <div class="box1item" @click="gopath('./idcardinfo')">
+              <div class="iconbox" :style="{'background':'#67a9fd'}">
+                <van-icon class-prefix="my-icon" name="credentials_icon" />
+              </div>
+              <p>身份证信息</p>
+               <p v-if="isCompleteUser == 1" class="p1">(已完善)</p>
+               <p v-else>(待完善)</p>
             </div>
-            <p>身份证信息</p>
-          </div>
-          <div class="box1item" @click="gopath('./workinfo')">
-            <div class="iconbox" :style="{'background':'#e96b56'}">
-              <van-icon class-prefix="my-icon" name="danwei" />
+            <div class="box1item" @click="gopath('./workinfo')">
+              <div class="iconbox" :style="{'background':'#e96b56'}">
+                <van-icon class-prefix="my-icon" name="danwei" />
+              </div>
+              <p>单位信息</p>
+               <p v-if="isCompleteCompany == 1" class="p1">(已完善)</p>
+               <p v-else>(待完善)</p>
             </div>
-            <p>单位信息</p>
-          </div>
-          <div class="box1item" @click="gopath('./blankcard')">
-            <div class="iconbox" :style="{'background':'#f8a724'}">
-              <van-icon class-prefix="my-icon" name="shuaqiaqiapianyinhangqia" />
+            <div class="box1item" @click="gopath('./blankcard')">
+              <div class="iconbox" :style="{'background':'#f8a724'}">
+                <van-icon class-prefix="my-icon" name="shuaqiaqiapianyinhangqia" />
+              </div>
+              <p>收款银行卡</p>
+               <p v-if="isCompleteBank == 1" class="p1">(已完善)</p>
+               <p v-else>(待完善)</p>
             </div>
-            <p>收款银行卡</p>
-          </div>
-          <div class="box1item" @click="gopath('./mobileinfo')">
-            <div class="iconbox" :style="{'background':'#ca8c59'}">
-              <van-icon class-prefix="my-icon" name="shouji1" />
+            <div class="box1item" @click="gopath('./mobileinfo')">
+              <div class="iconbox" :style="{'background':'#ca8c59'}">
+                <van-icon class-prefix="my-icon" name="shouji1" />
+              </div>
+              <p>手机号认证</p>
+              <p v-if="isCompletePhone == 1" class="p1">(已完善)</p>
+              <p v-else>(待完善)</p>
             </div>
-            <p>手机号认证</p>
-          </div>
-          <div class="box1item" @click="gopath('./updatapassword')" v-if="islogin">
-            <div class="iconbox" :style="{'background':'#FFA500'}">
-              <van-icon class-prefix="my-icon" name="suo" />
+            <div class="box1item" @click="gopath('./updatapassword')" v-if="islogin">
+              <div class="iconbox" :style="{'background':'#FFA500'}">
+                <van-icon class-prefix="my-icon" name="suo" />
+              </div>
+              <p>修改密码</p>
             </div>
-            <p>修改密码</p>
-          </div>
-          <!-- <div class="box1item" @click="wkfclick">
+            <!-- <div class="box1item" @click="wkfclick">
             <div class="iconbox" :style="{'background':'#3cc2ca'}">
               <van-icon class-prefix="my-icon" name="zmxy" />
             </div>
@@ -46,35 +55,36 @@
               <van-icon class-prefix="my-icon" name="xiangji" />
             </div>
             <p>其他资质证明</p>
-          </div>-->
-        </div>
-      </div>
-      <div class="myinfobox2" @click="gopath('./myorder')">
-        <div class="box2top">
-          <div class="box2text1">我的借款</div>
-          <div class="box2text2">审核中</div>
-        </div>
-        <div class="box2banner">
-          <div class="box2item">
-            <p>5000元</p>
-            <span>申请金额</span>
-          </div>
-          <div class="box2item">
-            <p>3个月</p>
-            <span>借款期限</span>
-          </div>
-          <div class="box2item">
-            <p>17871元</p>
-            <span>每月还款</span>
+            </div>-->
           </div>
         </div>
+        <div class="myinfobox2" @click="gopath('./myorder')" v-if="islogin && isjek">
+          <div class="box2top">
+            <div class="box2text1">我的借款</div>
+            <div class="box2text2">审核中</div>
+          </div>
+          <div class="box2banner">
+            <div class="box2item">
+              <p>5000元</p>
+              <span>申请金额</span>
+            </div>
+            <div class="box2item">
+              <p>3个月</p>
+              <span>借款期限</span>
+            </div>
+            <div class="box2item">
+              <p>17871元</p>
+              <span>每月还款</span>
+            </div>
+          </div>
+        </div>
+        <div class="myinfobox3" v-if="islogin">
+          <van-button type="default" @click="tuichu">
+            <van-icon class-prefix="my-icon" name="guanji" />退出登录
+          </van-button>
+        </div>
       </div>
-      <div class="myinfobox3" v-if="islogin">
-        <van-button type="default" @click="tuichu">
-          <van-icon class-prefix="my-icon" name="guanji" />退出登录
-        </van-button>
-      </div>
-    </div>
+    </van-pull-refresh>
     <tabbar :actives="3"></tabbar>
   </div>
 </template>
@@ -85,13 +95,28 @@ import headertitle from "../../components/headertitle";
 export default {
   data() {
     return {
-      islogin: false
+      islogin: false,
+      isLoading: false,
+      comId: 2,
+      userId: this.getLocalStorage("userId").data || "",
+      isCompletePhone:'',
+      isCompleteUser:"",
+      isCompleteBank:"",
+      isCompleteCompany:"",
+      isjek:null
     };
   },
   created() {
     this.jclogin();
+    this.queryjk();
   },
   methods: {
+    //下拉刷新
+    onRefresh() {
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 500);
+    },
     wkfclick() {
       this.$toast({
         type: "fail",
@@ -124,7 +149,6 @@ export default {
     },
     //退出登陆
     tuichu() {
-      console.log(1);
       this.$axios({
         method: "post",
         url: "http://39.98.251.244/loan/backend/systemuser/logout"
@@ -135,9 +159,62 @@ export default {
             message: res.data.msg,
             duration: 1000
           });
+          localStorage.removeItem('userId')
           setTimeout(() => {
             this.$router.push("./login");
           }, 500);
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    //查询借款人
+    queryjk() {
+      this.$axios({
+        method: "get",
+        url:
+          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+        params: {
+          comId: this.comId,
+          userId: this.userId
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          let customerId = res.data.data[0].id;
+          this.isCompletePhone = res.data.data[0].isCompletePhone;
+          this.isCompleteUser = res.data.data[0].isCompleteUser;
+          this.isCompleteCompany = res.data.data[0].isCompleteCompany;
+          this.isCompleteBank = res.data.data[0].isCompleteBank;
+          this.querymyjk(customerId)
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    //查询我的借款
+    querymyjk(id) {
+      this.$axios({
+        method: "get",
+        url: "http://39.98.251.244/loan/backend/recordLoan/queryRecordLoanVo",
+        params: {
+          comId: this.comId,
+          customerId: id
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          if(res.data.data.length == 0){
+            this.isjek = false
+          }else{
+             this.isjek = true
+          }
         } else {
           this.$toast({
             type: "fail",
@@ -161,6 +238,9 @@ export default {
 .myinfo {
   padding-top: 1rem;
   padding-bottom: 50px;
+  .van-pull-refresh {
+    min-height: 85vh;
+  }
   .box {
     margin-top: 0.4rem;
     padding: 0 0.4rem;
@@ -185,7 +265,6 @@ export default {
           width: 33.33%;
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: center;
           .iconbox {
             width: 0.8rem;
@@ -202,6 +281,9 @@ export default {
           p {
             font-size: 0.28rem;
             color: #999;
+          }
+          .p1{
+            color: red;
           }
         }
       }

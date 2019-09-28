@@ -109,7 +109,7 @@ export default {
       btnflag: false,
       timer: 60,
       okflag: false,
-      comId:2
+      comId: 2
     };
   },
   created() {
@@ -274,14 +274,26 @@ export default {
         data: data
       }).then(res => {
         if (res.data.code == 0) {
-           this.$toast({
+          this.$toast({
             type: "success",
             message: res.data.msg,
             duration: 1000
           });
           setTimeout(() => {
-            this.$router.push('./login')
-          },1000)
+            this.$axios({
+              method: "post",
+              url: "http://39.98.251.244/loan/backend/systemuser/accountLogin",
+              data: {
+                account: this.phone,
+                password: this.password,
+                verCode: this.code
+              }
+            }).then(res => {
+              if (res.data.code == 0) {
+                this.$router.push('./myinfo')
+              }
+            })
+          }, 1000);
         } else {
           this.$toast({
             type: "fail",

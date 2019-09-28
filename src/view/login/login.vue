@@ -148,15 +148,12 @@ export default {
       timer: 60,
       okflag: false,
       codeimg: "",
-      formPath: ""
     };
   },
   created() {
     this.vercode();
   },
   mounted() {
-    let query = this.$route.query;
-    this.formPath = query.path;
   },
   methods: {
     //下拉刷新
@@ -299,8 +296,9 @@ export default {
             message: res.data.msg,
             duration: 1000
           });
+          this.setLocalStorage("userId", res.data.data.id);
           setTimeout(() => {
-            this.$router.push(this.formPath);
+            this.$router.push("/myinfo");
           }, 500);
         } else {
           this.$toast({
@@ -358,12 +356,9 @@ export default {
             message: res.data.msg,
             duration: 1000
           });
+          this.setLocalStorage("userId", res.data.data.id);
           setTimeout(() => {
-            if(this.formPath == '/register' || this.formPath == '/forgetpassword'){
-              this.$router.push('/index')
-            }else{
-               this.$router.push(this.formPath);
-            }
+            this.$router.push("/myinfo");
           }, 500);
         } else {
           this.$toast({

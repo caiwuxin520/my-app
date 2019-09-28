@@ -7,7 +7,14 @@
         <p class="ptext">手机号码</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="phone" placeholder="请输入手机号" type="number" clearable maxlength="11" />
+            <van-field
+              v-model="phone"
+              placeholder="请输入手机号"
+              type="number"
+              clearable
+              maxlength="11"
+              :disabled="true"
+            />
           </div>
         </div>
       </div>
@@ -15,7 +22,7 @@
         <p class="ptext">服务密码</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="password" center clearable type="number" placeholder="请输入服务密码"></van-field>
+            <van-field v-model="password" center clearable type="number" placeholder="请输入服务密码" :disabled="wsflag"></van-field>
           </div>
         </div>
       </div>
@@ -31,10 +38,10 @@
     </div>
     <div class="bannerxy">
       <van-checkbox v-model="checked">同意</van-checkbox>
-      <span class="xyspan2">《用户使用协议》</span>
+      <span class="xyspan2" @click="gopath('/agreement')">《用户使用协议》</span>
     </div>
     <div class="bannerbtn">
-      <van-button type="primary" size="large">提交认证</van-button>
+      <van-button type="primary" size="large" :disabled="okflag" @click="phoneyz">提交认证</van-button>
     </div>
   </div>
 </template>
@@ -48,11 +55,17 @@ export default {
       password: "",
       code: "",
       codeimg: "",
-      phone: ""
+      phone: "",
+      okflag: false,
+      comId: 2,
+      userId: this.getLocalStorage("userId").data || "",
+      customerId: "",
+      wsflag:false
     };
   },
   created() {
-      this.vercode()
+    this.vercode();
+    this.queryinfo();
   },
   methods: {
     //获取图形验证码
@@ -79,6 +92,99 @@ export default {
             this.codeimg = data;
           }
         });
+    },
+    //跳转
+    gopath(path) {
+      this.$router.push({
+        path: path
+      });
+    },
+    //查询信息
+    queryinfo() {
+      this.$axios({
+        method: "get",
+        url:
+          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+        params: {
+          comId: this.comId,
+          userId: this.userId
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.phone = res.data.data[0].phoneNumber;
+          this.customerId = res.data.data[0].id;
+          if(res.data.data[0].isCompletePhone == 1){
+              this.password = res.data.data[0].phonePsd
+              this.wsflag = true
+              this.okflag = true
+          }
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    //手机号验证
+    phoneyz() {
+      this.okflag = true;
+      setTimeout(() => {
+        this.okflag = false;
+      }, 1000);
+      if (!this.password) {
+        this.$toast({
+          type: "fail",
+          message: "请输入服务密码",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.code) {
+        this.$toast({
+          type: "fail",
+          message: "请输入图形验证码",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.checked) {
+        this.$toast({
+          type: "fail",
+          message: "请同意用户使用协议",
+          duration: 1000
+        });
+        return;
+      }
+
+      this.$axios({
+        method: "post",
+        url:
+          "http://39.98.251.244/loan/backend/customerInfo/updateCustomerInfo",
+        data: {
+          id: this.customerId,
+          phonePsd: this.password,
+          verCode: this.code
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.$toast({
+            type: "success",
+            message: res.data.msg,
+            duration: 1000
+          });
+          setTimeout(() => {
+            this.$router.push('/login')
+          },500)
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
     }
   },
   components: {
@@ -170,13 +276,13 @@ export default {
 </style>
 
 <style>
-.mobileinfo .bannerxy .van-checkbox .van-icon{
-     border: 1px solid #666;
+.mobileinfo .bannerxy .van-checkbox .van-icon {
+  border: 1px solid #666;
 }
-.mobileinfo .bannerxy .van-checkbox__icon--checked .van-icon{
-    border-color: #1989fa;
+.mobileinfo .bannerxy .van-checkbox__icon--checked .van-icon {
+  border-color: #1989fa;
 }
-.mobileinfo .van-cell:not(:last-child)::after{
-    border-bottom: none;
+.mobileinfo .van-cell:not(:last-child)::after {
+  border-bottom: none;
 }
 </style>

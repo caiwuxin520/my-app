@@ -37,7 +37,7 @@
                 size="small"
                 type="primary"
                 v-else
-                :disabled="flag"
+                :disabled="btnflag"
               >{{timer}}</van-button>
             </van-field>
           </div>
@@ -49,7 +49,7 @@
         <p class="ptext">新密码</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="password1" placeholder="请输入您的新密码" clearable />
+            <van-field v-model="password1" placeholder="请输入您的新密码" clearable type="password" />
           </div>
         </div>
       </div>
@@ -57,13 +57,13 @@
         <p class="ptext">确认新密码</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="password2" placeholder="确认您的新密码" clearable />
+            <van-field v-model="password2" placeholder="确认您的新密码" clearable type="password" />
           </div>
         </div>
       </div>
     </div>
     <div class="bannerbtn">
-      <van-button type="primary" size="large">提交</van-button>
+      <van-button type="primary" size="large" :disabled="okflag" @click="updatapassword">提交</van-button>
     </div>
   </div>
 </template>
@@ -80,8 +80,10 @@ export default {
       sms: "",
       btnflag: false,
       timer: 60,
-      password1:"",
-      password2:""
+      password1: "",
+      password2: "",
+      okflag: false,
+      id: this.getLocalStorage("userId").data || ""
     };
   },
   created() {
@@ -146,6 +148,81 @@ export default {
             message: "发送成功",
             duration: 1000
           });
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    //修改密码
+    updatapassword() {
+      this.okflag = true;
+      setTimeout(() => {
+        this.okflag = false;
+      }, 1000);
+      let reg = /^1[3456789]\d{9}$/;
+      if (!reg.test(this.phone)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的手机号",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.code) {
+        this.$toast({
+          type: "fail",
+          message: "请输入图形验证码",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.sms) {
+        this.$toast({
+          type: "fail",
+          message: "请输入短信验证码",
+          duration: 1000
+        });
+        return;
+      }
+      let reg1 = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
+      if (!reg1.test(this.password1)) {
+        this.$toast({
+          type: "fail",
+          message: "密码的格式为6-16位字母数字组合",
+          duration: 1000
+        });
+        return;
+      }
+      if (this.password2 != this.password1) {
+        this.$toast({
+          type: "fail",
+          message: "第一次与第二次输入的密码不一致",
+          duration: 1000
+        });
+        return;
+      }
+
+      this.$axios({
+        method: "post",
+        url: "http://39.98.251.244/loan/backend/systemuser/updatePassword",
+        data: {
+          id: this.id,
+          password: this.password2
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.$toast({
+            type: "success",
+            message: '修改成功',
+            duration: 1000
+          });
+          setTimeout(() => {
+            this.$router.push('/myinfo')
+          },500)
         } else {
           this.$toast({
             type: "fail",
