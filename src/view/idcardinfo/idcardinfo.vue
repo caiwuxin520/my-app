@@ -1,13 +1,18 @@
 <template>
   <div class="idcardinfo">
     <headertitle :titles="'身份证信息'" :tabfalg="true"></headertitle>
-    <div class="tj">提交</div>
     <div class="banner">
       <div class="banneritem">
         <p class="ptext">姓名</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="name" placeholder="请输入您的真实姓名" clearable :disabled="isws" />
+            <van-field
+              v-model="name"
+              placeholder="请输入您的真实姓名"
+              clearable
+              :disabled="isws"
+              :maxlength="4"
+            />
           </div>
         </div>
       </div>
@@ -15,7 +20,13 @@
         <p class="ptext">身份证</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="idcard" placeholder="填写您的身份证号码" clearable :disabled="isws" />
+            <van-field
+              v-model="idcard"
+              placeholder="填写您的身份证号码"
+              clearable
+              :disabled="isws"
+              :maxlength="18"
+            />
           </div>
         </div>
       </div>
@@ -80,6 +91,9 @@
         <img :src="src3" />
       </div>
     </div>
+    <div class="bannerbtn">
+      <van-button type="primary" size="large" :disabled="okflag" @click="updataidcard">提交</van-button>
+    </div>
   </div>
 </template>
 
@@ -99,7 +113,8 @@ export default {
       isws: false,
       imgid1: "",
       imgid2: "",
-      imgid3: ""
+      imgid3: "",
+      okflag:false
     };
   },
   created() {
@@ -107,7 +122,7 @@ export default {
   },
   methods: {
     afterRead1(file) {
-      this.src1 = file.content;
+      // this.src1 = file.content;
       let img = new Image();
       img.src = file.content;
       this.dwimg = file.content;
@@ -148,9 +163,10 @@ export default {
         }
       }).then(res => {
         if (res.data.code == 0) {
-          let customerId = res.data.data[0].id;
+          this.customerId = res.data.data[0].id;
           if (res.data.data[0].isCompleteUser == 1) {
             this.isws = true;
+            this.okflag = true;
             this.name = res.data.data[0].realName;
             this.idcard = res.data.data[0].idcardNumber;
             this.src1 = res.data.data[0].idcardFrontValue;
@@ -199,6 +215,7 @@ export default {
       canvas.height = (originHeight / originWidth) * maxWidth;
       drawer.drawImage(img, 0, 0, canvas.width, canvas.height);
       let base64 = canvas.toDataURL("image/jpeg", quality); // 压缩后的base64图片
+      this.src1 = base64;
       let file = this.dataURLtoFile(base64, Date.parse(Date()) + ".jpg");
       file = { content: base64, file: file };
       this.onimg(file, num);
@@ -241,6 +258,87 @@ export default {
           });
         }
       });
+    },
+    //提交信息
+    updataidcard() {
+      this.okflag = true;
+      setTimeout(() => {
+        this.okflag = false;
+      }, 1000);
+      let reg = /^[\u4e00-\u9fa5]{2,4}$/;
+      if (!reg.test(this.name)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的姓名",
+          duration: 1000
+        });
+        return;
+      }
+      let reg1 = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+      if (!reg1.test(this.idcard)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的身份证号",
+          duration: 1000
+        });
+        return;
+      }
+      let idcard1 = this.idcard.toUpperCase();
+      if (!this.imgid1) {
+        this.$toast({
+          type: "fail",
+          message: "请上传身份证正面照",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.imgid2) {
+        this.$toast({
+          type: "fail",
+          message: "请上传身份证反面照",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.imgid3) {
+        this.$toast({
+          type: "fail",
+          message: "请上传手持身份证照",
+          duration: 1000
+        });
+        return;
+      }
+
+      this.$axios({
+        method: "post",
+        url:
+          "http://39.98.251.244/loan/backend/customerInfo/updateCustomerInfo",
+        data: {
+          id: this.customerId,
+          realName: this.name,
+          idcardNumber: idcard1,
+          idcardFront: this.imgid1,
+          idcardBack: this.imgid2,
+          idcardHand: this.imgid3
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.$toast({
+            type: "success",
+            message: res.data.msg,
+            duration: 1000
+          });
+          setTimeout(() => {
+            this.$router.push("/myinfo");
+          }, 500);
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
     }
   },
   components: {
@@ -257,13 +355,21 @@ export default {
   height: 100%;
   box-sizing: border-box;
   background-color: #fff;
-  .tj {
-    position: fixed;
-    color: #fff;
-    top: 0.3rem;
-    right: 0.3rem;
-    z-index: 1000;
+  .bannerbtn {
+    padding: 0 0.4rem;
+    margin-bottom: 0.2rem;
+    .van-button {
+      margin-top: 0.42rem;
+      border-radius: 25px;
+      line-height: 50px;
+      height: 50px;
+    }
+    .van-button--primary {
+      background-color: #349aff;
+      border: 1px solid #349aff;
+    }
   }
+
   .banner {
     padding: 0 0.4rem;
     background-color: #fff;

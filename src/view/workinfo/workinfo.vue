@@ -1,7 +1,6 @@
 <template>
   <div class="workinfo">
     <headertitle :titles="'单位信息'" :tabfalg="true"></headertitle>
-    <div class="tj">提交</div>
     <div class="tx">登录密码尽量设置8-16位，字母数字符号组合。</div>
     <div class="banner">
       <div class="banneritem">
@@ -20,7 +19,7 @@
           </div>
         </div>
       </div>
-       <div class="banneritem">
+      <div class="banneritem">
         <p class="ptext">公司名称</p>
         <div class="bannerinput">
           <div class="inputbox">
@@ -56,11 +55,17 @@
         <p class="ptext">单位地址</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="dwaddress" placeholder="请选择" clearable :disabled="true" right-icon="arrow"/>
+            <van-field
+              v-model="dwaddress"
+              placeholder="请选择"
+              clearable
+              :disabled="true"
+              right-icon="arrow"
+            />
           </div>
         </div>
       </div>
-       <div class="banneritem">
+      <div class="banneritem">
         <p class="ptext">详细地址</p>
         <div class="bannerinput">
           <div class="inputbox">
@@ -68,7 +73,7 @@
           </div>
         </div>
       </div>
-       <div class="banneritem">
+      <div class="banneritem">
         <p class="ptext">月收入(元)</p>
         <div class="bannerinput">
           <div class="inputbox">
@@ -76,15 +81,21 @@
           </div>
         </div>
       </div>
-       <div class="banneritem">
+      <div class="banneritem">
         <p class="ptext">现居住地址</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="jzaddress" placeholder="请选择" clearable :disabled="true" right-icon="arrow"/>
+            <van-field
+              v-model="jzaddress"
+              placeholder="请选择"
+              clearable
+              :disabled="true"
+              right-icon="arrow"
+            />
           </div>
         </div>
       </div>
-       <div class="banneritem">
+      <div class="banneritem">
         <p class="ptext">详细地址</p>
         <div class="bannerinput">
           <div class="inputbox">
@@ -93,7 +104,7 @@
         </div>
       </div>
     </div>
-     <div class="tx">直系亲属联系人</div>
+    <div class="tx">直系亲属联系人</div>
     <div class="banner">
       <div class="banneritem">
         <p class="ptext">姓名</p>
@@ -111,16 +122,22 @@
           </div>
         </div>
       </div>
-       <div class="banneritem">
+      <div class="banneritem">
         <p class="ptext">关系</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="zxgx" placeholder="请选择"  clearable :disabled="true" right-icon="arrow" />
+            <van-field
+              v-model="zxgx"
+              placeholder="请选择"
+              clearable
+              :disabled="true"
+              right-icon="arrow"
+            />
           </div>
         </div>
       </div>
     </div>
-     <div class="tx">其他联系人</div>
+    <div class="tx">其他联系人</div>
     <div class="banner">
       <div class="banneritem">
         <p class="ptext">姓名</p>
@@ -138,14 +155,23 @@
           </div>
         </div>
       </div>
-       <div class="banneritem">
+      <div class="banneritem">
         <p class="ptext">关系</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="qtgx" placeholder="请选择"  clearable :disabled="true" right-icon="arrow" />
+            <van-field
+              v-model="qtgx"
+              placeholder="请选择"
+              clearable
+              :disabled="true"
+              right-icon="arrow"
+            />
           </div>
         </div>
       </div>
+    </div>
+    <div class="bannerbtn">
+      <van-button type="primary" size="large">提交</van-button>
     </div>
   </div>
 </template>
@@ -155,30 +181,27 @@ import headertitle from "../../components/headertitle";
 export default {
   data() {
     return {
-      ailpay:"",
-      zmxy:"",
-      gsmc:"",
-      gszw:"",
-      dwphone:"",
-      gzage:"",
-      dwaddress:"",
-      xxaddress:"",
-      ysr:"",
-      jzaddress:"",
-      jzxxaddress:"",
-      zxphone:"",
-      zxgx:"",
-      zxname:"",
-      qtphone:"",
-      qtgx:"",
-      qtname:"",
+      ailpay: "",
+      zmxy: "",
+      gsmc: "",
+      gszw: "",
+      dwphone: "",
+      gzage: "",
+      dwaddress: "",
+      xxaddress: "",
+      ysr: "",
+      jzaddress: "",
+      jzxxaddress: "",
+      zxphone: "",
+      zxgx: "",
+      zxname: "",
+      qtphone: "",
+      qtgx: "",
+      qtname: ""
     };
   },
-  created() {
-    
-  },
-  methods: {
-  },
+  created() {},
+  methods: {},
   components: {
     headertitle
   }
@@ -192,19 +215,26 @@ export default {
   padding-top: 1rem;
   height: 100%;
   box-sizing: border-box;
-  .tj{
-    position: fixed;
-    color: #fff;
-    top: 0.3rem;
-    right: 0.3rem;
-    z-index: 1000;
+  .bannerbtn {
+    padding: 0 0.4rem;
+    margin-bottom: 0.2rem;
+    .van-button {
+      margin-top: 0.42rem;
+      border-radius: 25px;
+      line-height: 50px;
+      height: 50px;
+    }
+    .van-button--primary {
+      background-color: #349aff;
+      border: 1px solid #349aff;
+    }
   }
-   .tx {
+  .tx {
     padding: 0.4rem;
     font-size: 0.26rem;
     color: #666;
   }
-   .banner {
+  .banner {
     padding: 0 0.4rem;
     background-color: #fff;
     .banneritem {

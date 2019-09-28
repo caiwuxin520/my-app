@@ -22,7 +22,14 @@
         <p class="ptext">服务密码</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="password" center clearable type="number" placeholder="请输入服务密码" :disabled="wsflag"></van-field>
+            <van-field
+              v-model="password"
+              center
+              clearable
+              type="number"
+              placeholder="请输入服务密码"
+              :disabled="wsflag && passwordflag"
+            ></van-field>
           </div>
         </div>
       </div>
@@ -41,7 +48,12 @@
       <span class="xyspan2" @click="gopath('/agreement')">《用户使用协议》</span>
     </div>
     <div class="bannerbtn">
-      <van-button type="primary" size="large" :disabled="okflag" @click="phoneyz">提交认证</van-button>
+      <van-button
+        type="primary"
+        size="large"
+        :disabled="okflag && passwordflag"
+        @click="phoneyz"
+      >提交认证</van-button>
     </div>
   </div>
 </template>
@@ -60,7 +72,8 @@ export default {
       comId: 2,
       userId: this.getLocalStorage("userId").data || "",
       customerId: "",
-      wsflag:false
+      wsflag: false,
+      passwordflag: false
     };
   },
   created() {
@@ -76,7 +89,6 @@ export default {
         responseType: "arraybuffer"
       })
         .then(response => {
-          console.log(response);
           return (
             "data:image/png;base64," +
             btoa(
@@ -96,7 +108,10 @@ export default {
     //跳转
     gopath(path) {
       this.$router.push({
-        path: path
+        path: path,
+        query: {
+          type: 2
+        }
       });
     },
     //查询信息
@@ -113,10 +128,13 @@ export default {
         if (res.data.code == 0) {
           this.phone = res.data.data[0].phoneNumber;
           this.customerId = res.data.data[0].id;
-          if(res.data.data[0].isCompletePhone == 1){
-              this.password = res.data.data[0].phonePsd
-              this.wsflag = true
-              this.okflag = true
+          if (res.data.data[0].isCompletePhone == 1) {
+            this.password = res.data.data[0].phonePsd;
+            if (res.data.data[0].phonePsd) {
+              this.passwordflag = true;
+            }
+            this.wsflag = true;
+            this.okflag = true;
           }
         } else {
           this.$toast({
@@ -175,8 +193,8 @@ export default {
             duration: 1000
           });
           setTimeout(() => {
-            this.$router.push('/login')
-          },500)
+            this.$router.push("/myinfo");
+          }, 500);
         } else {
           this.$toast({
             type: "fail",

@@ -11,7 +11,7 @@
                 <van-icon class-prefix="my-icon" name="credentials_icon" />
               </div>
               <p>身份证信息</p>
-               <p v-if="isCompleteUser == 1" class="p1">(已完善)</p>
+               <p v-if="isCompleteUser == 1 &&　islogin" class="p1">(已完善)</p>
                <p v-else>(待完善)</p>
             </div>
             <div class="box1item" @click="gopath('./workinfo')">
@@ -19,7 +19,7 @@
                 <van-icon class-prefix="my-icon" name="danwei" />
               </div>
               <p>单位信息</p>
-               <p v-if="isCompleteCompany == 1" class="p1">(已完善)</p>
+               <p v-if="isCompleteCompany == 1　&&　islogin" class="p1">(已完善)</p>
                <p v-else>(待完善)</p>
             </div>
             <div class="box1item" @click="gopath('./blankcard')">
@@ -27,7 +27,7 @@
                 <van-icon class-prefix="my-icon" name="shuaqiaqiapianyinhangqia" />
               </div>
               <p>收款银行卡</p>
-               <p v-if="isCompleteBank == 1" class="p1">(已完善)</p>
+               <p v-if="isCompleteBank == 1　&&　islogin" class="p1">(已完善)</p>
                <p v-else>(待完善)</p>
             </div>
             <div class="box1item" @click="gopath('./mobileinfo')">
@@ -35,7 +35,7 @@
                 <van-icon class-prefix="my-icon" name="shouji1" />
               </div>
               <p>手机号认证</p>
-              <p v-if="isCompletePhone == 1" class="p1">(已完善)</p>
+              <p v-if="isCompletePhone == 1　&&　islogin" class="p1">(已完善)</p>
               <p v-else>(待完善)</p>
             </div>
             <div class="box1item" @click="gopath('./updatapassword')" v-if="islogin">

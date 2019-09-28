@@ -185,7 +185,10 @@ export default {
     //跳转
     gopath(path) {
       this.$router.push({
-        path: path
+        path: path,
+        query:{
+          type:1
+        }
       });
     },
     //获取图形验证码

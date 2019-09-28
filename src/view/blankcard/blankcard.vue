@@ -1,18 +1,23 @@
 <template>
   <div class="blankcard">
     <headertitle :titles="'银行卡信息'" :tabfalg="true"></headertitle>
-    <div class="tj">提交</div>
-    <div class="card">
-        <img src="../../assets/img/bg.png" alt="">
-        <p class="cardnum">********1111111</p>
+    <div class="card" v-if="isCompleteBank">
+      <img src="../../assets/img/bg.png" alt />
+      <p class="cardnum">********1111111</p>
     </div>
     <div class="tx">填写本人银行卡须是本人名下的借记卡（储蓄卡）</div>
-     <div class="banner">
+    <div class="banner" v-if="!isCompleteBank">
       <div class="banneritem">
         <p class="ptext">持卡人姓名</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="name" placeholder="填写持卡人姓名" clearable />
+            <van-field
+              v-model="name"
+              placeholder="填写持卡人姓名"
+              clearable
+              :maxlength="4"
+              :disabled="name"
+            />
           </div>
         </div>
       </div>
@@ -20,17 +25,30 @@
         <p class="ptext">持卡人身份证</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="idcard" placeholder="填写持卡人身份证号" clearable />
+            <van-field
+              v-model="idcard"
+              placeholder="填写持卡人身份证号"
+              clearable
+              :maxlength="18"
+              :disabled="idcard"
+            />
           </div>
         </div>
       </div>
     </div>
-    <div class="banner">
+    <div class="banner" v-if="!isCompleteBank">
       <div class="banneritem">
         <p class="ptext">开户银行</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="blankname" placeholder="请选择" clearable :disabled="true" right-icon="arrow"/>
+            <!-- <van-field
+              v-model="blankname"
+              placeholder="请选择"
+              clearable
+              :disabled="true"
+              right-icon="arrow"
+            />-->
+            <van-cell is-link @click="show = !show">{{blankname}}</van-cell>
           </div>
         </div>
       </div>
@@ -38,11 +56,24 @@
         <p class="ptext">银行卡号</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="blanknum" placeholder="填写银行卡号" clearable />
+            <van-field
+              v-model="blanknum"
+              placeholder="填写银行卡号"
+              clearable
+              type="number"
+              :maxlength="20"
+            />
           </div>
         </div>
       </div>
     </div>
+    <div class="bannerbtn" v-if="!isCompleteBank">
+      <van-button type="primary" size="large" :disabled="okflag" @click="updata">提交</van-button>
+    </div>
+    <!-- 银行选择 -->
+    <van-popup v-model="show" position="bottom">
+      <van-picker :columns="columns" show-toolbar @cancel="onCancel" @confirm="onConfirm" />
+    </van-popup>
   </div>
 </template>
 
@@ -51,17 +82,166 @@ import headertitle from "../../components/headertitle";
 export default {
   data() {
     return {
-      name:"",
-      idcard:"",
-      blankname:"",
-      blanknum:""
+      name: "",
+      idcard: "",
+      blankname: "",
+      blanknum: "",
+      blankid: "",
+      comId: 2,
+      userId: this.getLocalStorage("userId").data || "",
+      isCompleteBank: false,
+      banlist: [],
+      show: false,
+      columns: [],
+      customerId: "",
+      okflag: false
     };
   },
   created() {
-    
+    this.queryinfo();
+    this.queryblank();
   },
   methods: {
-   
+    //查询信息
+    queryinfo() {
+      this.$axios({
+        method: "get",
+        url:
+          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+        params: {
+          comId: this.comId,
+          userId: this.userId
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.customerId = res.data.data[0].id;
+          if (res.data.data[0].realName) {
+            this.name = res.data.data[0].realName;
+          }
+          if (res.data.data[0].idcardNumber) {
+            this.idcard = res.data.data[0].idcardNumber;
+          }
+          if (res.data.data[0].isCompleteBank == 1) {
+            this.isCompleteBank = true;
+          }
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    onConfirm(value, index) {
+      this.show = false;
+      this.blankname = this.columns[index].text;
+      this.blankid = this.columns[index].bankId;
+    },
+    onCancel() {
+      this.show = false;
+    },
+    //可用银行查询
+    queryblank() {
+      this.$axios({
+        method: "get",
+        url:
+          "http://39.98.251.244/loan/backend/companySettingBank/queryCompanySettingBank",
+        params: {
+          comId: this.comId
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.banlist = res.data.data;
+          this.banlist.forEach(item => {
+            let o = {
+              text: item.bankName,
+              bankId: item.id
+            };
+            this.columns.push(o);
+          });
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    //提交
+    updata() {
+      this.okflag = true;
+      setTimeout(() => {
+        this.okflag = false;
+      }, 1000);
+      if (!this.isCompleteBank) {
+        let reg = /^[\u4e00-\u9fa5]{2,4}$/;
+        if (!reg.test(this.name)) {
+          this.$toast({
+            type: "fail",
+            message: "请输入正确的姓名",
+            duration: 1000
+          });
+          return;
+        }
+        let reg1 = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if (!reg1.test(this.idcard)) {
+          this.$toast({
+            type: "fail",
+            message: "请输入正确的身份证号",
+            duration: 1000
+          });
+          return;
+        }
+        if (!this.blankname) {
+          this.$toast({
+            type: "fail",
+            message: "请输入您的开户银行",
+            duration: 1000
+          });
+          return;
+        }
+        if (!this.blanknum) {
+          this.$toast({
+            type: "fail",
+            message: "请输入您的银行卡号",
+            duration: 1000
+          });
+          return;
+        }
+
+        this.$axios({
+          method: "post",
+          url:
+            "http://39.98.251.244/loan/backend/customerInfo/updateCustomerInfo",
+          data: {
+            id: this.customerId,
+            realName: this.name,
+            idcardNumber: this.idcard,
+            bankId: this.blankid,
+            bankAccount: this.blanknum
+          }
+        }).then(res => {
+          if (res.data.code == 0) {
+            this.$toast({
+              type: "success",
+              message: res.data.msg,
+              duration: 1000
+            });
+            setTimeout(() => {
+              this.$router.push("/myinfo");
+            }, 500);
+          } else {
+            this.$toast({
+              type: "fail",
+              message: res.data.msg,
+              duration: 1000
+            });
+          }
+        });
+      }
+    }
   },
   components: {
     headertitle
@@ -76,28 +256,34 @@ export default {
   padding-top: 1rem;
   height: 100%;
   box-sizing: border-box;
-  .tj{
-    position: fixed;
-    color: #fff;
-    top: 0.3rem;
-    right: 0.3rem;
-    z-index: 1000;
+  .bannerbtn {
+    padding: 0 0.4rem;
+    .van-button {
+      margin-top: 0.42rem;
+      border-radius: 25px;
+      line-height: 50px;
+      height: 50px;
+    }
+    .van-button--primary {
+      background-color: #349aff;
+      border: 1px solid #349aff;
+    }
   }
-   .tx {
+  .tx {
     padding: 0.4rem;
     font-size: 0.26rem;
     color: #666;
   }
-  .card{
+  .card {
     padding: 0.4rem;
     position: relative;
     padding-bottom: 0;
-    img{
+    img {
       width: 100%;
       height: 3.6rem;
       border-radius: 10px;
     }
-    .cardnum{
+    .cardnum {
       position: absolute;
       color: #fff;
       right: 0.8rem;
