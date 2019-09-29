@@ -42,7 +42,7 @@
         >
           <div class="updata1">
             <div class="morenimg">
-              <img src="../../assets/img/zheng.png" class="img1" />
+              <img src="../../assets/img/zheng.svg" class="img1" />
             </div>
           </div>
         </van-uploader>
@@ -62,7 +62,7 @@
         >
           <div class="updata1">
             <div class="morenimg">
-              <img src="../../assets/img/zheng.png" class="img1" />
+              <img src="../../assets/img/fan.svg" class="img1" />
             </div>
           </div>
         </van-uploader>
@@ -82,7 +82,7 @@
         >
           <div class="updata1">
             <div class="morenimg">
-              <img src="../../assets/img/zheng.png" class="img1" />
+              <img src="../../assets/img/shou.svg" class="img1" />
             </div>
           </div>
         </van-uploader>
