@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     afterRead1(file) {
-      // this.src1 = file.content;
+      this.src1 = file.content;
       let img = new Image();
       img.src = file.content;
       this.dwimg = file.content;
@@ -215,7 +215,6 @@ export default {
       canvas.height = (originHeight / originWidth) * maxWidth;
       drawer.drawImage(img, 0, 0, canvas.width, canvas.height);
       let base64 = canvas.toDataURL("image/jpeg", quality); // 压缩后的base64图片
-      this.src1 = base64;
       let file = this.dataURLtoFile(base64, Date.parse(Date()) + ".jpg");
       file = { content: base64, file: file };
       this.onimg(file, num);

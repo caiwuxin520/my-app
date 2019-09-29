@@ -1,13 +1,13 @@
 <template>
   <div class="workinfo">
     <headertitle :titles="'单位信息'" :tabfalg="true"></headertitle>
-    <div class="tx">登录密码尽量设置8-16位，字母数字符号组合。</div>
+    <div class="tx">填写真实有效的信息审核才会通过哦!</div>
     <div class="banner">
       <div class="banneritem">
         <p class="ptext">支付宝账户</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="ailpay" placeholder="填写您的支付宝账号" clearable />
+            <van-field v-model="ailpay" placeholder="填写您的支付宝账号" clearable :maxlength="30" />
           </div>
         </div>
       </div>
@@ -15,7 +15,7 @@
         <p class="ptext">芝麻信用</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="zmxy" placeholder="填写您的芝麻信用" clearable />
+            <van-field v-model="zmxy" placeholder="填写您的芝麻信用" clearable type="number" :maxlength="4" />
           </div>
         </div>
       </div>
@@ -23,7 +23,7 @@
         <p class="ptext">公司名称</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="gsmc" placeholder="填写您的公司名称" clearable />
+            <van-field v-model="gsmc" placeholder="填写您的公司名称" clearable :maxlength="30"/>
           </div>
         </div>
       </div>
@@ -31,7 +31,7 @@
         <p class="ptext">公司职位</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="gszw" placeholder="填写您的公司职位" clearable />
+            <van-field v-model="gszw" placeholder="填写您的公司职位" clearable :maxlength="30"/>
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
         <p class="ptext">单位电话</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="dwphone" placeholder="填写您的单位电话" clearable />
+            <van-field v-model="dwphone" placeholder="填写您的单位电话" clearable :maxlength="20" type="number"/>
           </div>
         </div>
       </div>
@@ -47,14 +47,14 @@
         <p class="ptext">工作年龄(年)</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="gzage" placeholder="填写您的工作年龄" clearable />
+            <van-field v-model="gzage" placeholder="填写您的工作年龄" clearable :maxlength="3" type="number"/>
           </div>
         </div>
       </div>
       <div class="banneritem">
         <p class="ptext">单位地址</p>
         <div class="bannerinput">
-          <div class="inputbox">
+          <div class="inputbox" @click="show('1')">
             <van-field
               v-model="dwaddress"
               placeholder="请选择"
@@ -69,7 +69,7 @@
         <p class="ptext">详细地址</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="xxaddress" placeholder="填写您的详细地址" clearable />
+            <van-field v-model="xxaddress" placeholder="填写您的详细地址" clearable   :maxlength="40"/>
           </div>
         </div>
       </div>
@@ -77,14 +77,14 @@
         <p class="ptext">月收入(元)</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="ysr" placeholder="填写您的月收入(元)" clearable />
+            <van-field v-model="ysr" placeholder="填写您的月收入(元)" clearable  type="number"  :maxlength="10"/>
           </div>
         </div>
       </div>
       <div class="banneritem">
         <p class="ptext">现居住地址</p>
         <div class="bannerinput">
-          <div class="inputbox">
+          <div class="inputbox" @click="show('2')">
             <van-field
               v-model="jzaddress"
               placeholder="请选择"
@@ -99,7 +99,7 @@
         <p class="ptext">详细地址</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="jzxxaddress" placeholder="填写您的详细地址" clearable />
+            <van-field v-model="jzxxaddress" placeholder="填写您的详细地址" clearable :maxlength="40"/>
           </div>
         </div>
       </div>
@@ -110,7 +110,7 @@
         <p class="ptext">姓名</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="zxname" placeholder="填写您的亲属姓名" clearable />
+            <van-field v-model="zxname" placeholder="填写您的亲属姓名" clearable  :maxlength="4"/>
           </div>
         </div>
       </div>
@@ -118,14 +118,14 @@
         <p class="ptext">手机</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="zxphone" placeholder="填写您的亲属手机" clearable />
+            <van-field v-model="zxphone" placeholder="填写您的亲属手机" clearable type="number" :maxlength="11"/>
           </div>
         </div>
       </div>
       <div class="banneritem">
         <p class="ptext">关系</p>
         <div class="bannerinput">
-          <div class="inputbox">
+          <div class="inputbox" @click="show('3')">
             <van-field
               v-model="zxgx"
               placeholder="请选择"
@@ -143,7 +143,7 @@
         <p class="ptext">姓名</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="qtname" placeholder="填写联系人姓名" clearable />
+            <van-field v-model="qtname" placeholder="填写联系人姓名" clearable :maxlength="4"/>
           </div>
         </div>
       </div>
@@ -151,14 +151,14 @@
         <p class="ptext">手机</p>
         <div class="bannerinput">
           <div class="inputbox">
-            <van-field v-model="qtphone" placeholder="填写联系人手机" clearable />
+            <van-field v-model="qtphone" placeholder="填写联系人手机" clearable type="number" :maxlength="11"/>
           </div>
         </div>
       </div>
       <div class="banneritem">
         <p class="ptext">关系</p>
         <div class="bannerinput">
-          <div class="inputbox">
+          <div class="inputbox" @click="show('4')">
             <van-field
               v-model="qtgx"
               placeholder="请选择"
@@ -170,14 +170,28 @@
         </div>
       </div>
     </div>
+    <!-- 地址选择 -->
+    <van-popup v-model="show1" position="bottom">
+      <van-area :area-list="areaList" @cancel="show1 = !show1" @confirm="onconfirm" />
+    </van-popup>
+    <!-- 关系选择 -->
+    <van-popup v-model="show2" position="bottom">
+      <van-picker
+        :columns="columns"
+        show-toolbar
+        @cancel="this.show2 = false"
+        @confirm="onConfirm1"
+      />
+    </van-popup>
     <div class="bannerbtn">
-      <van-button type="primary" size="large">提交</van-button>
+      <van-button type="primary" size="large" :disabled="okflag" @click="okdata">提交</van-button>
     </div>
   </div>
 </template>
 
 <script>
 import headertitle from "../../components/headertitle";
+import areaLists from "../../assets/js/area";
 export default {
   data() {
     return {
@@ -187,21 +201,301 @@ export default {
       gszw: "",
       dwphone: "",
       gzage: "",
-      dwaddress: "",
+      dwaddress: "请选择",
       xxaddress: "",
       ysr: "",
-      jzaddress: "",
+      jzaddress: "请选择",
       jzxxaddress: "",
       zxphone: "",
-      zxgx: "",
+      zxgx: "请选择",
       zxname: "",
       qtphone: "",
-      qtgx: "",
-      qtname: ""
+      qtgx: "请选择",
+      qtname: "",
+      okflag: false,
+      show1: false,
+      showactive: null,
+      showactive1: null,
+      show2: false,
+      gxid1: null,
+      gxid2: null,
+      areaList: {},
+      ismoren: false,
+      columns: [
+        {
+          text: "父母",
+          id: 1
+        },
+        {
+          text: "兄妹",
+          id: 2
+        },
+        {
+          text: "同事",
+          id: 3
+        },
+        {
+          text: "朋友",
+          id: 4
+        }
+      ]
     };
   },
-  created() {},
-  methods: {},
+  created() {
+    //页面初始化将省市区数据赋值给areaList
+    this.areaList = areaLists;
+    this.queryinfo();
+  },
+  methods: {
+    //显示
+    show(type) {
+      if (!this.ismoren) {
+        if (type == "1" || type == "2") {
+          this.show1 = !this.show1;
+          this.showactive = type;
+          this.show2 = false;
+        } else if (type == "3" || type == "4") {
+          this.show2 = !this.show2;
+          this.showactive1 = type;
+          this.show1 = false;
+        }
+      }
+    },
+    //查询信息
+    queryinfo() {
+      this.$axios({
+        method: "get",
+        url:
+          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+        params: {
+          comId: this.comId,
+          userId: this.userId
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          if (res.data.data[0].isCompleteCompany == 1) {
+            this.ismoren = true;
+            this.okflag = true;
+          }
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
+    //地址选择确认 格式化
+    onconfirm(e) {
+      let c = "";
+      e.forEach(item => {
+        if (typeof item == "undefined") {
+          return;
+        }
+        c += item.name + " ";
+      });
+      this.show1 = false;
+      if (this.showactive == "1") {
+        this.dwaddress = c.substr(0, c.length - 1);
+      } else {
+        this.jzaddress = c.substr(0, c.length - 1);
+      }
+    },
+    //关系选择
+    onConfirm1(value, index) {
+      this.show2 = false;
+      if (this.showactive1 == "3") {
+        this.zxgx = this.columns[index].text;
+        this.gxid1 = this.columns[index].id;
+      } else {
+        this.qtgx = this.columns[index].text;
+        this.gxid2 = this.columns[index].id;
+      }
+    },
+    //提交
+    okdata() {
+      this.okflag = true;
+      setTimeout(() => {
+        this.okflag = false;
+      }, 1000);
+      let reg = /^1[3456789]\d{9}$/;
+      let reg1 = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+      let ailpayname = null
+      if (reg.test(this.ailpay) || reg1.test(this.ailpay)) {
+        ailpayname = this.ailpay
+      } else {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的支付宝账户",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.zmxy) {
+        this.$toast({
+          type: "fail",
+          message: "请输入芝麻信用",
+          duration: 1000
+        });
+        return;
+      }
+      let reg3 = /^[\u4e00-\u9fa5]+$/;
+      if (!reg3.test(this.gsmc)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的公司名称",
+          duration: 1000
+        });
+        return;
+      }
+      if (!reg3.test(this.gszw)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的公司职业",
+          duration: 1000
+        });
+        return;
+      }
+      if (!this.gzage) {
+        this.$toast({
+          type: "fail",
+          message: "请输入工作年龄",
+          duration: 1000
+        });
+        return;
+      }
+       if (parseFloat(this.gzage) < 0) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确的工作年龄",
+          duration: 1000
+        });
+        return;
+      }
+      if (this.dwaddress == '请选择') {
+        this.$toast({
+          type: "fail",
+          message: "请选择单位地址",
+          duration: 1000
+        });
+        return;
+      }
+      if (this.dwaddress == '请选择') {
+        this.$toast({
+          type: "fail",
+          message: "请选择单位地址",
+          duration: 1000
+        });
+        return;
+      }
+      let reg4 = /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/
+      if (!reg4.test(this.xxaddress)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入单位详细地址",
+          duration: 1000
+        });
+        return;
+      }
+      if(!this.ysr){
+        this.$toast({
+          type: "fail",
+          message: "请输入月收入",
+          duration: 1000
+        });
+        return;
+      }
+      if (this.jzaddress == '请选择') {
+        this.$toast({
+          type: "fail",
+          message: "请选择现居住地址",
+          duration: 1000
+        });
+        return;
+      }
+      if (!reg4.test(this.jzxxaddress)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入您的详细地址",
+          duration: 1000
+        });
+        return;
+      }
+      let reg5 = /^[\u4e00-\u9fa5]{2,4}$/;
+      if (!reg5.test(this.zxname)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确直系亲属姓名",
+          duration: 1000
+        });
+        return;
+      }
+      if (!reg.test(this.zxphone)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确直系亲属手机号",
+          duration: 1000
+        });
+        return;
+      }
+      if (this.zxgx == '请选择') {
+        this.$toast({
+          type: "fail",
+          message: "请选择直系亲属关系",
+          duration: 1000
+        });
+        return;
+      }
+      if (!reg5.test(this.qtname)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确其他联系人姓名",
+          duration: 1000
+        });
+        return;
+      }
+      if (!reg.test(this.qtphone)) {
+        this.$toast({
+          type: "fail",
+          message: "请输入正确其他联系人手机号",
+          duration: 1000
+        });
+        return;
+      }
+      if (this.qtgx == '请选择') {
+        this.$toast({
+          type: "fail",
+          message: "请选择其他联系人关系",
+          duration: 1000
+        });
+        return;
+      }
+      //  this.$axios({
+      //     method: "post",
+      //     url:
+      //       "http://39.98.251.244/loan/backend/customerInfo/updateCustomerInfo",
+      //     data:data
+      //   }).then(res => {
+      //     if (res.data.code == 0) {
+      //       this.$toast({
+      //         type: "success",
+      //         message: res.data.msg,
+      //         duration: 1000
+      //       });
+      //       setTimeout(() => {
+      //         this.$router.push("/myinfo");
+      //       }, 500);
+      //     } else {
+      //       this.$toast({
+      //         type: "fail",
+      //         message: res.data.msg,
+      //         duration: 1000
+      //       });
+      //     }
+      //   });
+    }
+  },
   components: {
     headertitle
   }
@@ -274,3 +568,4 @@ export default {
   }
 }
 </style>
+
