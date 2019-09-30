@@ -239,7 +239,7 @@ export default {
       align-items: center;
       .ptext {
         width: 20%;
-        font-size: 0.28rem;
+        font-size: 16px;
         color: #666;
         white-space: nowrap;
       }
@@ -270,7 +270,7 @@ export default {
   }
   .bannerxy {
     padding: 0 0.4rem;
-    height: 50px;
+    height: 1rem;
     display: flex;
     align-items: center;
     .xyspan2 {

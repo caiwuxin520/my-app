@@ -409,7 +409,7 @@ export default {
       display: flex;
       align-items: center;
       .my-icon {
-        font-size: 0.48rem;
+        font-size: 24px;
         color: #666;
       }
       .bannerinput {

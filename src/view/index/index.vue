@@ -79,25 +79,25 @@ export default {
   data() {
     return {
       // value: "",
-      arr: [
-        "不是被郭德纲发现的，也不是一开始就收为徒弟。",
-        "现在雅阁这个状态像极了新A4L上市那段日子。",
-        "低配太寒碜，各种需要加装，中配定价过高，又没啥特色",
-        "然后各种机油门、经销商造反什么的幺蛾子。",
-        "看五月销量，建议参考A4，打8折吧。",
-        "不是被郭德纲发现的，也不是一开始就收为徒弟。"
-      ],
-      number: 0,//信息滚动条数
-      value: 0,//贷款金额
-      checked: false,//是否勾选协议
-      personmoney: [],//可贷款金额数组
-      max: 0,//最大可贷款金额
-      min: 0,//最小可贷款金额
-      dynamic: 0,//选择月份的下标
-      newMonth: [],//月份数据处理后的
-      val: 0,//选择的月份值
+      arr: [],
+      number: 0, //信息滚动条数
+      value: 0, //贷款金额
+      checked: false, //是否勾选协议
+      personmoney: [], //可贷款金额数组
+      max: 0, //最大可贷款金额
+      min: 0, //最小可贷款金额
+      dynamic: 0, //选择月份的下标
+      newMonth: [], //月份数据处理后的
+      val: 0, //选择的月份值
       returnMoneyPerMonth: "", //每月还款
-      profitPerMonth: "" //月息
+      profitPerMonth: "", //月息
+      comId: 2,
+      customerId: "",
+      userId: this.getLocalStorage("userId").data || "",
+      islogin: false,
+      bankinfo: false,
+      idcardinfo: false,
+      dwinfo: false
     };
   },
   components: {
@@ -122,7 +122,35 @@ export default {
   created() {
     this.startMove();
     this.getmoney();
+    this.queryjk();
+    this.jclogin();
     // this.getseesionid()
+    let prefixArray = new Array(
+      "130",
+      "131",
+      "132",
+      "133",
+      "135",
+      "137",
+      "138",
+      "170",
+      "187",
+      "189"
+    );
+    
+    
+    for (var a = 0; a < 50; a++) {
+      let is = parseInt(10 * Math.random());
+      let prefix = prefixArray[is];
+      for (var j = 0; j < 8; j++) {
+        prefix = prefix + Math.floor(Math.random() * 4);
+        prefix = prefix.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
+      }
+      let b = (Math.floor(Math.random() * (20 - 5)) + 5) + '000';
+      let o = this.getNowFormatDate() +' '+ prefix + '成功贷到' + b + '元'
+      this.arr.push(o)
+    }
+    
   },
 
   methods: {
@@ -137,6 +165,21 @@ export default {
         this.startMove();
       });
     },
+    getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    },
     // 滑块
     onChange(value) {
       this.$toast("当前值：" + value);
@@ -145,14 +188,17 @@ export default {
     getmsg(val) {
       this.$axios
         .get(
-          `http://39.98.251.244/loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=2&loanMoney=${this.value}&loanMonth=${this.dynamic == 0 ? parseInt(this.newMonth[0]) : parseInt(val)}`
+          `http://39.98.251.244/loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=${
+            this.comId
+          }&loanMoney=${this.value}&loanMonth=${
+            this.dynamic == 0 ? parseInt(this.newMonth[0]) : parseInt(val)
+          }`
         )
         .then(res => {
-          console.log(res.data);
           if (res.data.code == 0) {
             this.returnMoneyPerMonth = res.data.data.returnMoneyPerMonth;
             this.profitPerMonth = res.data.data.profitPerMonth;
-          }else{
+          } else {
             this.$toast(res.data.msg);
           }
         });
@@ -161,7 +207,7 @@ export default {
     getmoney() {
       this.$axios
         .get(
-          "http://39.98.251.244/loan/backend/companySettingLoan/queryCompanySettingLoanVo?comId=2"
+          `http://39.98.251.244/loan/backend/companySettingLoan/queryCompanySettingLoanVo?comId=${this.comId}`
         )
         .then(res => {
           if (res.data.code == 0) {
@@ -172,54 +218,109 @@ export default {
             this.month = this.personmoney.loanInstallment;
             this.newMonth = this.month.split(",");
             this.getmsg(this.newMonth[0]);
-          }else{
+          } else {
             this.$toast(res.data.msg);
           }
         });
+    },
+    //查询借款人
+    queryjk() {
+      this.$axios({
+        method: "get",
+        url:
+          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+        params: {
+          comId: this.comId,
+          userId: this.userId
+        }
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.customerId = res.data.data[0].id;
+          if (res.data.data[0].isCompleteUser == 1) {
+            (this.bankinfo =
+              res.data.data[0].isCompleteBank == 1 ? true : false),
+              (this.idcardinfo =
+                res.data.data[0].isCompleteUser == 1 ? true : false),
+              (this.dwinfo =
+                res.data.data[0].isCompleteCompany == 1 ? true : false);
+          }
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
     },
     //选择月份
     getmonth(index, value) {
       this.dynamic = index;
-      console.log(value);
       this.val = value;
       this.getmsg(this.val);
     },
+    //检查登陆状态
+    jclogin() {
+      this.$axios({
+        method: "post",
+        url: "http://39.98.251.244/loan/backend/systemuser/checkLogin"
+      }).then(res => {
+        if (res.data.code == 0) {
+          this.islogin = true;
+        } else {
+          this.$toast({
+            type: "fail",
+            message: res.data.msg,
+            duration: 1000
+          });
+        }
+      });
+    },
     //提交借款
     gochecked() {
-      if(this.checked == true){
-        let data = {
-        comId: 2,//跟在地址栏后面的
-        customerId: 1,//登录后才有的
-        loanMoney: this.value,//贷款总金额
-        loanMonth:
-          this.dynamic == 0 ? parseInt(this.newMonth[0]) : parseInt(this.val)//贷款月份
-      };
-      this.$axios
-        .post(
-          "http://39.98.251.244/loan/backend/recordLoan/insertRecordLoan",
-          data
-        )
-        .then(res => {
-          if (res.data.code == 0) {
-            this.$dialog
-              .alert({
-                title: "提示",
-                message: "借款申请已提交，请等待后台审批"
-              })
-              .then(() => {
-                this.$router.push("./myinfo");
+      if (this.islogin) {
+        if (this.bankinfo && this.idcardinfo && this.dwinfo) {
+          if (this.checked == true) {
+            let data = {
+              comId: this.comId, //跟在地址栏后面的
+              customerId: this.customerId, //登录后才有的
+              loanMoney: this.value, //贷款总金额
+              loanMonth:
+                this.dynamic == 0
+                  ? parseInt(this.newMonth[0])
+                  : parseInt(this.val) //贷款月份
+            };
+            this.$axios
+              .post(
+                "http://39.98.251.244/loan/backend/recordLoan/insertRecordLoan",
+                data
+              )
+              .then(res => {
+                if (res.data.code == 0) {
+                  this.$toast({
+                    type: "success",
+                    message: "借款申请已提交，请等待后台审批",
+                    duration: 1000
+                  });
+                  this.$router.push("/myinfo");
+                } else {
+                  this.$toast(res.data.msg);
+                }
               });
-          }else if(res.data.code == -2){
-            this.$toast('请先登录');
-            this.$router.push('./login')
-          }else{
-            this.$toast(res.data.msg);
+          } else {
+            this.$toast("请勾选协议");
           }
-        });
-      }else{
-        this.$toast('请勾选协议');
+        } else {
+          this.$toast({
+            type: "fail",
+            message: "请完善个人信息",
+            duration: 1000
+          });
+          this.$router.push("./myinfo");
+        }
+      } else {
+        this.$router.push("./login");
       }
-      
     },
     //跳转借款协议
     jkxy() {
@@ -378,15 +479,13 @@ export default {
 }
 .text-container {
   // width: 500px;
-  padding-top: 0.4rem;
-  padding-bottom: 0.4rem;
-  padding-left: 0.5rem;
-  height: 0.6rem;
-  line-height: 0.6rem;
+  padding: 0 0.5rem;
+  height: 20px;
+  left: 20px;
   // margin: 10px auto;
   // border: 1px solid cornflowerblue;
   overflow: hidden;
-   background-color: #fff;
+  background-color: #fff;
 }
 .bb {
   height: 0.8rem;
@@ -395,10 +494,9 @@ export default {
 .text,
 .text2 {
   margin: 0;
-  
+  padding-left: 0.4rem;
 }
 .inner-container {
- 
   animation: myMove 10s linear infinite;
   animation-fill-mode: forwards;
 }

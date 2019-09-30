@@ -15,12 +15,12 @@
         <div class="iconbox">
           <van-icon class-prefix="my-icon" name="shenhe" />
         </div>
-        <p>审核通过</p>
+        <p>{{jkinfo.loanStatusValue}}</p>
       </div>
       <div class="line">
         <span></span>
       </div>
-      <div class="box1item">
+      <div class="box1item iconboxactive">
         <div class="iconbox">
           <van-icon class-prefix="my-icon" name="yidaozhang" />
         </div>
@@ -28,40 +28,40 @@
       </div>
     </div>
     <div class="je">
-      <div class="pic">2000,000.00</div>
-      <p>恭喜！您的个人信用贷款已审核通过！</p>
+      <div class="pic">{{jkinfo.loanMoney}}</div>
+      <p>{{jkinfo.statusNotice}}</p>
     </div>
     <div class="banner">
       <div class="item">
         <div class="left">订单编号:</div>
         <div class="right">
-            <span>1231231231312</span>
+            <span>{{jkinfo.loanNo}}</span>
             <van-button type="default"  size="mini">复制</van-button>
         </div>
       </div>
        <div class="item">
         <div class="left">借款金额:</div>
-        <div class="right">￥50,000</div>
+        <div class="right">￥{{jkinfo.loanMoney}}</div>
       </div>
        <div class="item">
         <div class="left">下单时间:</div>
-        <div class="right">2019-06-13 09:11:12</div>
+        <div class="right">{{jkinfo.createTime}}</div>
       </div>
        <div class="item">
         <div class="left">借款期限:</div>
-        <div class="right">3个月</div>
+        <div class="right">{{jkinfo.loanMonth}}个月</div>
       </div>
        <div class="item">
         <div class="left">到账银行:</div>
-        <div class="right">招商银行</div>
+        <div class="right">{{jkinfo.bankName}}</div>
       </div>
        <div class="item">
         <div class="left">收款账号:</div>
-        <div class="right">**** **** **** 6542</div>
+        <div class="right">{{jkinfo.bankAccount}}</div>
       </div>
        <div class="item">
         <div class="left">每月还款:</div>
-        <div class="right">￥17,674</div>
+        <div class="right">￥{{jkinfo.returnMoneyPerMonth}}</div>
       </div>
     </div>
   </div>
@@ -73,7 +73,8 @@ export default {
   data() {
     return {
       comId: 2,
-      userId: this.getLocalStorage("userId").data || ""
+      userId: this.getLocalStorage("userId").data || "",
+      jkinfo:{}
     };
   },
   created() {
@@ -114,7 +115,7 @@ export default {
         }
       }).then(res => {
         if (res.data.code == 0) {
-
+           this.jkinfo = res.data.data[0]
         } else {
           this.$toast({
             type: "fail",
@@ -205,6 +206,7 @@ export default {
     p {
       margin-top: 0.2rem;
       font-size: 0.28rem;
+      padding: 0 0.4rem;
       color: #999;
     }
   }

@@ -7,6 +7,9 @@ const index = () => import('@/view/index/index')//首页
 const myinfo = () => import('@/view/myinfo/myinfo')//我的
 const wallet = () => import('@/view/wallet/wallet')//钱包
 const Customer = () => import('@/view/Customer/Customer')//客服
+const helpinfo = () => import('@/view/Customer/helpinfo')//帮助详情
+const helpcenter = () => import('@/view/Customer/helpcenter')//帮助中心
+const custominfo = () => import('@/view/Customer/custominfo')//在线客服
 const login = () => import('@/view/login/login')//登录
 const forgetpassword = () => import('@/view/forgetpassword/forgetpassword')//忘记密码
 const register = () => import('@/view/register/register')//注册
@@ -98,6 +101,21 @@ const router = new Router({
       path: '/myorder',
       name: 'myorder',
       component: myorder,
+    },
+    {
+      path: '/helpinfo',
+      name: 'helpinfo',
+      component: helpinfo,
+    },
+    {
+      path: '/helpcenter',
+      name: 'helpcenter',
+      component: helpcenter,
+    },
+    {
+      path: '/custominfo',
+      name: 'custominfo',
+      component: custominfo,
     },
   ],
   //解决跳转滚动条不在顶部问题.

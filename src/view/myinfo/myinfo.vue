@@ -61,19 +61,19 @@
         <div class="myinfobox2" @click="gopath('./myorder')" v-if="islogin && isjek">
           <div class="box2top">
             <div class="box2text1">我的借款</div>
-            <div class="box2text2">审核中</div>
+            <div class="box2text2">{{jkinfo.loanStatusValue}}</div>
           </div>
           <div class="box2banner">
             <div class="box2item">
-              <p>5000元</p>
+              <p>{{jkinfo.loanMoney}}元</p>
               <span>申请金额</span>
             </div>
             <div class="box2item">
-              <p>3个月</p>
+              <p>{{jkinfo.loanMonth}}个月</p>
               <span>借款期限</span>
             </div>
             <div class="box2item">
-              <p>17871元</p>
+              <p>{{jkinfo.returnMoneyPerMonth}}元</p>
               <span>每月还款</span>
             </div>
           </div>
@@ -103,7 +103,9 @@ export default {
       isCompleteUser:"",
       isCompleteBank:"",
       isCompleteCompany:"",
-      isjek:null
+      isjek:null,
+      jkinfo:{},
+      customerId:''
     };
   },
   created() {
@@ -114,6 +116,7 @@ export default {
     //下拉刷新
     onRefresh() {
       setTimeout(() => {
+        this.querymyjk()
         this.isLoading = false;
       }, 500);
     },
@@ -184,12 +187,12 @@ export default {
         }
       }).then(res => {
         if (res.data.code == 0) {
-          let customerId = res.data.data[0].id;
+          this.customerId= res.data.data[0].id;
           this.isCompletePhone = res.data.data[0].isCompletePhone;
           this.isCompleteUser = res.data.data[0].isCompleteUser;
           this.isCompleteCompany = res.data.data[0].isCompleteCompany;
           this.isCompleteBank = res.data.data[0].isCompleteBank;
-          this.querymyjk(customerId)
+          this.querymyjk()
         } else {
           this.$toast({
             type: "fail",
@@ -200,19 +203,20 @@ export default {
       });
     },
     //查询我的借款
-    querymyjk(id) {
+    querymyjk() {
       this.$axios({
         method: "get",
         url: "http://39.98.251.244/loan/backend/recordLoan/queryRecordLoanVo",
         params: {
           comId: this.comId,
-          customerId: id
+          customerId: this.customerId
         }
       }).then(res => {
         if (res.data.code == 0) {
           if(res.data.data.length == 0){
             this.isjek = false
           }else{
+             this.jkinfo = res.data.data[0]
              this.isjek = true
           }
         } else {

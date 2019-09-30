@@ -2,7 +2,7 @@
   <div class="blankcard">
     <headertitle :titles="'银行卡信息'" :tabfalg="true"></headertitle>
     <div class="card" v-if="isCompleteBank">
-      <img src="../../assets/img/bg.png" alt />
+      <img src="../../assets/img/zsblank.svg" alt />
       <p class="cardnum">{{zxblanknum | banknumber}}</p>
     </div>
     <div class="tx">填写本人银行卡须是本人名下的借记卡（储蓄卡）</div>
