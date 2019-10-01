@@ -18,6 +18,9 @@ Vue.prototype.getLocalStorage = getLocalStorage
 //设置localstorage
 Vue.prototype.setLocalStorage = setLocalStorage
 
+//公司id目前设为2  为默认
+setLocalStorage('comId',2)
+
 //引入axios
 import axios from './assets/js/axios'
 

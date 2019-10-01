@@ -280,7 +280,7 @@ export default {
   data() {
     return {
       customerId: "",
-      comId: 2,
+      comId: this.getLocalStorage('comId').data ||　"",
       userId: this.getLocalStorage("userId").data || "",
       ailpay: "",
       zmxy: "",

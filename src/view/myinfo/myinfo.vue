@@ -97,7 +97,7 @@ export default {
     return {
       islogin: false,
       isLoading: false,
-      comId: 2,
+      comId: this.getLocalStorage('comId').data ||　"",
       userId: this.getLocalStorage("userId").data || "",
       isCompletePhone:'',
       isCompleteUser:"",

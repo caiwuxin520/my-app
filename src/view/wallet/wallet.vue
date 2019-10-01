@@ -50,7 +50,7 @@ export default {
   name: "scroll",
   data() {
     return {
-      comId: 2,
+      comId: this.getLocalStorage('comId').data ||　"",
       customerId: "",
       islogin: false,
       userId: this.getLocalStorage("userId").data || "",

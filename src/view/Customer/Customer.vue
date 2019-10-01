@@ -44,7 +44,7 @@ export default {
     return {
       isLoading: false,
       list: [],
-      comId: 2
+      comId: this.getLocalStorage('comId').data ||　""
     };
   },
   created() {

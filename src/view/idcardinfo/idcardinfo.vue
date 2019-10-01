@@ -108,7 +108,7 @@ export default {
       src2: "",
       src3: "",
       customerId: "",
-      comId: 2,
+      comId: this.getLocalStorage('comId').data ||　"",
       userId: this.getLocalStorage("userId").data || "",
       isws: false,
       imgid1: "",

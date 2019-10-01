@@ -92,7 +92,7 @@ export default {
       val: 0, //选择的月份值
       returnMoneyPerMonth: "", //每月还款
       profitPerMonth: "", //月息
-      comId: 2,
+      comId: this.getLocalStorage('comId').data ||　"",
       customerId: "",
       userId: this.getLocalStorage("userId").data || "",
       islogin: false,
@@ -498,6 +498,7 @@ export default {
 .text2 {
   margin: 0;
   padding-left: 0.4rem;
+  font-size: 0.28rem;
 }
 .inner-container {
   animation: myMove 10s linear infinite;

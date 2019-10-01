@@ -22,7 +22,7 @@ import headertitle from "../../components/headertitle";
 export default {
   data() {
     return {
-      comId: 2,
+      comId: this.getLocalStorage('comId').data ||　"",
       id: this.$route.query.id,
       list: []
     };

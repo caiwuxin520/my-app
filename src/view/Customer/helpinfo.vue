@@ -16,7 +16,7 @@ import headertitle from "../../components/headertitle";
 export default {
   data() {
     return {
-      comId: 2,
+      comId: this.getLocalStorage('comId').data ||　"",
       title: this.$route.query.title,
       content: this.$route.query.content
     };

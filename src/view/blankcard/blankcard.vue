@@ -87,7 +87,7 @@ export default {
       blankname: "",
       blanknum: "",
       blankid: "",
-      comId: 2,
+      comId:this.getLocalStorage('comId').data ||　"",
       userId: this.getLocalStorage("userId").data || "",
       isCompleteBank: false,
       banlist: [],

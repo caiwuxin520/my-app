@@ -110,7 +110,7 @@ export default {
       btnflag: false,
       timer: 60,
       okflag: false,
-      comId: 2
+      comId:this.getLocalStorage('comId').data ||　""
     };
   },
   created() {

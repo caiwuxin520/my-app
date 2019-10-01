@@ -69,7 +69,7 @@ export default {
       codeimg: "",
       phone: "",
       okflag: false,
-      comId: 2,
+      comId:this.getLocalStorage('comId').data ||　"",
       userId: this.getLocalStorage("userId").data || "",
       customerId: "",
       wsflag: false,

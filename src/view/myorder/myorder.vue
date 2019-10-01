@@ -73,7 +73,7 @@ import Clipboard from 'clipboard';
 export default {
   data() {
     return {
-      comId: 2,
+      comId: this.getLocalStorage('comId').data ||　"",
       userId: this.getLocalStorage("userId").data || "",
       jkinfo:{}
     };
