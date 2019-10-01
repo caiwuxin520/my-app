@@ -50,7 +50,7 @@ export default {
   name: "scroll",
   data() {
     return {
-      comId: this.getLocalStorage('comId').data ||　"",
+      comId: this.getLocalStorage("comId").data || "",
       customerId: "",
       islogin: false,
       userId: this.getLocalStorage("userId").data || "",
@@ -230,16 +230,19 @@ export default {
 }
 .ye {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: flex-start;
   background-color: #fff;
   // line-height: 0.8rem;
   align-items: center;
   padding: 0.4rem 0.4rem;
   border-bottom: 1px solid #ccc;
   .left {
+    width: 100%;
     display: flex;
     flex-direction: column;
     line-height: 0.6rem;
+    margin-bottom: 0.4rem;
     // align-items: center;
     .top {
       color: #999;
@@ -252,8 +255,13 @@ export default {
     }
   }
   .right {
+    width: 100%;
     .van-button {
-      width: 1.2rem;
+      width: 100%;
+      background-color: #349aff;
+      color: #fff;
+      font-size: 0.36rem;
+      height: 0.8rem;
     }
   }
 }
