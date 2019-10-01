@@ -280,7 +280,7 @@ export default {
   }
   .tx {
     padding: 0.4rem;
-    font-size: 0.26rem;
+    font-size: 0.28rem;
     color: #666;
   }
   .card {

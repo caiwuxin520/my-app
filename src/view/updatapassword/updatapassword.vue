@@ -267,7 +267,7 @@ export default {
       align-items: center;
       .ptext {
         width: 20%;
-        font-size: 0.28rem;
+        font-size: 16px;
         color: #666;
         white-space: nowrap;
       }

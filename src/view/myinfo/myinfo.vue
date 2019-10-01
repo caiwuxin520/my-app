@@ -283,7 +283,7 @@ export default {
             }
           }
           p {
-            font-size: 0.28rem;
+            font-size: 0.32rem;
             color: #999;
           }
           .p1{
@@ -304,11 +304,11 @@ export default {
         align-items: center;
         justify-content: space-between;
         .box2text1 {
-          font-size: 0.28rem;
+          font-size: 0.32rem;
           color: #333;
         }
         .box2text2 {
-          font-size: 0.28rem;
+          font-size: 0.32rem;
           color: red;
         }
       }
@@ -327,7 +327,7 @@ export default {
             font-size: 0.36rem;
           }
           span {
-            font-size: 0.24rem;
+            font-size: 0.32rem;
             color: #999;
           }
         }

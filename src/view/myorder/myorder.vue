@@ -36,7 +36,7 @@
         <div class="left">订单编号:</div>
         <div class="right">
             <span>{{jkinfo.loanNo}}</span>
-            <van-button type="default"  size="mini">复制</van-button>
+            <van-button type="default"  size="mini" class="tag-read" :data-clipboard-text="jkinfo.loanNo" @click="copy">复制</van-button>
         </div>
       </div>
        <div class="item">
@@ -69,6 +69,7 @@
 
 <script>
 import headertitle from "../../components/headertitle";
+import Clipboard from 'clipboard';
 export default {
   data() {
     return {
@@ -124,7 +125,28 @@ export default {
           });
         }
       });
-    }
+    },
+     copy() {
+        let clipboard = new Clipboard('.tag-read')
+        clipboard.on('success', e => {
+           this.$toast({
+            type: "success",
+            message: '复制成功',
+            duration: 1000
+          });
+          // 释放内存
+          clipboard.destroy()
+        })
+        clipboard.on('error', e => {
+           this.$toast({
+            type: "fail",
+            message: '不支持复制',
+            duration: 1000
+          });
+          // 释放内存
+          clipboard.destroy()
+        })
+      }
   },
   components: {
     headertitle
@@ -225,9 +247,7 @@ export default {
              width: 75%;
              color: #000;
              font-weight: bold;
-             .van-button{
-                 margin-left: 0.4rem;
-             }
+             
          }
      } 
   }

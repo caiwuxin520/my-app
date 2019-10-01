@@ -55,6 +55,9 @@ export default {
     border-bottom: 1px solid #eee;
     margin-bottom: 0.4rem;
   }
+  .content{
+    font-size: 0.36rem;
+  }
   .cusicon {
     background-color: #349aff;
     width: 0.9rem;

@@ -35,7 +35,7 @@ html {
 }
 #app {
   min-height: 100vh;
-  font-size: 0.28rem;
+  font-size: 0.32rem;
   background-color: #f1f1f1;
 }
 body {

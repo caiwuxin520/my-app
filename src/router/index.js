@@ -73,6 +73,8 @@ const router = new Router({
       path: '/jkxy',
       name: 'jkxy',
       component: jkxy,
+    },
+    {
       path: '/idcardinfo',
       name: 'idcardinfo',
       component: idcardinfo,

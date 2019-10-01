@@ -2,46 +2,46 @@
   <div class="wallet">
     <headertitle :titles="'钱包'" :tabfalg="false"></headertitle>
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-    <div>
-      <!-- 首页头部 -->
-      <div class="banner">
-        <div class="title">
-          <span class="span1">账户余额</span>
-          <span v-if="islogin" class="span2">{{balanceWallet}}</span>
-          <span v-else class="span2">0</span>
+      <div>
+        <!-- 首页头部 -->
+        <div class="banner">
+          <div class="title">
+            <span class="span1">账户余额</span>
+            <span v-if="islogin" class="span2">{{balanceWallet}}</span>
+            <span v-else class="span2">0</span>
+          </div>
         </div>
-      </div>
-      <!-- 实名认证 -->
-      <div class="rz" v-if="islogin">
-        <img src="../../assets/img/user_tx.png" alt />
-        <span>{{phone}}</span>
-        <span v-if="isCertificate == 1">--已实名制认证</span>
-        <span v-if="isCertificate == 0">--未实名制认证</span>
-      </div>
-      <div class="rz" v-else>
-        <van-button type="default" size="large" round to="/login">请登录</van-button>
-      </div>
-      <!-- 账户余额 -->
-      <div class="ye">
-        <div class="left">
-          <span class="top">账户余额</span>
-          <span class="bottom">{{balanceDebt}}</span>
+        <!-- 实名认证 -->
+        <div class="rz" v-if="islogin">
+          <img src="../../assets/img/user_tx.png" alt />
+          <span>{{phone}}</span>
+          <span v-if="isCertificate == 1">--已实名制认证</span>
+          <span v-if="isCertificate == 0">--未实名制认证</span>
         </div>
-        <div class="right">
-          <van-button type="default" round size="small" @click="checktx" :disabled="okflag">取现</van-button>
+        <div class="rz" v-else>
+          <van-button type="default" size="large" round to="/login">请登录</van-button>
         </div>
-      </div>
-      <!-- <div class="ye ye1">
+        <!-- 账户余额 -->
+        <div class="ye">
+          <div class="left">
+            <span class="top">账户余额</span>
+            <span class="bottom">{{balanceDebt}}</span>
+          </div>
+          <div class="right">
+            <van-button type="default" round size="small" @click="checktx" :disabled="okflag">取现</van-button>
+          </div>
+        </div>
+        <!-- <div class="ye ye1">
         <div class="left">
           <span class="top">待还余额</span>
           <span class="bottom">{{balanceDebt}}</span>
         </div>
-      </div> -->
-      <div class="xz">
-        <van-icon class-prefix="my-icon" name="dunpai" />
-        <span>账户资金安全由银行保障</span>
+        </div>-->
+        <div class="xz">
+          <van-icon class-prefix="my-icon" name="dunpai" />
+          <span>账户资金安全由银行保障</span>
+        </div>
       </div>
-    </div>
     </van-pull-refresh>
 
     <!-- 封装底部组件 -->
@@ -65,7 +65,7 @@ export default {
       isCertificate: "",
       phone: "",
       okflag: false,
-       isLoading: false,
+      isLoading: false
     };
   },
   components: {
@@ -97,7 +97,7 @@ export default {
     //下拉刷新
     onRefresh() {
       setTimeout(() => {
-        this.queryjk()
+        this.queryjk();
         this.isLoading = false;
       }, 500);
     },
@@ -133,33 +133,41 @@ export default {
       setTimeout(() => {
         this.okflag = false;
       }, 1000);
-      if (this.balanceWallet > 0) {
-        let data = {
-          comId: this.comId,
-          customerId: this.customerId,
-          cashoutMoney: this.balanceWallet
-        };
-        this.$axios
-          .post(
-            "http://39.98.251.244/loan/backend/recordCashout/insertRecordCashout",
-            data
-          )
-          .then(res => {
-            if (res.data.code == 0) {
-              this.$toast({
-                type: "success",
-                message: res.data.msg,
-                duration: 1000
-              });
-              this.queryjk();
-            } else {
-              this.$toast({
-                type: "fail",
-                message: res.data.msg,
-                duration: 1000
-              });
-            }
+      if (this.islogin) {
+        if (this.balanceWallet > 0) {
+          let data = {
+            comId: this.comId,
+            customerId: this.customerId,
+            cashoutMoney: this.balanceWallet
+          };
+          this.$axios
+            .post(
+              "http://39.98.251.244/loan/backend/recordCashout/insertRecordCashout",
+              data
+            )
+            .then(res => {
+              if (res.data.code == 0) {
+                this.$toast({
+                  type: "success",
+                  message: res.data.msg,
+                  duration: 1000
+                });
+                this.queryjk();
+              } else {
+                this.$toast({
+                  type: "fail",
+                  message: res.data.msg,
+                  duration: 1000
+                });
+              }
+            });
+        } else {
+          this.$toast({
+            type: "fail",
+            message: "余额需要大于0元",
+            duration: 1000
           });
+        }
       } else {
         this.$toast({
           type: "fail",
@@ -174,13 +182,13 @@ export default {
 
 
 <style lang='less' scoped>
-.wallet{
+.wallet {
   .van-pull-refresh {
     min-height: 85vh;
   }
 }
 .banner {
-  background: url("../../assets/img/bg2.png") no-repeat;
+  background: url("../../../static/bg2.png") no-repeat;
   background-size: cover;
   // text-align: center;
   // margin-bottom:1rem;
@@ -225,6 +233,7 @@ export default {
   }
   span {
     color: #999;
+    font-size: 0.36rem;
   }
 }
 .ye {
@@ -242,7 +251,7 @@ export default {
     // align-items: center;
     .top {
       color: #999;
-      font-size: 0.12rem;
+      font-size: 0.32rem;
     }
     .bottom {
       color: black;
@@ -262,8 +271,11 @@ export default {
 .xz {
   text-align: center;
   color: #aaa;
-  font-size: 0.12rem;
+  font-size: 0.36rem;
   line-height: 1rem;
+  .my-icon {
+    font-size: 0.36rem;
+  }
 }
 </style>
 

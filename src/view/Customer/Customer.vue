@@ -6,7 +6,7 @@
         <div class="banneritem" v-for="(item,i) in list" :key="i">
           <div class="itemleft">
             <div class="bannericon" :class="i | classname">
-              <van-icon class-prefix="my-icon" :name="i | iconname" />
+              <van-icon class-prefix="my-icon" :name="i | iconname" size="0.4rem" />
             </div>
             <p>{{item.title}}</p>
           </div>
@@ -21,7 +21,7 @@
             </div>
             <div class="itemright1" v-if="item.zdlist.length == 2" @click="gogengduo(item.id)">
               <span>查看更多信息</span>
-              <van-icon name="arrow" color="#349AFF" size="0.3rem" />
+              <van-icon name="arrow" color="#349AFF" size="0.36rem" />
             </div>
           </div>
         </div>
@@ -115,10 +115,9 @@ export default {
         }
       });
     },
-    gokf(){
+    gokf() {
       this.$router.push({
-        path: "/custominfo",
-      
+        path: "/custominfo"
       });
     }
   },
@@ -131,75 +130,75 @@ export default {
       let a = null;
       switch (val) {
         case 0:
-          a = 'iconfonthuankuankuai'
+          a = "iconfonthuankuankuai";
           break;
         case 1:
-          a = 'qianbao'
+          a = "qianbao";
           break;
         case 2:
-          a = 'xiaodai-'
+          a = "xiaodai-";
           break;
         case 3:
-          a = 'wode'
+          a = "wode";
           break;
         case 4:
-          a = 'danwei'
+          a = "danwei";
           break;
         case 5:
-          a = 'dunpai'
+          a = "dunpai";
           break;
         case 6:
-          a = 'shenhe'
+          a = "shenhe";
           break;
         case 7:
-          a = 'icon-test'
+          a = "icon-test";
           break;
         case 8:
-          a = 'credentials_icon'
+          a = "credentials_icon";
           break;
         case 9:
-          a = 'ziliaoduibi'
+          a = "ziliaoduibi";
           break;
         default:
-          a = 'huanzhong'
+          a = "huanzhong";
       }
       return a;
     },
-    classname(val){
+    classname(val) {
       let a = null;
       switch (val) {
         case 0:
-          a = 'icon2'
+          a = "icon2";
           break;
         case 1:
-          a = 'icon3'
+          a = "icon3";
           break;
         case 2:
-          a = 'icon4'
+          a = "icon4";
           break;
         case 3:
-          a = 'icon5'
+          a = "icon5";
           break;
         case 4:
-          a = 'icon6'
+          a = "icon6";
           break;
         case 5:
-          a = 'icon7'
+          a = "icon7";
           break;
         case 6:
-          a = 'icon8'
+          a = "icon8";
           break;
         case 7:
-          a = 'icon9'
+          a = "icon9";
           break;
         case 8:
-          a = 'icon10'
+          a = "icon10";
           break;
         case 9:
-          a = 'icon1'
+          a = "icon1";
           break;
         default:
-          a = 'icon2'
+          a = "icon2";
       }
       return a;
     }
@@ -213,6 +212,10 @@ export default {
 .Customer {
   padding-top: 1rem;
   padding-bottom: 50px;
+
+  .van-pull-refresh {
+    min-height: 85vh;
+  }
   .banner {
     .banneritem {
       display: flex;
@@ -221,6 +224,9 @@ export default {
       background-color: #fff;
       margin-bottom: 0.4rem;
       .itemleft {
+        p {
+          font-size: 0.36rem;
+        }
         width: 30%;
         display: flex;
         align-items: center;
@@ -252,22 +258,22 @@ export default {
         .icon4 {
           background-color: #f42321;
         }
-         .icon5 {
+        .icon5 {
           background-color: #f33331;
         }
-         .icon6 {
+        .icon6 {
           background-color: #f19388;
         }
-         .icon7 {
+        .icon7 {
           background-color: #f29238;
         }
-         .icon8 {
+        .icon8 {
           background-color: #f21266;
         }
-         .icon9 {
+        .icon9 {
           background-color: #f21883;
         }
-         .icon10 {
+        .icon10 {
           background-color: #f29338;
         }
       }
@@ -286,9 +292,11 @@ export default {
             overflow: hidden; //超出的文本隐藏
             text-overflow: ellipsis; //溢出用省略号显示
             white-space: nowrap; //溢出不换行
+            font-size: 0.36rem;
           }
           span {
             color: #349aff;
+            font-size: 0.36rem;
             margin-right: 0.2rem;
           }
         }

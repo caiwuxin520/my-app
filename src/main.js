@@ -9,6 +9,8 @@ import 'vant/lib/index.css';
 //引入字体图标
 import './assets/fonts/iconfont.css'
 
+//引入appback
+import './assets/js/appback'
 //引入common.js
 import {setLocalStorage,getLocalStorage } from './assets/js/common'
 //获取localstorage

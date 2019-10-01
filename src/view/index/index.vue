@@ -334,13 +334,13 @@ export default {
 
 <style lang='less' scoped>
 .custom-button {
-  background: url("../../assets/img/jinbi.png") no-repeat;
+  background: url("../../../static/jinbi.png") no-repeat;
   background-size: 100% 100%;
   width: 0.48rem;
   height: 0.48rem;
 }
 .banner {
-  background: url("../../assets/img/bg.png") 100% 100% no-repeat;
+  background: url("../../../static/bg.png") 100% 100% no-repeat;
   background-size: 100% 100%;
   text-align: center;
   // height: 4rem;
@@ -385,12 +385,13 @@ export default {
         border-radius: 0.4rem;
         color: black;
         width: 30%;
-        font-size: 0.18rem;
+        font-size: 0.36rem;
         margin-right: 0.2rem;
         margin-bottom: 0.3rem;
       }
       .colorChange {
         background-color: #349aff;
+        border-color: #349aff;
         color: #fff;
       }
     }
@@ -414,7 +415,7 @@ export default {
         margin-bottom: 0.1rem;
       }
       .bottom {
-        font-size: 0.18rem;
+        font-size: 0.32rem;
       }
     }
     .hk {
@@ -430,7 +431,7 @@ export default {
         margin-bottom: 0.1rem;
       }
       .bottom {
-        font-size: 0.18rem;
+        font-size: 0.32rem;
       }
     }
     .yx {
@@ -444,7 +445,7 @@ export default {
         margin-bottom: 0.1rem;
       }
       .bottom {
-        font-size: 0.18rem;
+       font-size: 0.32rem;
       }
     }
   }
@@ -452,7 +453,7 @@ export default {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     padding-left: 0.5rem;
-    font-size: 0.12rem;
+    font-size: 0.32rem;
     display: flex;
     align-items: center;
     span {
@@ -466,7 +467,7 @@ export default {
       background-color: #349aff;
       border-radius: 0.4rem;
       color: #fff;
-      font-size: 0.2rem;
+      font-size: 0.36rem;
       height: 0.8rem;
       line-height: 0.8rem;
       width: 100%;

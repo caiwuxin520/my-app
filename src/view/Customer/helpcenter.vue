@@ -5,7 +5,7 @@
       <div class="item" v-for="(item,i) in list" :key="i"  @click="gocusinfo(item.title,item.content)">
         <div class="left">{{item.title}}</div>
         <div class="right">
-          <van-icon name="arrow" />
+          <van-icon name="arrow" size="0.36rem" />
         </div>
       </div>
     </div>
@@ -98,6 +98,7 @@ export default {
         overflow: hidden; //超出的文本隐藏
         text-overflow: ellipsis; //溢出用省略号显示
         white-space: nowrap; //溢出不换行
+        font-size: 0.36rem;
       }
       .right {
         width: 10%;
