@@ -12,6 +12,7 @@
           active-color="rgba(255,255,255,.8)"
           inactive-color="rgba(255,255,255,.3)"
           bar-height="4px"
+          :step='1000'
         >
           <div slot="button" class="custom-button"></div>
         </van-slider>
@@ -53,7 +54,7 @@
       </div>
       <div class="xy">
         <van-checkbox v-model="checked" checked-color="#349aff">同意</van-checkbox>
-        <span @click="jkxy">《借款协议》</span>
+        <span @click="gopath">《借款协议》</span>
       </div>
       <div class="btn">
         <button @click="gochecked">马上借款</button>
@@ -83,7 +84,7 @@ export default {
       number: 0, //信息滚动条数
       value: 0, //贷款金额
       checked: false, //是否勾选协议
-      personmoney: [], //可贷款金额数组
+      personmoney: {}, //可贷款金额数组
       max: 0, //最大可贷款金额
       min: 0, //最小可贷款金额
       dynamic: 0, //选择月份的下标
@@ -180,10 +181,6 @@ export default {
         var currentdate = year + seperator1 + month + seperator1 + strDate;
         return currentdate;
     },
-    // 滑块
-    onChange(value) {
-      this.$toast("当前值：" + value);
-    },
     //根据贷款期限以及贷款金额 获取贷款信息
     getmsg(val) {
       this.$axios
@@ -214,7 +211,7 @@ export default {
             this.personmoney = res.data.data[0];
             this.max = this.personmoney.loanMax;
             this.min = this.personmoney.loanMin;
-            this.value = this.min;
+            this.value =this.personmoney.loanDefault;
             this.month = this.personmoney.loanInstallment;
             this.newMonth = this.month.split(",");
             this.getmsg(this.newMonth[0]);
@@ -323,8 +320,13 @@ export default {
       }
     },
     //跳转借款协议
-    jkxy() {
-      this.$router.push("./jkxy");
+    gopath() {
+      this.$router.push({
+        path:'agreement',
+        query:{
+          type:0
+        }
+      });
     }
   }
 };

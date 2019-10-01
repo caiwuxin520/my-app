@@ -21,6 +21,8 @@ Vue.prototype.setLocalStorage = setLocalStorage
 //引入axios
 import axios from './assets/js/axios'
 
+//引入vux
+import store from './store'
 Vue.prototype.$axios = axios
 
 Vue.use(Vant);
@@ -31,5 +33,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })

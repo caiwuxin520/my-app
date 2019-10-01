@@ -503,7 +503,7 @@ export default {
       if (!reg3.test(this.gszw)) {
         this.$toast({
           type: "fail",
-          message: "请输入正确的公司职业",
+          message: "请输入正确的公司职务",
           duration: 1000
         });
         return;

@@ -20,7 +20,7 @@
       <div class="line">
         <span></span>
       </div>
-      <div class="box1item iconboxactive">
+      <div class="box1item">
         <div class="iconbox">
           <van-icon class-prefix="my-icon" name="yidaozhang" />
         </div>

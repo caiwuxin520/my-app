@@ -94,6 +94,7 @@
 <script>
 import headertitle from "../../components/headertitle";
 export default {
+  name: "register",
   data() {
     return {
       phone: "",
@@ -113,8 +114,14 @@ export default {
     };
   },
   created() {
-    //初次进入页面获得图形验证码
-    this.vercode();
+    if (this.$store.getters.keepAlive.length == 0) {
+      this.vercode();
+    }
+  },
+  activated() {
+    if (this.$store.getters.keepAlive.length > 0) {
+      this.vercode();
+    }
   },
   methods: {
     //下拉刷新
@@ -186,8 +193,8 @@ export default {
     gopath(path) {
       this.$router.push({
         path: path,
-        query:{
-          type:1
+        query: {
+          type: 1
         }
       });
     },
@@ -293,9 +300,9 @@ export default {
               }
             }).then(res => {
               if (res.data.code == 0) {
-                this.$router.push('./myinfo')
+                this.$router.push("./myinfo");
               }
-            })
+            });
           }, 1000);
         } else {
           this.$toast({
@@ -309,6 +316,14 @@ export default {
   },
   components: {
     headertitle
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.path.indexOf("agreement") > -1) {
+      this.$store.commit("setKeepAlive", ["register"]);
+    } else {
+      this.$store.commit("setKeepAlive", []);
+    }
+    next();
   }
 };
 </script>

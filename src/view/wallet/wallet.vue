@@ -25,18 +25,12 @@
         <div class="ye">
           <div class="left">
             <span class="top">账户余额</span>
-            <span class="bottom">{{balanceDebt}}</span>
+            <span class="bottom">{{balanceWallet}}</span>
           </div>
           <div class="right">
             <van-button type="default" round size="small" @click="checktx" :disabled="okflag">取现</van-button>
           </div>
         </div>
-        <!-- <div class="ye ye1">
-        <div class="left">
-          <span class="top">待还余额</span>
-          <span class="bottom">{{balanceDebt}}</span>
-        </div>
-        </div>-->
         <div class="xz">
           <van-icon class-prefix="my-icon" name="dunpai" />
           <span>账户资金安全由银行保障</span>
@@ -60,7 +54,6 @@ export default {
       customerId: "",
       islogin: false,
       userId: this.getLocalStorage("userId").data || "",
-      balanceDebt: "",
       balanceWallet: "",
       isCertificate: "",
       phone: "",
@@ -114,7 +107,6 @@ export default {
       }).then(res => {
         if (res.data.code == 0) {
           this.customerId = res.data.data[0].id;
-          this.balanceDebt = res.data.data[0].balanceDebt;
           this.balanceWallet = res.data.data[0].balanceWallet;
           this.isCertificate = res.data.data[0].isCertificate;
           this.phone = res.data.data[0].phoneNumber;

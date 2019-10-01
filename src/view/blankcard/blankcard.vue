@@ -2,10 +2,10 @@
   <div class="blankcard">
     <headertitle :titles="'银行卡信息'" :tabfalg="true"></headertitle>
     <div class="card" v-if="isCompleteBank">
-      <img src="../../assets/img/zsblank.svg" alt />
+      <img :src="banksrc" alt />
       <p class="cardnum">{{zxblanknum | banknumber}}</p>
     </div>
-    <div class="tx">填写本人银行卡须是本人名下的借记卡（储蓄卡）</div>
+    <div class="tx" v-if="!isCompleteBank">填写本人银行卡须是本人名下的借记卡（储蓄卡）</div>
     <div class="banner" v-if="!isCompleteBank">
       <div class="banneritem">
         <p class="ptext">持卡人姓名</p>
@@ -95,7 +95,8 @@ export default {
       columns: [],
       customerId: "",
       okflag: false,
-      zxblanknum :''
+      zxblanknum :'',
+      banksrc:''
     };
   },
   created() {
@@ -125,6 +126,7 @@ export default {
           if (res.data.data[0].isCompleteBank == 1) {
             this.isCompleteBank = true;
             this.zxblanknum = res.data.data[0].bankAccount
+            this.banksrc = res.data.data[0].bankIcon
           }
         } else {
           this.$toast({
@@ -295,7 +297,7 @@ export default {
     .cardnum {
       position: absolute;
       color: #fff;
-      right: 0.8rem;
+      left: 0.8rem;
       bottom: 0.4rem;
     }
   }
