@@ -21,7 +21,7 @@
         <div class="rz" v-else>
           <van-button type="default" size="large" round to="/login">请登录</van-button>
         </div>
-        <!-- 账户余额 -->
+        <!-- 账户余额 1-->
         <div class="ye">
           <div class="left">
             <span class="top">账户余额</span>
