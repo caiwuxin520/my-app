@@ -171,7 +171,7 @@ export default {
       } else {
         this.$toast({
           type: "fail",
-          message: "余额需要大于0元",
+          message: "请先登录",
           duration: 1000
         });
       }
