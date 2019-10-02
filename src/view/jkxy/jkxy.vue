@@ -28,7 +28,7 @@ export default {
     },
     //查询协议
     getmsg(){
-        this.$axios.get('http://39.98.251.244/loan/backend/agreement/queryAgreementVo?type=0').then(res =>{
+        this.$axios.get(this.$url+'loan/backend/agreement/queryAgreementVo?type=0').then(res =>{
             this.content = res.data.data[0].agreementContent
         }
             

@@ -359,7 +359,7 @@ export default {
       this.$axios({
         method: "get",
         url:
-          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+         this.$url+"loan/backend/customerInfo/queryCustomerInfoVo",
         params: {
           comId: this.comId,
           userId: this.userId
@@ -659,7 +659,7 @@ export default {
       this.$axios({
         method: "post",
         url:
-          "http://39.98.251.244/loan/backend/customerInfo/updateCustomerInfo",
+          this.$url+"loan/backend/customerInfo/updateCustomerInfo",
         data: data
       }).then(res => {
         if (res.data.code == 0) {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import { getLocalStorage } from '../assets/js/common'
+import { url } from '../assets/js/common'
 import axios from 'axios'
 
 const index = () => import('@/view/index/index')//首页
@@ -142,7 +142,7 @@ router.beforeEach((to, from, next) => {
   if (arrpath.includes(to.path)) {
     axios({
       method: "post",
-      url: "http://39.98.251.244/loan/backend/systemuser/checkLogin",
+      url: url+"loan/backend/systemuser/checkLogin",
     }).then(res => {
       if(res.data.code == 0){
         next()

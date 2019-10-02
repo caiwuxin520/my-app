@@ -25,7 +25,7 @@ export default {
     queryinfo() {
       this.$axios({
         method: "get",
-        url: "http://39.98.251.244/loan/backend/agreement/queryAgreementVo",
+        url: this.$url+"loan/backend/agreement/queryAgreementVo",
         params: {
           comId: this.comId,
           type: this.type

@@ -85,7 +85,7 @@ export default {
     vercode() {
       this.$axios({
         method: "get",
-        url: "http://39.98.251.244/loan/backend/systemtool/defaultKaptcha",
+        url: this.$url+"loan/backend/systemtool/defaultKaptcha",
         responseType: "arraybuffer"
       })
         .then(response => {
@@ -119,7 +119,7 @@ export default {
       this.$axios({
         method: "get",
         url:
-          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+          this.$url+"loan/backend/customerInfo/queryCustomerInfoVo",
         params: {
           comId: this.comId,
           userId: this.userId
@@ -179,7 +179,7 @@ export default {
       this.$axios({
         method: "post",
         url:
-          "http://39.98.251.244/loan/backend/customerInfo/updateCustomerInfo",
+         this.$url+"loan/backend/customerInfo/updateCustomerInfo",
         data: {
           id: this.customerId,
           phonePsd: this.password,

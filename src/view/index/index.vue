@@ -183,7 +183,7 @@ export default {
     getmsg(val) {
       this.$axios
         .get(
-          `http://39.98.251.244/loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=${
+          `${this.$url}loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=${
             this.comId
           }&loanMoney=${this.value}&loanMonth=${
             this.dynamic == 0 ? parseInt(this.newMonth[0]) : parseInt(val)
@@ -202,7 +202,7 @@ export default {
     getmoney() {
       this.$axios
         .get(
-          `http://39.98.251.244/loan/backend/companySettingLoan/queryCompanySettingLoanVo?comId=${this.comId}`
+          this.$url+`loan/backend/companySettingLoan/queryCompanySettingLoanVo?comId=${this.comId}`
         )
         .then(res => {
           if (res.data.code == 0) {
@@ -225,7 +225,7 @@ export default {
       this.$axios({
         method: "get",
         url:
-          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+          this.$url+"loan/backend/customerInfo/queryCustomerInfoVo",
         params: {
           comId: this.comId,
           userId: this.userId
@@ -262,7 +262,7 @@ export default {
     jclogin() {
       this.$axios({
         method: "post",
-        url: "http://39.98.251.244/loan/backend/systemuser/checkLogin"
+        url: this.$url+"loan/backend/systemuser/checkLogin"
       }).then(res => {
         if (res.data.code == 0) {
           this.islogin = true;
@@ -291,7 +291,7 @@ export default {
             };
             this.$axios
               .post(
-                "http://39.98.251.244/loan/backend/recordLoan/insertRecordLoan",
+                this.$url+"loan/backend/recordLoan/insertRecordLoan",
                 data
               )
               .then(res => {

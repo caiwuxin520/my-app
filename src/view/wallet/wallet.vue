@@ -25,7 +25,8 @@
         <div class="ye">
           <div class="left">
             <span class="top">账户余额</span>
-            <span class="bottom">{{balanceWallet}}</span>
+             <span v-if="islogin" class="bottom">{{balanceWallet}}</span>
+            <span v-else class="bottom">0</span>
           </div>
           <div class="right">
             <van-button type="default" round size="small" @click="checktx" :disabled="okflag">取现</van-button>
@@ -74,7 +75,7 @@ export default {
     jclogin() {
       this.$axios({
         method: "post",
-        url: "http://39.98.251.244/loan/backend/systemuser/checkLogin"
+        url: this.$url+"loan/backend/systemuser/checkLogin"
       }).then(res => {
         if (res.data.code == 0) {
           this.islogin = true;
@@ -99,7 +100,7 @@ export default {
       this.$axios({
         method: "get",
         url:
-          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+          this.$url+"loan/backend/customerInfo/queryCustomerInfoVo",
         params: {
           comId: this.comId,
           userId: this.userId
@@ -136,7 +137,7 @@ export default {
           };
           this.$axios
             .post(
-              "http://39.98.251.244/loan/backend/recordCashout/insertRecordCashout",
+              this.$url+"loan/backend/recordCashout/insertRecordCashout",
               data
             )
             .then(res => {

@@ -87,7 +87,7 @@ export default {
       this.$axios({
         method: "get",
         url:
-          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+          this.$url+"loan/backend/customerInfo/queryCustomerInfoVo",
         params: {
           comId: this.comId,
           userId: this.userId
@@ -109,7 +109,7 @@ export default {
     querymyjk(id) {
       this.$axios({
         method: "get",
-        url: "http://39.98.251.244/loan/backend/recordLoan/queryRecordLoanVo",
+        url: this.$url+"loan/backend/recordLoan/queryRecordLoanVo",
         params: {
           comId: this.comId,
           customerId: id

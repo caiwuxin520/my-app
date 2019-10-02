@@ -4,6 +4,7 @@ export function setLocalStorage(key, value){
     var curTime = new Date().getTime();
     localStorage.setItem(key,JSON.stringify({data:value,time:curTime}));
 }
+export const url = 'http://39.98.251.244/'
 //获取本地存储
 export function getLocalStorage(key){
     let exp = 24*60*60*1000  //过期时间 一天

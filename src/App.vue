@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <keep-alive :include="keepAlive">
-    <router-view />
-     </keep-alive>
+      <router-view />
+    </keep-alive>
   </div>
 </template>
 
@@ -10,11 +10,39 @@
 import "./assets/js/rem";
 export default {
   name: "App",
-   computed: {
-    keepAlive () {
-      return this.$store.getters.keepAlive
-    },
+  data() {
+    return {
+      onLine: navigator.onLine
+    };
   },
+
+  mounted() {
+    window.addEventListener("online", this.updateOnlineStatus);
+    window.addEventListener("offline", this.updateOnlineStatus);
+  },
+
+  methods: {
+    updateOnlineStatus(e) {
+      const { type } = e;
+      this.onLine = type === "online";
+      if (!this.onLine) {
+        this.$toast({
+          type: "fail",
+          message: "网络中断,请检查您的网络",
+          duration: 3000
+        });
+      }
+    }
+  },
+  beforeDestroy() {
+    window.removeEventListener("online", this.updateOnlineStatus);
+    window.removeEventListener("offline", this.updateOnlineStatus);
+  },
+  computed: {
+    keepAlive() {
+      return this.$store.getters.keepAlive;
+    }
+  }
 };
 //ios禁止缩放
 window.onload = function() {

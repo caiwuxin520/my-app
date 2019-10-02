@@ -12,12 +12,13 @@ import './assets/fonts/iconfont.css'
 //引入appback
 import './assets/js/appback'
 //引入common.js
-import {setLocalStorage,getLocalStorage } from './assets/js/common'
+import {setLocalStorage,getLocalStorage,url} from './assets/js/common'
 //获取localstorage
 Vue.prototype.getLocalStorage = getLocalStorage
 //设置localstorage
 Vue.prototype.setLocalStorage = setLocalStorage
-
+//设置url
+Vue.prototype.$url = url
 //引入axios
 import axios from './assets/js/axios'
 
@@ -26,8 +27,8 @@ function getParameterByName(name) {
   name = name.replace(/[\[\]]/g, "\\$&");
   var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
       results = regex.exec(url);
-  if (!results) return 3;
-  if (!results[2]) return 3;
+  if (!results) return 2;
+  if (!results[2]) return 2;
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 

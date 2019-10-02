@@ -137,7 +137,7 @@ export default {
     jclogin() {
       this.$axios({
         method: "post",
-        url: "http://39.98.251.244/loan/backend/systemuser/checkLogin"
+        url: this.$url+"loan/backend/systemuser/checkLogin"
       }).then(res => {
         if (res.data.code == 0) {
           this.islogin = true;
@@ -154,7 +154,7 @@ export default {
     tuichu() {
       this.$axios({
         method: "post",
-        url: "http://39.98.251.244/loan/backend/systemuser/logout"
+        url: this.$url+"loan/backend/systemuser/logout"
       }).then(res => {
         if (res.data.code == 0) {
           this.$toast({
@@ -180,7 +180,7 @@ export default {
       this.$axios({
         method: "get",
         url:
-          "http://39.98.251.244/loan/backend/customerInfo/queryCustomerInfoVo",
+          this.$url+"loan/backend/customerInfo/queryCustomerInfoVo",
         params: {
           comId: this.comId,
           userId: this.userId
@@ -208,7 +208,7 @@ export default {
     querymyjk() {
       this.$axios({
         method: "get",
-        url: "http://39.98.251.244/loan/backend/recordLoan/queryRecordLoanVo",
+        url: this.$url+"loan/backend/recordLoan/queryRecordLoanVo",
         params: {
           comId: this.comId,
           customerId: this.customerId
@@ -259,7 +259,7 @@ export default {
         line-height: 1rem;
         padding-left: 0.3rem;
         border-bottom: 0.02rem solid #eee;
-        font-size: 0.28rem;
+        font-size: 0.32rem;
         color: #333;
       }
       .box1banner {

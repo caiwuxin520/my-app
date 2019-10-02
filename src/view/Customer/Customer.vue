@@ -61,7 +61,7 @@ export default {
     querylist() {
       this.$axios({
         method: "get",
-        url: "http://39.98.251.244/loan/backend/helpInfo/queryHelpInfoVo",
+        url: this.$url+"/loan/backend/helpInfo/queryHelpInfoVo",
         params: {
           comId: this.comId
         }

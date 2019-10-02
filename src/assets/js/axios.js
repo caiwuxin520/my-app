@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+
 // 添加响应拦截器
 axios.interceptors.response.use((response) => {
   // 对响应数据做点什么
