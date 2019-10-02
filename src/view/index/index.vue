@@ -12,7 +12,7 @@
           active-color="rgba(255,255,255,.8)"
           inactive-color="rgba(255,255,255,.3)"
           bar-height="4px"
-          :step='1000'
+          :step="1000"
         >
           <div slot="button" class="custom-button"></div>
         </van-slider>
@@ -92,7 +92,7 @@ export default {
       val: 0, //选择的月份值
       returnMoneyPerMonth: "", //每月还款
       profitPerMonth: "", //月息
-      comId: this.getLocalStorage('comId').data ||　"",
+      comId:this.getLocalStorage("comId").data || "",
       customerId: "",
       userId: this.getLocalStorage("userId").data || "",
       islogin: false,
@@ -138,8 +138,7 @@ export default {
       "187",
       "189"
     );
-    
-    
+
     for (var a = 0; a < 50; a++) {
       let is = parseInt(10 * Math.random());
       let prefix = prefixArray[is];
@@ -147,11 +146,10 @@ export default {
         prefix = prefix + Math.floor(Math.random() * 4);
         prefix = prefix.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
       }
-      let b = (Math.floor(Math.random() * (20 - 5)) + 5) + '000';
-      let o = this.getNowFormatDate() +' '+ prefix + '成功贷到' + b + '元'
-      this.arr.push(o)
+      let b = Math.floor(Math.random() * (20 - 5)) + 5 + "000";
+      let o = this.getNowFormatDate() + " " + prefix + "成功贷到" + b + "元";
+      this.arr.push(o);
     }
-    
   },
 
   methods: {
@@ -167,19 +165,19 @@ export default {
       });
     },
     getNowFormatDate() {
-        var date = new Date();
-        var seperator1 = "-";
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        var strDate = date.getDate();
-        if (month >= 1 && month <= 9) {
-            month = "0" + month;
-        }
-        if (strDate >= 0 && strDate <= 9) {
-            strDate = "0" + strDate;
-        }
-        var currentdate = year + seperator1 + month + seperator1 + strDate;
-        return currentdate;
+      var date = new Date();
+      var seperator1 = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = year + seperator1 + month + seperator1 + strDate;
+      return currentdate;
     },
     //根据贷款期限以及贷款金额 获取贷款信息
     getmsg(val) {
@@ -208,13 +206,15 @@ export default {
         )
         .then(res => {
           if (res.data.code == 0) {
-            this.personmoney = res.data.data[0];
-            this.max = this.personmoney.loanMax;
-            this.min = this.personmoney.loanMin;
-            this.value =this.personmoney.loanDefault;
-            this.month = this.personmoney.loanInstallment;
-            this.newMonth = this.month.split(",");
-            this.getmsg(this.newMonth[0]);
+            if (res.data.data.length > 0) {
+              this.personmoney = res.data.data[0];
+              this.max = this.personmoney.loanMax;
+              this.min = this.personmoney.loanMin;
+              this.value = this.personmoney.loanDefault;
+              this.month = this.personmoney.loanInstallment;
+              this.newMonth = this.month.split(",");
+              this.getmsg(this.newMonth[0]);
+            }
           } else {
             this.$toast(res.data.msg);
           }
@@ -232,14 +232,16 @@ export default {
         }
       }).then(res => {
         if (res.data.code == 0) {
-          this.customerId = res.data.data[0].id;
-          if (res.data.data[0].isCompleteUser == 1) {
-            (this.bankinfo =
-              res.data.data[0].isCompleteBank == 1 ? true : false),
-              (this.idcardinfo =
-                res.data.data[0].isCompleteUser == 1 ? true : false),
-              (this.dwinfo =
-                res.data.data[0].isCompleteCompany == 1 ? true : false);
+          if (res.data.data.length > 0) {
+            this.customerId = res.data.data[0].id;
+            if (res.data.data[0].isCompleteUser == 1) {
+              (this.bankinfo =
+                res.data.data[0].isCompleteBank == 1 ? true : false),
+                (this.idcardinfo =
+                  res.data.data[0].isCompleteUser == 1 ? true : false),
+                (this.dwinfo =
+                  res.data.data[0].isCompleteCompany == 1 ? true : false);
+            }
           }
         } else {
           this.$toast({
@@ -322,9 +324,9 @@ export default {
     //跳转借款协议
     gopath() {
       this.$router.push({
-        path:'agreement',
-        query:{
-          type:0
+        path: "agreement",
+        query: {
+          type: 0
         }
       });
     }
@@ -447,7 +449,7 @@ export default {
         margin-bottom: 0.1rem;
       }
       .bottom {
-       font-size: 0.32rem;
+        font-size: 0.32rem;
       }
     }
   }

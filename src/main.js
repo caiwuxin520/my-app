@@ -18,11 +18,22 @@ Vue.prototype.getLocalStorage = getLocalStorage
 //设置localstorage
 Vue.prototype.setLocalStorage = setLocalStorage
 
-//公司id目前设为2  为默认
-setLocalStorage('comId',2)
-
 //引入axios
 import axios from './assets/js/axios'
+
+function getParameterByName(name) {
+  let url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+  if (!results) return 3;
+  if (!results[2]) return 3;
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+let comId = getParameterByName('comId')
+//公司id存储
+setLocalStorage("comId", comId);
 
 //引入vux
 import store from './store'

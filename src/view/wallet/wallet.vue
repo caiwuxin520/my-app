@@ -106,10 +106,12 @@ export default {
         }
       }).then(res => {
         if (res.data.code == 0) {
-          this.customerId = res.data.data[0].id;
-          this.balanceWallet = res.data.data[0].balanceWallet;
-          this.isCertificate = res.data.data[0].isCertificate;
-          this.phone = res.data.data[0].phoneNumber;
+          if (res.data.data.length > 0) {
+            this.customerId = res.data.data[0].id;
+            this.balanceWallet = res.data.data[0].balanceWallet;
+            this.isCertificate = res.data.data[0].isCertificate;
+            this.phone = res.data.data[0].phoneNumber;
+          }
         } else {
           this.$toast({
             type: "fail",

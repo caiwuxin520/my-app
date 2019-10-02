@@ -44,7 +44,7 @@ export default {
     return {
       isLoading: false,
       list: [],
-      comId: this.getLocalStorage('comId').data ||　""
+      comId: this.getLocalStorage("comId").data || ""
     };
   },
   created() {
@@ -67,28 +67,30 @@ export default {
         }
       }).then(res => {
         if (res.data.code == 0) {
-          let newarr = [];
-          let arr = res.data.data;
-          arr.forEach(item => {
-            if (item.parentId == null) {
-              item["zdlist"] = [];
-              newarr.push(item);
-            }
-          });
-          newarr.forEach(item => {
-            arr.forEach(items => {
-              if (items.parentId == item.id) {
-                item.zdlist.push(items);
+          if (res.data.data.length > 0) {
+            let newarr = [];
+            let arr = res.data.data;
+            arr.forEach(item => {
+              if (item.parentId == null) {
+                item["zdlist"] = [];
+                newarr.push(item);
               }
             });
-          });
-          newarr.forEach(item => {
-            if (item.zdlist.length > 3) {
-              let a = item.zdlist.slice(0, 2);
-              item.zdlist = a;
-            }
-          });
-          this.list = newarr;
+            newarr.forEach(item => {
+              arr.forEach(items => {
+                if (items.parentId == item.id) {
+                  item.zdlist.push(items);
+                }
+              });
+            });
+            newarr.forEach(item => {
+              if (item.zdlist.length > 3) {
+                let a = item.zdlist.slice(0, 2);
+                item.zdlist = a;
+              }
+            });
+            this.list = newarr;
+          }
         } else {
           this.$toast({
             type: "fail",

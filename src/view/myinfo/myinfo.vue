@@ -11,24 +11,24 @@
                 <van-icon class-prefix="my-icon" name="credentials_icon" />
               </div>
               <p>身份证信息</p>
-               <p v-if="isCompleteUser == 1 &&　islogin" class="p1">(已完善)</p>
-               <p v-else>(待完善)</p>
+              <p v-if="isCompleteUser == 1 &&　islogin" class="p1">(已完善)</p>
+              <p v-else>(待完善)</p>
             </div>
             <div class="box1item" @click="gopath('./workinfo')">
               <div class="iconbox" :style="{'background':'#e96b56'}">
                 <van-icon class-prefix="my-icon" name="danwei" />
               </div>
               <p>单位信息</p>
-               <p v-if="isCompleteCompany == 1　&&　islogin" class="p1">(已完善)</p>
-               <p v-else>(待完善)</p>
+              <p v-if="isCompleteCompany == 1　&&　islogin" class="p1">(已完善)</p>
+              <p v-else>(待完善)</p>
             </div>
             <div class="box1item" @click="gopath('./blankcard')">
               <div class="iconbox" :style="{'background':'#f8a724'}">
                 <van-icon class-prefix="my-icon" name="shuaqiaqiapianyinhangqia" />
               </div>
               <p>收款银行卡</p>
-               <p v-if="isCompleteBank == 1　&&　islogin" class="p1">(已完善)</p>
-               <p v-else>(待完善)</p>
+              <p v-if="isCompleteBank == 1　&&　islogin" class="p1">(已完善)</p>
+              <p v-else>(待完善)</p>
             </div>
             <div class="box1item" @click="gopath('./mobileinfo')">
               <div class="iconbox" :style="{'background':'#ca8c59'}">
@@ -97,15 +97,15 @@ export default {
     return {
       islogin: false,
       isLoading: false,
-      comId: this.getLocalStorage('comId').data ||　"",
+      comId: this.getLocalStorage("comId").data || "",
       userId: this.getLocalStorage("userId").data || "",
-      isCompletePhone:'',
-      isCompleteUser:"",
-      isCompleteBank:"",
-      isCompleteCompany:"",
-      isjek:null,
-      jkinfo:{},
-      customerId:''
+      isCompletePhone: "",
+      isCompleteUser: "",
+      isCompleteBank: "",
+      isCompleteCompany: "",
+      isjek: null,
+      jkinfo: {},
+      customerId: ""
     };
   },
   created() {
@@ -116,7 +116,7 @@ export default {
     //下拉刷新
     onRefresh() {
       setTimeout(() => {
-        this.querymyjk()
+        this.querymyjk();
         this.isLoading = false;
       }, 500);
     },
@@ -162,7 +162,7 @@ export default {
             message: res.data.msg,
             duration: 1000
           });
-          localStorage.removeItem('userId')
+          localStorage.removeItem("userId");
           setTimeout(() => {
             this.$router.push("./login");
           }, 500);
@@ -187,12 +187,14 @@ export default {
         }
       }).then(res => {
         if (res.data.code == 0) {
-          this.customerId= res.data.data[0].id;
-          this.isCompletePhone = res.data.data[0].isCompletePhone;
-          this.isCompleteUser = res.data.data[0].isCompleteUser;
-          this.isCompleteCompany = res.data.data[0].isCompleteCompany;
-          this.isCompleteBank = res.data.data[0].isCompleteBank;
-          this.querymyjk()
+          if (res.data.data.length > 0) {
+            this.customerId = res.data.data[0].id;
+            this.isCompletePhone = res.data.data[0].isCompletePhone;
+            this.isCompleteUser = res.data.data[0].isCompleteUser;
+            this.isCompleteCompany = res.data.data[0].isCompleteCompany;
+            this.isCompleteBank = res.data.data[0].isCompleteBank;
+            this.querymyjk();
+          }
         } else {
           this.$toast({
             type: "fail",
@@ -213,11 +215,11 @@ export default {
         }
       }).then(res => {
         if (res.data.code == 0) {
-          if(res.data.data.length == 0){
-            this.isjek = false
-          }else{
-             this.jkinfo = res.data.data[0]
-             this.isjek = true
+          if (res.data.data.length == 0) {
+            this.isjek = false;
+          } else {
+            this.jkinfo = res.data.data[0];
+            this.isjek = true;
           }
         } else {
           this.$toast({
@@ -286,7 +288,7 @@ export default {
             font-size: 0.32rem;
             color: #999;
           }
-          .p1{
+          .p1 {
             color: red;
           }
         }
