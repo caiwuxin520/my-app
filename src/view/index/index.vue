@@ -3,7 +3,7 @@
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <!-- 首页头部 -->
       <div class="banner">
-        <span>{{value}}</span>
+        <span>{{changval}}</span>
         <div class="title">
           <p>您最高可贷款额度（元）：{{personmoney.loanMax}}</p>
           <van-slider

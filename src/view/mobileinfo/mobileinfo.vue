@@ -45,7 +45,7 @@
     </div>
     <div class="bannerxy">
       <van-checkbox v-model="checked">同意</van-checkbox>
-      <span class="xyspan2" @click="gopath('/agreement')">《用户使用协议》</span>
+      <span class="xyspan2" @click="gopath('agreement')">《用户使用协议》</span>
     </div>
     <div class="bannerbtn">
       <van-button
