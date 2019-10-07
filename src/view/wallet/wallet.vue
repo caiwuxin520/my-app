@@ -23,11 +23,11 @@
         </div>
         <!-- 账户余额 1-->
         <div class="ye">
-          <div class="left">
+          <!-- <div class="left">
             <span class="top">账户余额</span>
              <span v-if="islogin" class="bottom">{{balanceWallet}}</span>
             <span v-else class="bottom">0</span>
-          </div>
+          </div> -->
           <div class="right">
             <van-button type="default" round size="small" @click="checktx" :disabled="okflag">取现</van-button>
           </div>

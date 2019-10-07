@@ -11,6 +11,7 @@
               v-model="ailpay"
               placeholder="填写您的支付宝账号"
               clearable
+              ref="input1"
               :maxlength="30"
               :disabled="ismoren"
             />
@@ -23,10 +24,11 @@
           <div class="inputbox">
             <van-field
               v-model="zmxy"
-              placeholder="填写您的芝麻信用"
+              placeholder="填写正确的芝麻信用"
               clearable
               type="number"
               :maxlength="3"
+              ref="input2"
               :disabled="ismoren"
             />
           </div>
@@ -40,6 +42,7 @@
               v-model="gsmc"
               placeholder="填写您的公司名称"
               clearable
+              ref="input3"
               :maxlength="30"
               :disabled="ismoren"
             />
@@ -54,6 +57,7 @@
               v-model="gszw"
               placeholder="填写您的公司职位"
               clearable
+              ref="input4"
               :maxlength="30"
               :disabled="ismoren"
             />
@@ -68,6 +72,7 @@
               v-model="dwphone"
               placeholder="填写您的单位电话"
               clearable
+              ref="input5"
               :maxlength="20"
               type="number"
               :disabled="ismoren"
@@ -83,6 +88,7 @@
               v-model="gzage"
               placeholder="填写您的工作年龄"
               clearable
+              ref="input6"
               :maxlength="3"
               type="number"
               :disabled="ismoren"
@@ -90,7 +96,7 @@
           </div>
         </div>
       </div>
-      <div class="banneritem">
+      <div class="banneritem banneritemcolor">
         <p class="ptext">单位地址</p>
         <div class="bannerinput">
           <div class="inputbox" @click="show('1')">
@@ -98,7 +104,7 @@
               v-model="dwaddress"
               placeholder="请选择"
               clearable
-              :disabled="true"
+              :disabled="ismoren"
               right-icon="arrow"
             />
           </div>
@@ -112,6 +118,7 @@
               v-model="xxaddress"
               placeholder="填写您的详细地址"
               clearable
+              ref="input7"
               :maxlength="40"
               :disabled="ismoren"
             />
@@ -127,6 +134,7 @@
               placeholder="填写您的月收入(元)"
               clearable
               type="number"
+              ref="input8"
               :maxlength="10"
               :disabled="ismoren"
             />
@@ -141,7 +149,7 @@
               v-model="jzaddress"
               placeholder="请选择"
               clearable
-              :disabled="true"
+              :disabled="ismoren"
               right-icon="arrow"
             />
           </div>
@@ -155,6 +163,7 @@
               v-model="jzxxaddress"
               placeholder="填写您的详细地址"
               clearable
+              ref="input9"
               :maxlength="40"
               :disabled="ismoren"
             />
@@ -172,6 +181,7 @@
               v-model="zxname"
               placeholder="填写您的亲属姓名"
               clearable
+              ref="input10"
               :maxlength="4"
               :disabled="ismoren"
             />
@@ -186,6 +196,7 @@
               v-model="zxphone"
               placeholder="填写您的亲属手机"
               clearable
+              ref="input11"
               type="number"
               :maxlength="11"
               :disabled="ismoren"
@@ -201,7 +212,7 @@
               v-model="zxgx"
               placeholder="请选择"
               clearable
-              :disabled="true"
+              :disabled="ismoren"
               right-icon="arrow"
             />
           </div>
@@ -218,6 +229,7 @@
               v-model="qtname"
               placeholder="填写联系人姓名"
               clearable
+              ref="input12"
               :maxlength="4"
               :disabled="ismoren"
             />
@@ -232,6 +244,7 @@
               v-model="qtphone"
               placeholder="填写联系人手机"
               clearable
+              ref="input13"
               type="number"
               :maxlength="11"
               :disabled="ismoren"
@@ -247,7 +260,7 @@
               v-model="qtgx"
               placeholder="请选择"
               clearable
-              :disabled="true"
+              :disabled="ismoren"
               right-icon="arrow"
             />
           </div>
@@ -260,12 +273,7 @@
     </van-popup>
     <!-- 关系选择 -->
     <van-popup v-model="show2" position="bottom">
-      <van-picker
-        :columns="columns"
-        show-toolbar
-        @cancel="this.show2 = false"
-        @confirm="onConfirm1"
-      />
+      <van-picker :columns="columns" show-toolbar @cancel="show2 = !show2" @confirm="onConfirm1" />
     </van-popup>
     <div class="bannerbtn">
       <van-button type="primary" size="large" :disabled="okflag" @click="okdata">提交</van-button>
@@ -280,7 +288,7 @@ export default {
   data() {
     return {
       customerId: "",
-      comId: this.getLocalStorage('comId').data ||　"",
+      comId: this.getLocalStorage("comId").data || "",
       userId: this.getLocalStorage("userId").data || "",
       ailpay: "",
       zmxy: "",
@@ -288,16 +296,16 @@ export default {
       gszw: "",
       dwphone: "",
       gzage: "",
-      dwaddress: "请选择",
+      dwaddress: "",
       xxaddress: "",
       ysr: "",
-      jzaddress: "请选择",
+      jzaddress: "",
       jzxxaddress: "",
       zxphone: "",
-      zxgx: "请选择",
+      zxgx: "",
       zxname: "",
       qtphone: "",
-      qtgx: "请选择",
+      qtgx: "",
       qtname: "",
       okflag: false,
       show1: false,
@@ -358,8 +366,7 @@ export default {
     queryinfo() {
       this.$axios({
         method: "get",
-        url:
-         this.$url+"loan/backend/customerInfo/queryCustomerInfoVo",
+        url: this.$url + "loan/backend/customerInfo/queryCustomerInfoVo",
         params: {
           comId: this.comId,
           userId: this.userId
@@ -476,6 +483,8 @@ export default {
       if (reg.test(this.ailpay) || reg1.test(this.ailpay)) {
         ailpayname = this.ailpay;
       } else {
+        this.ailpay = "";
+        this.$refs.input1.focus();
         this.$toast({
           type: "fail",
           message: "请输入正确的支付宝账户",
@@ -484,6 +493,8 @@ export default {
         return;
       }
       if (!this.zmxy) {
+        this.zmxy = "";
+        this.$refs.input2.focus();
         this.$toast({
           type: "fail",
           message: "请输入芝麻信用",
@@ -493,6 +504,8 @@ export default {
       }
       let reg3 = /^[\u4e00-\u9fa5]+$/;
       if (!reg3.test(this.gsmc)) {
+        this.gsmc = "";
+        this.$refs.input3.focus();
         this.$toast({
           type: "fail",
           message: "请输入正确的公司名称",
@@ -501,6 +514,8 @@ export default {
         return;
       }
       if (!reg3.test(this.gszw)) {
+        this.gszw = "";
+        this.$refs.input4.focus();
         this.$toast({
           type: "fail",
           message: "请输入正确的公司职务",
@@ -508,7 +523,22 @@ export default {
         });
         return;
       }
+      if (this.dwphone) {
+        let reg10 = /^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/;
+        if (!reg10.test(this.dwphone)) {
+          this.dwphone = "";
+          this.$refs.input5.focus();
+          this.$toast({
+            type: "fail",
+            message: "请输入正确的单位电话",
+            duration: 1000
+          });
+          return;
+        }
+      }
       if (!this.gzage) {
+        this.gzage = "";
+        this.$refs.input6.focus();
         this.$toast({
           type: "fail",
           message: "请输入工作年龄",
@@ -517,6 +547,8 @@ export default {
         return;
       }
       if (parseFloat(this.gzage) < 0) {
+        this.gzage = "";
+        this.$refs.input6.focus();
         this.$toast({
           type: "fail",
           message: "请输入正确的工作年龄",
@@ -524,15 +556,7 @@ export default {
         });
         return;
       }
-      if (this.dwaddress == "请选择") {
-        this.$toast({
-          type: "fail",
-          message: "请选择单位地址",
-          duration: 1000
-        });
-        return;
-      }
-      if (this.dwaddress == "请选择") {
+      if (!this.dwaddress) {
         this.$toast({
           type: "fail",
           message: "请选择单位地址",
@@ -542,6 +566,8 @@ export default {
       }
       let reg4 = /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/;
       if (!reg4.test(this.xxaddress)) {
+        this.xxaddress = "";
+        this.$refs.input7.focus();
         this.$toast({
           type: "fail",
           message: "请输入单位详细地址",
@@ -550,6 +576,8 @@ export default {
         return;
       }
       if (!this.ysr) {
+        this.ysr = "";
+        this.$refs.input8.focus();
         this.$toast({
           type: "fail",
           message: "请输入月收入",
@@ -557,7 +585,7 @@ export default {
         });
         return;
       }
-      if (this.jzaddress == "请选择") {
+      if (!this.jzaddress) {
         this.$toast({
           type: "fail",
           message: "请选择现居住地址",
@@ -566,6 +594,8 @@ export default {
         return;
       }
       if (!reg4.test(this.jzxxaddress)) {
+        this.jzxxaddress = "";
+        this.$refs.input9.focus();
         this.$toast({
           type: "fail",
           message: "请输入您的详细地址",
@@ -575,6 +605,8 @@ export default {
       }
       let reg5 = /^[\u4e00-\u9fa5]{2,4}$/;
       if (!reg5.test(this.zxname)) {
+        this.zxname = "";
+        this.$refs.input10.focus();
         this.$toast({
           type: "fail",
           message: "请输入正确直系亲属姓名",
@@ -583,6 +615,8 @@ export default {
         return;
       }
       if (!reg.test(this.zxphone)) {
+        this.zxphone = "";
+        this.$refs.input11.focus();
         this.$toast({
           type: "fail",
           message: "请输入正确直系亲属手机号",
@@ -590,7 +624,7 @@ export default {
         });
         return;
       }
-      if (this.zxgx == "请选择") {
+      if (!this.zxgx) {
         this.$toast({
           type: "fail",
           message: "请选择直系亲属关系",
@@ -599,6 +633,8 @@ export default {
         return;
       }
       if (!reg5.test(this.qtname)) {
+        this.qtname = "";
+        this.$refs.input12.focus();
         this.$toast({
           type: "fail",
           message: "请输入正确其他联系人姓名",
@@ -607,6 +643,8 @@ export default {
         return;
       }
       if (!reg.test(this.qtphone)) {
+        this.qtphone = "";
+        this.$refs.input13.focus();
         this.$toast({
           type: "fail",
           message: "请输入正确其他联系人手机号",
@@ -614,7 +652,7 @@ export default {
         });
         return;
       }
-      if (this.qtgx == "请选择") {
+      if (!this.qtgx) {
         this.$toast({
           type: "fail",
           message: "请选择其他联系人关系",
@@ -658,8 +696,7 @@ export default {
       };
       this.$axios({
         method: "post",
-        url:
-          this.$url+"loan/backend/customerInfo/updateCustomerInfo",
+        url: this.$url + "loan/backend/customerInfo/updateCustomerInfo",
         data: data
       }).then(res => {
         if (res.data.code == 0) {
@@ -753,4 +790,3 @@ export default {
   }
 }
 </style>
-

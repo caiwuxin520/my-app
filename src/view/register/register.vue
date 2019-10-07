@@ -110,18 +110,14 @@ export default {
       btnflag: false,
       timer: 60,
       okflag: false,
-      comId:this.getLocalStorage('comId').data ||　""
+      comId: this.getLocalStorage("comId").data || ""
     };
   },
   created() {
-    if (this.$store.getters.keepAlive.length == 0) {
-      this.vercode();
-    }
+    this.vercode();
   },
   activated() {
-    if (this.$store.getters.keepAlive.length > 0) {
-      this.vercode();
-    }
+    this.vercode();
   },
   methods: {
     //下拉刷新
@@ -149,7 +145,7 @@ export default {
       }
       this.$axios({
         method: "get",
-        url: this.$url+"loan/backend/systemsms/sendSmsCode",
+        url: this.$url + "loan/backend/systemsms/sendSmsCode",
         params: {
           phoneNumber: this.phone
         }
@@ -202,7 +198,7 @@ export default {
     vercode() {
       this.$axios({
         method: "get",
-        url: this.$url+"loan/backend/systemtool/defaultKaptcha",
+        url: this.$url + "loan/backend/systemtool/defaultKaptcha",
         responseType: "arraybuffer"
       })
         .then(response => {
@@ -279,8 +275,7 @@ export default {
       };
       this.$axios({
         method: "post",
-        url:
-          this.$url+"loan/backend/customerInfo/insertCustomerInfo",
+        url: this.$url + "loan/backend/customerInfo/insertCustomerInfo",
         data: data
       }).then(res => {
         if (res.data.code == 0) {
@@ -292,7 +287,7 @@ export default {
           setTimeout(() => {
             this.$axios({
               method: "post",
-              url: this.$url+"loan/backend/systemuser/accountLogin",
+              url: this.$url + "loan/backend/systemuser/accountLogin",
               data: {
                 account: this.phone,
                 password: this.password,
@@ -300,7 +295,14 @@ export default {
               }
             }).then(res => {
               if (res.data.code == 0) {
+                 this.setLocalStorage("userId", res.data.data.id);
                 this.$router.push("./myinfo");
+              } else {
+                this.$toast({
+                  type: "fail",
+                  message: res.data.msg,
+                  duration: 1000
+                });
               }
             });
           }, 1000);

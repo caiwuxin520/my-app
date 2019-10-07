@@ -1,73 +1,75 @@
 <template>
   <div>
-    <!-- 首页头部 -->
-    <div class="banner">
-      <span>{{value}}</span>
-      <div class="title">
-        <p>您最高可贷款额度（元）：{{personmoney.loanMax}}</p>
-        <van-slider
-          v-model="value"
-          :max="max"
-          :min="min"
-          active-color="rgba(255,255,255,.8)"
-          inactive-color="rgba(255,255,255,.3)"
-          bar-height="4px"
-          :step="1000"
-        >
-          <div slot="button" class="custom-button"></div>
-        </van-slider>
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <!-- 首页头部 -->
+      <div class="banner">
+        <span>{{value}}</span>
+        <div class="title">
+          <p>您最高可贷款额度（元）：{{personmoney.loanMax}}</p>
+          <van-slider
+            v-model="value"
+            :max="max"
+            :min="min"
+            active-color="rgba(255,255,255,.8)"
+            inactive-color="rgba(255,255,255,.3)"
+            bar-height="4px"
+            :step="1000"
+          >
+            <div slot="button" class="custom-button"></div>
+          </van-slider>
+        </div>
       </div>
-    </div>
-    <!-- 借款期限 -->
-    <div class="qx">
-      <div class="qx_title">
-        <p>借款期限</p>
-        <div class="month">
-          <div
-            :class="{colorChange:index==dynamic}"
-            class="vv"
-            v-for="(value,index) in newMonth"
-            :key="index"
-            @click="getmonth(index,value)"
-          >{{value}}个月</div>
-          <!-- <div>6个月</div>
+      <!-- 借款期限 -->
+      <div class="qx">
+        <div class="qx_title">
+          <p>借款期限</p>
+          <div class="month">
+            <div
+              :class="{colorChange:index==dynamic}"
+              class="vv"
+              v-for="(value,index) in newMonth"
+              :key="index"
+              @click="getmonth(index,value)"
+            >{{value}}个月</div>
+            <!-- <div>6个月</div>
           <div>12个月</div>
           <div>24个月</div>
-          <div>36个月</div>-->
+            <div>36个月</div>-->
+          </div>
+        </div>
+        <div class="qx_money">
+          <!-- <span class="left">每月还款（元）</span>
+          <span>月息（元）</span>-->
+          <div class="myjk">
+            <span class="top">{{value}}</span>
+            <span class="bottom">我的借款</span>
+          </div>
+          <div class="hk">
+            <span class="top">{{returnMoneyPerMonth}}</span>
+            <span class="bottom">每月还款</span>
+          </div>
+          <div class="yx">
+            <span class="top">{{profitPerMonth}}</span>
+            <span class="bottom">月息</span>
+          </div>
+        </div>
+        <div class="xy">
+          <van-checkbox v-model="checked" checked-color="#349aff">同意</van-checkbox>
+          <span @click="gopath">《借款协议》</span>
+        </div>
+        <div class="btn">
+          <button @click="gochecked">马上借款</button>
         </div>
       </div>
-      <div class="qx_money">
-        <!-- <span class="left">每月还款（元）</span>
-        <span>月息（元）</span>-->
-        <div class="myjk">
-          <span class="top">{{value}}</span>
-          <span class="bottom">我的借款</span>
-        </div>
-        <div class="hk">
-          <span class="top">{{returnMoneyPerMonth}}</span>
-          <span class="bottom">每月还款</span>
-        </div>
-        <div class="yx">
-          <span class="top">{{profitPerMonth}}</span>
-          <span class="bottom">月息</span>
-        </div>
-      </div>
-      <div class="xy">
-        <van-checkbox v-model="checked" checked-color="#349aff">同意</van-checkbox>
-        <span @click="gopath">《借款协议》</span>
-      </div>
-      <div class="btn">
-        <button @click="gochecked">马上借款</button>
-      </div>
-    </div>
 
-    <!-- 滚动公告 -->
-    <div class="text-container">
-      <div class="inner-container">
-        <p class="text" v-for="(text, index) in arr" :key="index">{{text}}</p>
+      <!-- 滚动公告 -->
+      <div class="text-container">
+        <div class="inner-container">
+          <p class="text" v-for="(text, index) in arr" :key="index">{{text}}</p>
+        </div>
       </div>
-    </div>
-    <div class="bb"></div>
+      <div class="bb"></div>
+    </van-pull-refresh>
     <!-- 封装底部组件 -->
     <tabbar :actives="0"></tabbar>
   </div>
@@ -92,13 +94,14 @@ export default {
       val: 0, //选择的月份值
       returnMoneyPerMonth: "", //每月还款
       profitPerMonth: "", //月息
-      comId:this.getLocalStorage("comId").data || "",
+      comId: this.getLocalStorage("comId").data || "",
       customerId: "",
       userId: this.getLocalStorage("userId").data || "",
       islogin: false,
       bankinfo: false,
       idcardinfo: false,
-      dwinfo: false
+      dwinfo: false,
+      isLoading: false
     };
   },
   components: {
@@ -153,6 +156,16 @@ export default {
   },
 
   methods: {
+    //下拉刷新
+    onRefresh() {
+      setTimeout(() => {
+        this.dynamic = 0
+        this.startMove();
+        this.getmoney();
+        this.queryjk();
+        this.isLoading = false;
+      }, 500);
+    },
     // 滚动定时器
     startMove() {
       let timer = setTimeout(() => {
@@ -183,7 +196,9 @@ export default {
     getmsg(val) {
       this.$axios
         .get(
-          `${this.$url}loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=${
+          `${
+            this.$url
+          }loan/backend/companySettingLoan/queryReturnMoneyPerMonth?comId=${
             this.comId
           }&loanMoney=${this.value}&loanMonth=${
             this.dynamic == 0 ? parseInt(this.newMonth[0]) : parseInt(val)
@@ -202,7 +217,8 @@ export default {
     getmoney() {
       this.$axios
         .get(
-          this.$url+`loan/backend/companySettingLoan/queryCompanySettingLoanVo?comId=${this.comId}`
+          this.$url +
+            `loan/backend/companySettingLoan/queryCompanySettingLoanVo?comId=${this.comId}`
         )
         .then(res => {
           if (res.data.code == 0) {
@@ -224,8 +240,7 @@ export default {
     queryjk() {
       this.$axios({
         method: "get",
-        url:
-          this.$url+"loan/backend/customerInfo/queryCustomerInfoVo",
+        url: this.$url + "loan/backend/customerInfo/queryCustomerInfoVo",
         params: {
           comId: this.comId,
           userId: this.userId
@@ -262,7 +277,7 @@ export default {
     jclogin() {
       this.$axios({
         method: "post",
-        url: this.$url+"loan/backend/systemuser/checkLogin"
+        url: this.$url + "loan/backend/systemuser/checkLogin"
       }).then(res => {
         if (res.data.code == 0) {
           this.islogin = true;
@@ -291,7 +306,7 @@ export default {
             };
             this.$axios
               .post(
-                this.$url+"loan/backend/recordLoan/insertRecordLoan",
+                this.$url + "loan/backend/recordLoan/insertRecordLoan",
                 data
               )
               .then(res => {

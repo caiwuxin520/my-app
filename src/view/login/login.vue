@@ -246,6 +246,9 @@ export default {
     },
     //跳转
     gopath(path) {
+      if(path == './register'){
+        this.$store.commit('setKeepAlive', ['register']) //设置缓存
+      }
       this.$router.push({
         path: path
       });

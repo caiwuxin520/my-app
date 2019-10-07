@@ -1,6 +1,7 @@
 <template>
   <div class="myorder">
     <headertitle :titles="'我的借款'" :tabfalg="true"></headertitle>
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
     <div class="box1banner">
       <div class="box1item iconboxactive">
         <div class="iconbox">
@@ -64,6 +65,7 @@
         <div class="right">￥{{jkinfo.returnMoneyPerMonth}}</div>
       </div>
     </div>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -75,7 +77,8 @@ export default {
     return {
       comId: this.getLocalStorage('comId').data ||　"",
       userId: this.getLocalStorage("userId").data || "",
-      jkinfo:{}
+      jkinfo:{},
+      isLoading: false,
     };
   },
   created() {
@@ -104,6 +107,13 @@ export default {
           });
         }
       });
+    },
+     //下拉刷新
+    onRefresh() {
+      setTimeout(() => {
+        this.queryjk();
+        this.isLoading = false;
+      }, 500);
     },
     //查询我的借款
     querymyjk(id) {
@@ -161,6 +171,9 @@ export default {
   padding-top: 1rem;
   height: 100%;
   box-sizing: border-box;
+   .van-pull-refresh {
+    min-height: 85vh;
+  }
   .box1banner {
     display: flex;
     height: 2rem;
