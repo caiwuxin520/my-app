@@ -7,13 +7,14 @@
         <div class="title">
           <p>您最高可贷款额度（元）：{{personmoney.loanMax}}</p>
           <van-slider
-            v-model="value"
+            v-model="changval"
             :max="max"
             :min="min"
             active-color="rgba(255,255,255,.8)"
             inactive-color="rgba(255,255,255,.3)"
             bar-height="4px"
             :step="1000"
+            @change="onChange"
           >
             <div slot="button" class="custom-button"></div>
           </van-slider>
@@ -85,6 +86,7 @@ export default {
       arr: [],
       number: 0, //信息滚动条数
       value: 0, //贷款金额
+      changval:0,
       checked: false, //是否勾选协议
       personmoney: {}, //可贷款金额数组
       max: 0, //最大可贷款金额
@@ -108,12 +110,12 @@ export default {
     tabbar
   },
   // 监听滑块值的变化
-  watch: {
-    value(newvalue, oldvalue) {
-      this.value = newvalue;
-      this.getmsg(this.val);
-    }
-  },
+  // watch: {
+  //   value(newvalue, oldvalue) {
+  //     this.value = newvalue;
+  //     this.getmsg(this.val);
+  //   }
+  // },
   // 计算滚动消息
   computed: {
     text() {
@@ -156,10 +158,14 @@ export default {
   },
 
   methods: {
+    onChange(value) {
+      this.value = value
+      this.getmsg(this.val);
+    },
     //下拉刷新
     onRefresh() {
       setTimeout(() => {
-        this.dynamic = 0
+        this.dynamic = 0;
         this.startMove();
         this.getmoney();
         this.queryjk();
@@ -227,6 +233,7 @@ export default {
               this.max = this.personmoney.loanMax;
               this.min = this.personmoney.loanMin;
               this.value = this.personmoney.loanDefault;
+              this.changval = this.personmoney.loanDefault;
               this.month = this.personmoney.loanInstallment;
               this.newMonth = this.month.split(",");
               this.getmsg(this.newMonth[0]);
