@@ -7,9 +7,9 @@ export function setLocalStorage(key, value){
 
 //动态请求地址
 let location = window.location
- //export const url = location.protocol + '//' + location.host + '/'
+ export const url = location.protocol + '//' + location.host + '/'
 
- export const url = 'http://39.98.251.244/'
+ //export const url = 'http://39.98.251.244/'
 
 //获取本地存储
 export function getLocalStorage(key){

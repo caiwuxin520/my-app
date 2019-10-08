@@ -16,16 +16,16 @@
         <div class="iconbox">
           <van-icon class-prefix="my-icon" name="shenhe" />
         </div>
-        <p>{{jkinfo.loanStatusValue}}</p>
+        <p>{{jkinfo.isTransOkStatus==0 ? jkinfo.loanStatusValue : jkinfo.loanStatusBeforeValue}}</p>
       </div>
       <div class="line">
         <span></span>
       </div>
-      <div class="box1item" :class="{'iconboxactive':jkinfo.isTransOkStatus==1}"  >
+      <div class="box1item"  :class="[jkinfo.isTransOkStatus==1 ? 'iconboxactive' : '']" >
         <div class="iconbox">
           <van-icon class-prefix="my-icon" name="yidaozhang" />
         </div>
-        <p>{{jkinfo.loanStatusValue}}</p>
+        <p>{{jkinfo.isTransOkStatus==0 ? '打款成功'  : jkinfo.loanStatusValue}}</p>
       </div>
     </div>
     <div class="je">
