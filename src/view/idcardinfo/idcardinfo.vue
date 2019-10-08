@@ -124,34 +124,37 @@ export default {
   },
   methods: {
     afterRead1(file) {
-      this.src1 = file.content;
-      let img = new Image();
-      img.src = file.content;
-      this.dwimg = file.content;
-      let that = this;
-      img.onload = function() {
-        that.ontpys(img, 1);
-      };
+      // this.src1 = file.content;
+      this.onimg(file, 1);
+      // let img = new Image();
+      // img.src = file.content;
+      // this.dwimg = file.content;
+      // let that = this;
+      // img.onload = function() {
+      //   that.ontpys(img, 1);
+      // };
     },
     afterRead2(file) {
-      this.src2 = file.content;
-      let img = new Image();
-      img.src = file.content;
-      this.dwimg = file.content;
-      let that = this;
-      img.onload = function() {
-        that.ontpys(img, 2);
-      };
+      // this.src2 = file.content;
+      this.onimg(file, 2);
+      // let img = new Image();
+      // img.src = file.content;
+      // this.dwimg = file.content;
+      // let that = this;
+      // img.onload = function() {
+      //   that.ontpys(img, 2);
+      // };
     },
     afterRead3(file) {
-      this.src3 = file.content;
-      let img = new Image();
-      img.src = file.content;
-      this.dwimg = file.content;
-      let that = this;
-      img.onload = function() {
-        that.ontpys(img, 3);
-      };
+      // this.src3 = file.content;
+      this.onimg(file, 3);
+      // let img = new Image();
+      // img.src = file.content;
+      // this.dwimg = file.content;
+      // let that = this;
+      // img.onload = function() {
+      //   that.ontpys(img, 3);
+      // };
     },
     //查询借款人
     queryjk() {
@@ -212,37 +215,42 @@ export default {
       });
     },
     //压缩图片的方法
-    ontpys(img, num) {
-      let originWidth = img.width, // 压缩后的宽
-        originHeight = img.height,
-        maxWidth = 400,
-        maxHeight = 400,
-        quality = 0.8, // 压缩质量
-        canvas = document.createElement("canvas"),
-        drawer = canvas.getContext("2d");
-      canvas.width = maxWidth;
-      canvas.height = (originHeight / originWidth) * maxWidth;
-      drawer.drawImage(img, 0, 0, canvas.width, canvas.height);
-      let base64 = canvas.toDataURL("image/jpeg", quality); // 压缩后的base64图片
-      let file = this.dataURLtoFile(base64, Date.parse(Date()) + ".jpg");
-      file = { content: base64, file: file };
-      this.onimg(file, num);
-    },
-    //base64转file
-    dataURLtoFile(dataurl, filename) {
-      let arr = dataurl.split(","),
-        mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]),
-        n = bstr.length,
-        u8arr = new Uint8Array(n);
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-      return new File([u8arr], filename, { type: mime });
-    },
+    // ontpys(img, num) {
+    //   let originWidth = img.width, // 压缩后的宽
+    //     originHeight = img.height,
+    //     maxWidth = 400,
+    //     maxHeight = 400,
+    //     quality = 0.8, // 压缩质量
+    //     canvas = document.createElement("canvas"),
+    //     drawer = canvas.getContext("2d");
+    //   canvas.width = maxWidth;
+    //   canvas.height = (originHeight / originWidth) * maxWidth;
+    //   drawer.drawImage(img, 0, 0, canvas.width, canvas.height);
+    //   let base64 = canvas.toDataURL("image/jpeg", quality); // 压缩后的base64图片
+    //   let file = this.dataURLtoFile(base64, Date.parse(Date()) + ".jpg");
+    //   file = { content: base64, file: file };
+    //   this.onimg(file, num);
+    // },
+    // //base64转file
+    // dataURLtoFile(dataurl, filename) {
+    //   let arr = dataurl.split(","),
+    //     mime = arr[0].match(/:(.*?);/)[1],
+    //     bstr = atob(arr[1]),
+    //     n = bstr.length,
+    //     u8arr = new Uint8Array(n);
+    //   while (n--) {
+    //     u8arr[n] = bstr.charCodeAt(n);
+    //   }
+    //   return new File([u8arr], filename, { type: mime });
+    // },
     //图片上传
     onimg(file, num) {
       //console.log(file.content)
+      const toast = this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true, // 禁用背景点击
+        loadingType: "spinner",
+      });
       var formData = new FormData();
       formData.append("file", file.file);
       this.$axios({
@@ -251,12 +259,16 @@ export default {
         data: formData
       }).then(res => {
         if (res.data.code == 0) {
+          this.$toast.clear();
           if (num == 1) {
             this.imgid1 = res.data.data.id;
+            this.src1 = res.data.data.url;
           } else if (num == 2) {
             this.imgid2 = res.data.data.id;
+            this.src2 = res.data.data.url;
           } else {
             this.imgid3 = res.data.data.id;
+            this.src3 = res.data.data.url;
           }
         } else {
           this.$toast({
