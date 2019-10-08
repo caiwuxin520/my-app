@@ -32,7 +32,7 @@ export default {
     query(){
       this.$axios({
         method: "get",
-        url: this.$url+"/loan/backend/companySettingBase/queryCompanySettingBaseVo",
+        url: this.$url+"loan/backend/companySettingBase/queryCompanySettingBaseVo",
         params: {
           comId: this.comId
         }

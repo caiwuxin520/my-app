@@ -10,7 +10,7 @@
               v-model="name"
               placeholder="请输入您的真实姓名"
               clearable
-              :disabled="isws"
+              :disabled="isws || nameflag"
               :maxlength="4"
             />
           </div>
@@ -24,7 +24,7 @@
               v-model="idcard"
               placeholder="填写您的身份证号码"
               clearable
-              :disabled="isws"
+              :disabled="isws ||　idcardflag"
               :maxlength="18"
             />
           </div>
@@ -108,13 +108,15 @@ export default {
       src2: "",
       src3: "",
       customerId: "",
-      comId: this.getLocalStorage('comId').data ||　"",
+      comId: this.getLocalStorage("comId").data || "",
       userId: this.getLocalStorage("userId").data || "",
       isws: false,
       imgid1: "",
       imgid2: "",
       imgid3: "",
-      okflag:false
+      okflag: false,
+      nameflag: false,
+      idcardflag: false
     };
   },
   created() {
@@ -155,8 +157,7 @@ export default {
     queryjk() {
       this.$axios({
         method: "get",
-        url:
-          this.$url+"loan/backend/customerInfo/queryCustomerInfoVo",
+        url: this.$url + "loan/backend/customerInfo/queryCustomerInfoVo",
         params: {
           comId: this.comId,
           userId: this.userId
@@ -164,6 +165,14 @@ export default {
       }).then(res => {
         if (res.data.code == 0) {
           this.customerId = res.data.data[0].id;
+          if (res.data.data[0].realName) {
+            this.name = res.data.data[0].realName;
+            this.nameflag = true;
+          }
+          if (res.data.data[0].idcardNumber) {
+            this.idcard = res.data.data[0].idcardNumber;
+            this.idcardflag = true;
+          }
           if (res.data.data[0].isCompleteUser == 1) {
             this.isws = true;
             this.okflag = true;
@@ -238,7 +247,7 @@ export default {
       formData.append("file", file.file);
       this.$axios({
         method: "post",
-        url: this.$url+"loan/backend/systemfile/uploadFileLocal",
+        url: this.$url + "loan/backend/systemfile/uploadFileLocal",
         data: formData
       }).then(res => {
         if (res.data.code == 0) {
@@ -310,8 +319,7 @@ export default {
 
       this.$axios({
         method: "post",
-        url:
-          this.$url+"loan/backend/customerInfo/updateCustomerInfo",
+        url: this.$url + "loan/backend/customerInfo/updateCustomerInfo",
         data: {
           id: this.customerId,
           realName: this.name,

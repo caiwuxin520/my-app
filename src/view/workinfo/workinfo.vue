@@ -524,7 +524,7 @@ export default {
         return;
       }
       if (this.dwphone) {
-        let reg10 = /^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/;
+        let reg10 = /^[0-9]*$/;
         if (!reg10.test(this.dwphone)) {
           this.dwphone = "";
           this.$refs.input5.focus();

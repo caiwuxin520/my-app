@@ -16,7 +16,7 @@
               placeholder="填写持卡人姓名"
               clearable
               :maxlength="4"
-              :disabled="name"
+              :disabled="nameflag"
             />
           </div>
         </div>
@@ -30,7 +30,7 @@
               placeholder="填写持卡人身份证号"
               clearable
               :maxlength="18"
-              :disabled="idcard"
+              :disabled="idcardflag"
             />
           </div>
         </div>
@@ -96,7 +96,9 @@ export default {
       customerId: "",
       okflag: false,
       zxblanknum :'',
-      banksrc:''
+      banksrc:'',
+      nameflag:false,
+      idcardflag:false
     };
   },
   created() {
@@ -119,9 +121,11 @@ export default {
           this.customerId = res.data.data[0].id;
           if (res.data.data[0].realName) {
             this.name = res.data.data[0].realName;
+            this.nameflag = true
           }
           if (res.data.data[0].idcardNumber) {
             this.idcard = res.data.data[0].idcardNumber;
+            this.idcardflag = true
           }
           if (res.data.data[0].isCompleteBank == 1) {
             this.isCompleteBank = true;
@@ -150,7 +154,7 @@ export default {
       this.$axios({
         method: "get",
         url:
-          this.$url+"/loan/backend/companySettingBank/queryCompanySettingBank",
+          this.$url+"loan/backend/companySettingBank/queryCompanySettingBank",
         params: {
           comId: this.comId
         }
@@ -218,7 +222,7 @@ export default {
         this.$axios({
           method: "post",
           url:
-            this.$url+"/loan/backend/customerInfo/updateCustomerInfo",
+            this.$url+"loan/backend/customerInfo/updateCustomerInfo",
           data: {
             id: this.customerId,
             realName: this.name,

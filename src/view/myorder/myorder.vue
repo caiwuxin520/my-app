@@ -21,11 +21,11 @@
       <div class="line">
         <span></span>
       </div>
-      <div class="box1item">
+      <div class="box1item" :class="{'iconboxactive':jkinfo.isTransOkStatus==1}"  >
         <div class="iconbox">
           <van-icon class-prefix="my-icon" name="yidaozhang" />
         </div>
-        <p>到账成功</p>
+        <p>{{jkinfo.loanStatusValue}}</p>
       </div>
     </div>
     <div class="je">
