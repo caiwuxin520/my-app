@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script>
+<script> 
 import tabbar from "../../components/tabbar";
 import headertitle from "../../components/headertitle";
 export default {
@@ -171,7 +171,7 @@ export default {
         });
       }
     }
-  }
+  },
 };
 </script>
 

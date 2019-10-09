@@ -58,7 +58,7 @@
       </div>
        <div class="item">
         <div class="left">收款账号:</div>
-        <div class="right">{{jkinfo.bankAccount}}</div>
+        <div class="right">{{jkinfo.bankAccount |banknumber}}</div>
       </div>
        <div class="item">
         <div class="left">每月还款:</div>
@@ -160,6 +160,13 @@ export default {
   },
   components: {
     headertitle
+  },
+  filters:{
+    banknumber(val){
+      let reg = /^(\d{4})\d+(\d{4})$/;
+      let str = val.replace(reg, "$1********$2");
+      return str
+    }
   }
 };
 </script>
