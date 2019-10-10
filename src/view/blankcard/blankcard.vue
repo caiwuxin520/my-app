@@ -3,7 +3,7 @@
     <headertitle :titles="'银行卡信息'" :tabfalg="true"></headertitle>
     <div class="card" v-if="isCompleteBank">
       <img :src="banksrc" alt />
-      <p class="cardnum">{{zxblanknum | banknumber}}</p>
+      <p class="cardnum">{{zxblanknum}}</p>
     </div>
     <div class="tx" v-if="!isCompleteBank">填写本人银行卡须是本人名下的借记卡（储蓄卡）</div>
     <div class="banner" v-if="!isCompleteBank">
@@ -254,13 +254,13 @@ export default {
   components: {
     headertitle
   },
-  filters:{
-    banknumber(val){
-      let reg = /^(\d{4})\d+(\d{4})$/;
-      let str = val.replace(reg, "$1****$2");
-      return str
-    }
-  }
+  // filters:{
+  //   banknumber(val){
+  //     let reg = /^(\d{4})\d+(\d{4})$/;
+  //     let str = val.replace(reg, "$1****$2");
+  //     return str
+  //   }
+  // }
 };
 </script>
 
