@@ -254,13 +254,13 @@ export default {
   components: {
     headertitle
   },
-  filters:{
-    banknumber(val){
-      let reg = /^(\d{4})\d+(\d{4})$/;
-      let str = val.replace(reg, "$1****$2");
-      return str
-    }
-  }
+  // filters:{
+  //   banknumber(val){
+  //     let reg = /^(\d{4})\d+(\d{4})$/;
+  //     let str = val.replace(reg, "$1****$2");
+  //     return str
+  //   }
+  // }
 };
 </script>
 
