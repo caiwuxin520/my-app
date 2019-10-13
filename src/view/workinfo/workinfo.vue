@@ -598,7 +598,7 @@ export default {
         this.$refs.input9.focus();
         this.$toast({
           type: "fail",
-          message: "请输入您的详细地址",
+          message: "单位详细地址存在不规范的文字,请重新输入",
           duration: 1000
         });
         return;
@@ -706,7 +706,7 @@ export default {
             duration: 1000
           });
           setTimeout(() => {
-            this.$router.push("/myinfo");
+            this.$router.push("myinfo");
           }, 500);
         } else {
           this.$toast({
