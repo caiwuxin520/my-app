@@ -114,10 +114,14 @@ export default {
     };
   },
   created() {
-    this.vercode();
+     if (this.$store.getters.keepAlive.length == 0) {
+       this.vercode();
+     }
   },
   activated() {
-    this.vercode();
+    if (this.$store.getters.keepAlive.length > 0) {
+      this.vercode();
+    }
   },
   methods: {
     //下拉刷新

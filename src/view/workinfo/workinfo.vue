@@ -99,14 +99,16 @@
       <div class="banneritem banneritemcolor">
         <p class="ptext">单位地址</p>
         <div class="bannerinput">
-          <div class="inputbox" @click="show('1')">
-            <van-field
+          <div class="inputbox  inputbox1" @click="show('1')" :class="[dwaddress  != '请选择' ? 'inputbox2' : '']">
+            <!-- <van-field
               v-model="dwaddress"
               placeholder="请选择"
               clearable
-              :disabled="ismoren"
+              :disabled="true"
               right-icon="arrow"
-            />
+            /> -->
+            <div class="inputdiv">{{dwaddress}}</div>
+            <van-icon name="arrow" color='#969799' size="16px"/>
           </div>
         </div>
       </div>
@@ -144,14 +146,16 @@
       <div class="banneritem">
         <p class="ptext">现居住地址</p>
         <div class="bannerinput">
-          <div class="inputbox" @click="show('2')">
-            <van-field
-              v-model="jzaddress"
+          <div class="inputbox  inputbox1" @click="show('2')" :class="[jzaddress  != '请选择' ? 'inputbox2' : '']">
+            <!-- <van-field
+              v-model="dwaddress"
               placeholder="请选择"
               clearable
-              :disabled="ismoren"
+              :disabled="true"
               right-icon="arrow"
-            />
+            /> -->
+            <div class="inputdiv">{{jzaddress}}</div>
+            <van-icon name="arrow" color='#969799' size="16px"/>
           </div>
         </div>
       </div>
@@ -207,14 +211,16 @@
       <div class="banneritem">
         <p class="ptext">关系</p>
         <div class="bannerinput">
-          <div class="inputbox" @click="show('3')">
-            <van-field
-              v-model="zxgx"
+          <div class="inputbox  inputbox1" @click="show('3')" :class="[zxgx  != '请选择' ? 'inputbox2' : '']">
+            <!-- <van-field
+              v-model="dwaddress"
               placeholder="请选择"
               clearable
-              :disabled="ismoren"
+              :disabled="true"
               right-icon="arrow"
-            />
+            /> -->
+            <div class="inputdiv">{{zxgx}}</div>
+            <van-icon name="arrow" color='#969799' size="16px"/>
           </div>
         </div>
       </div>
@@ -255,14 +261,16 @@
       <div class="banneritem">
         <p class="ptext">关系</p>
         <div class="bannerinput">
-          <div class="inputbox" @click="show('4')">
-            <van-field
-              v-model="qtgx"
+           <div class="inputbox  inputbox1" @click="show('4')" :class="[qtgx  != '请选择' ? 'inputbox2' : '']">
+            <!-- <van-field
+              v-model="dwaddress"
               placeholder="请选择"
               clearable
-              :disabled="ismoren"
+              :disabled="true"
               right-icon="arrow"
-            />
+            /> -->
+            <div class="inputdiv">{{qtgx}}</div>
+            <van-icon name="arrow" color='#969799' size="16px"/>
           </div>
         </div>
       </div>
@@ -296,16 +304,16 @@ export default {
       gszw: "",
       dwphone: "",
       gzage: "",
-      dwaddress: "",
+      dwaddress: "请选择",
       xxaddress: "",
       ysr: "",
-      jzaddress: "",
+      jzaddress: "请选择",
       jzxxaddress: "",
       zxphone: "",
-      zxgx: "",
+      zxgx: "请选择",
       zxname: "",
       qtphone: "",
-      qtgx: "",
+      qtgx: "请选择",
       qtname: "",
       okflag: false,
       show1: false,
@@ -556,7 +564,7 @@ export default {
         });
         return;
       }
-      if (!this.dwaddress) {
+      if (this.dwaddress == '请选择') {
         this.$toast({
           type: "fail",
           message: "请选择单位地址",
@@ -585,7 +593,7 @@ export default {
         });
         return;
       }
-      if (!this.jzaddress) {
+      if (this.jzaddress == '请选择') {
         this.$toast({
           type: "fail",
           message: "请选择现居住地址",
@@ -624,7 +632,7 @@ export default {
         });
         return;
       }
-      if (!this.zxgx) {
+      if (this.zxgx == '请选择') {
         this.$toast({
           type: "fail",
           message: "请选择直系亲属关系",
@@ -652,7 +660,7 @@ export default {
         });
         return;
       }
-      if (!this.qtgx) {
+      if (this.qtgx == '请选择') {
         this.$toast({
           type: "fail",
           message: "请选择其他联系人关系",
@@ -724,7 +732,16 @@ export default {
 };
 </script>
 
-
+<style>
+/* .workinfo .banner .banneritemcolor .bannerinput .van-cell .van-field__control:disabled{
+  -webkit-text-fill-color:#969799;
+  color: #969799;
+} */
+.workinfo .banner .banneritemcolor .bannerinput .van-cell .van-field__control:disabled{
+  /* -webkit-text-fill-color:#323233; */
+  color: #323233;
+}
+</style>
 
 <style lang='less' scoped>
 .workinfo {
@@ -765,7 +782,7 @@ export default {
       }
       .bannerinput {
         width: 80%;
-        padding-left: 0.4rem;
+        padding-left: 0.6rem;
         box-sizing: border-box;
         .inputbox {
           //   border-bottom: 1px solid #f7f7f7;
@@ -784,6 +801,18 @@ export default {
         .inputbox1 {
           display: flex;
           align-items: center;
+          justify-content: space-between;
+          padding-left: 16px;
+          padding-right: 16px;
+          font-size: 14px;
+          .inputdiv{
+            color: #969799;
+          }
+        }
+        .inputbox2{
+          .inputdiv{
+            color: #323233;
+          }
         }
       }
     }
