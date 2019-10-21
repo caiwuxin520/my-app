@@ -5,7 +5,8 @@
     <div class="content" v-html="content"></div>
     <div class="cusicon" @click="gokf">
       <div class="bannericon">
-        <van-icon class-prefix="my-icon" name="kefu" />
+        <img src="../../assets/img/service.gif" style="width:50px"/>
+        <!-- <van-icon class-prefix="my-icon" name="kefu" /> -->
       </div>
     </div>
   </div>

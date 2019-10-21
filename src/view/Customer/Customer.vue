@@ -29,7 +29,8 @@
     </van-pull-refresh>
     <div class="cusicon" @click="gokf">
       <div class="bannericon">
-        <van-icon class-prefix="my-icon" name="kefu" />
+        <img src="../../assets/img/service.gif" style="width:50px"/>
+        <!-- <van-icon class-prefix="my-icon" name="kefu" /> -->
       </div>
     </div>
     <tabbar :actives="2"></tabbar>

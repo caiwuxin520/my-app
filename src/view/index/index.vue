@@ -128,7 +128,9 @@ export default {
   created() {
     this.startMove();
     this.getmoney();
-    this.queryjk();
+     if(this.userId){
+      this.queryjk();
+    }
     this.jclogin();
     // this.getseesionid()
     let prefixArray = new Array(
@@ -151,7 +153,7 @@ export default {
         prefix = prefix + Math.floor(Math.random() * 4);
         prefix = prefix.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
       }
-      let b = Math.floor(Math.random() * (20 - 5)) + 5 + "000";
+      let b = Math.floor(Math.random() * 50)+50 + "000";
       let o = this.getNowFormatDate() + " " + prefix + "成功贷到" + b + "元";
       this.arr.push(o);
     }
@@ -168,7 +170,9 @@ export default {
         this.dynamic = 0;
         this.startMove();
         this.getmoney();
-        this.queryjk();
+         if(this.userId){
+      this.queryjk();
+    }
         this.isLoading = false;
       }, 500);
     },

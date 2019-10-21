@@ -9,7 +9,7 @@
           <div class="inputbox">
             <van-field
               v-model="ailpay"
-              placeholder="填写您的支付宝账号"
+              placeholder="支付宝账号为手机号或邮箱"
               clearable
               ref="input1"
               :maxlength="30"
@@ -24,7 +24,7 @@
           <div class="inputbox">
             <van-field
               v-model="zmxy"
-              placeholder="填写正确的芝麻信用"
+              placeholder="芝麻信用为数字。例：500"
               clearable
               type="number"
               :maxlength="3"
@@ -72,9 +72,9 @@
               v-model="dwphone"
               placeholder="填写您的单位电话"
               clearable
+              @input="onInput"
               ref="input5"
               :maxlength="20"
-              type="number"
               :disabled="ismoren"
             />
           </div>
@@ -90,7 +90,6 @@
               clearable
               ref="input6"
               :maxlength="3"
-              type="number"
               :disabled="ismoren"
             />
           </div>
@@ -99,16 +98,15 @@
       <div class="banneritem banneritemcolor">
         <p class="ptext">单位地址</p>
         <div class="bannerinput">
-          <div class="inputbox  inputbox1" @click="show('1')" :class="[dwaddress  != '请选择' ? 'inputbox2' : '']">
-            <!-- <van-field
+          <div class="inputbox" @click="show('1')">
+            <van-field
               v-model="dwaddress"
               placeholder="请选择"
               clearable
-              :disabled="true"
+              readonly
+              :disabled="ismoren"
               right-icon="arrow"
-            /> -->
-            <div class="inputdiv">{{dwaddress}}</div>
-            <van-icon name="arrow" color='#969799' size="16px"/>
+            />
           </div>
         </div>
       </div>
@@ -133,7 +131,7 @@
           <div class="inputbox">
             <van-field
               v-model="ysr"
-              placeholder="填写您的月收入(元)"
+              placeholder="收入为数字(元)"
               clearable
               type="number"
               ref="input8"
@@ -146,16 +144,15 @@
       <div class="banneritem">
         <p class="ptext">现居住地址</p>
         <div class="bannerinput">
-          <div class="inputbox  inputbox1" @click="show('2')" :class="[jzaddress  != '请选择' ? 'inputbox2' : '']">
-            <!-- <van-field
-              v-model="dwaddress"
+          <div class="inputbox" @click="show('2')">
+            <van-field
+              v-model="jzaddress"
               placeholder="请选择"
               clearable
-              :disabled="true"
+              readonly
+              :disabled="ismoren"
               right-icon="arrow"
-            /> -->
-            <div class="inputdiv">{{jzaddress}}</div>
-            <van-icon name="arrow" color='#969799' size="16px"/>
+            />
           </div>
         </div>
       </div>
@@ -211,16 +208,15 @@
       <div class="banneritem">
         <p class="ptext">关系</p>
         <div class="bannerinput">
-          <div class="inputbox  inputbox1" @click="show('3')" :class="[zxgx  != '请选择' ? 'inputbox2' : '']">
-            <!-- <van-field
-              v-model="dwaddress"
+          <div class="inputbox" @click="show('3')">
+            <van-field
+              v-model="zxgx"
               placeholder="请选择"
               clearable
-              :disabled="true"
+              readonly
+              :disabled="ismoren"
               right-icon="arrow"
-            /> -->
-            <div class="inputdiv">{{zxgx}}</div>
-            <van-icon name="arrow" color='#969799' size="16px"/>
+            />
           </div>
         </div>
       </div>
@@ -261,16 +257,15 @@
       <div class="banneritem">
         <p class="ptext">关系</p>
         <div class="bannerinput">
-           <div class="inputbox  inputbox1" @click="show('4')" :class="[qtgx  != '请选择' ? 'inputbox2' : '']">
-            <!-- <van-field
-              v-model="dwaddress"
+          <div class="inputbox" @click="show('4')">
+            <van-field
+              v-model="qtgx"
               placeholder="请选择"
               clearable
-              :disabled="true"
+              readonly
+              :disabled="ismoren"
               right-icon="arrow"
-            /> -->
-            <div class="inputdiv">{{qtgx}}</div>
-            <van-icon name="arrow" color='#969799' size="16px"/>
+            />
           </div>
         </div>
       </div>
@@ -304,16 +299,16 @@ export default {
       gszw: "",
       dwphone: "",
       gzage: "",
-      dwaddress: "请选择",
+      dwaddress: "",
       xxaddress: "",
       ysr: "",
-      jzaddress: "请选择",
+      jzaddress: "",
       jzxxaddress: "",
       zxphone: "",
-      zxgx: "请选择",
+      zxgx: "",
       zxname: "",
       qtphone: "",
-      qtgx: "请选择",
+      qtgx: "",
       qtname: "",
       okflag: false,
       show1: false,
@@ -369,6 +364,9 @@ export default {
           this.show1 = false;
         }
       }
+    },
+    onInput(value){
+      console.log(value)
     },
     //查询信息
     queryinfo() {
@@ -495,7 +493,7 @@ export default {
         this.$refs.input1.focus();
         this.$toast({
           type: "fail",
-          message: "请输入正确的支付宝账户",
+          message: "请输入正确的支付宝账户。",
           duration: 1000
         });
         return;
@@ -505,7 +503,7 @@ export default {
         this.$refs.input2.focus();
         this.$toast({
           type: "fail",
-          message: "请输入芝麻信用",
+          message: "芝麻信用为数字格式，请重新输入。",
           duration: 1000
         });
         return;
@@ -516,7 +514,7 @@ export default {
         this.$refs.input3.focus();
         this.$toast({
           type: "fail",
-          message: "请输入正确的公司名称",
+          message: "请输入正确的公司名称。",
           duration: 1000
         });
         return;
@@ -526,7 +524,7 @@ export default {
         this.$refs.input4.focus();
         this.$toast({
           type: "fail",
-          message: "请输入正确的公司职务",
+          message: "公司职位存在不规范的文字或字符，请重新输入。",
           duration: 1000
         });
         return;
@@ -538,7 +536,7 @@ export default {
           this.$refs.input5.focus();
           this.$toast({
             type: "fail",
-            message: "请输入正确的单位电话",
+            message: "单位电话为数字，请重新输入。",
             duration: 1000
           });
           return;
@@ -549,7 +547,18 @@ export default {
         this.$refs.input6.focus();
         this.$toast({
           type: "fail",
-          message: "请输入工作年龄",
+          message: "请输入工作年龄。",
+          duration: 1000
+        });
+        return;
+      }
+      var ageReg=/^[1-9]\d*$/
+      if (!ageReg.test(this.gzage)) {
+        this.gzage = "";
+        this.$refs.input6.focus();
+        this.$toast({
+          type: "fail",
+          message: "工作年龄请输入正整数。",
           duration: 1000
         });
         return;
@@ -559,15 +568,15 @@ export default {
         this.$refs.input6.focus();
         this.$toast({
           type: "fail",
-          message: "请输入正确的工作年龄",
+          message: "请输入正确的工作年龄。",
           duration: 1000
         });
         return;
       }
-      if (this.dwaddress == '请选择') {
+      if (!this.dwaddress) {
         this.$toast({
           type: "fail",
-          message: "请选择单位地址",
+          message: "请选择单位地址。",
           duration: 1000
         });
         return;
@@ -578,25 +587,36 @@ export default {
         this.$refs.input7.focus();
         this.$toast({
           type: "fail",
-          message: "请输入单位详细地址",
+          message: "详细地址存在不规范的文字或字符，请重新输入。",
           duration: 1000
         });
         return;
       }
+      var regs=/\s/g;
+      if(regs.test(this.xxaddress)){
+        this.xxaddress = "";
+        this.$refs.input7.focus();
+        this.$toast({
+          type: "fail",
+          message: "详细地址存在不规范的文字或字符，请重新输入。",
+          duration: 1000
+        });
+        return;
+      }
       if (!this.ysr) {
         this.ysr = "";
         this.$refs.input8.focus();
         this.$toast({
           type: "fail",
-          message: "请输入月收入",
+          message: "月收入为数字格式，请重新输入。",
           duration: 1000
         });
         return;
       }
-      if (this.jzaddress == '请选择') {
+      if (!this.jzaddress) {
         this.$toast({
           type: "fail",
-          message: "请选择现居住地址",
+          message: "请选择现居住地址。",
           duration: 1000
         });
         return;
@@ -606,18 +626,28 @@ export default {
         this.$refs.input9.focus();
         this.$toast({
           type: "fail",
-          message: "单位详细地址存在不规范的文字,请重新输入",
+          message: "详细地址存在不规范的文字或字符，请重新输入。",
           duration: 1000
         });
         return;
       }
+      if(regs.test(this.jzxxaddress)){
+        this.jzxxaddress= "";
+        this.$refs.input9.focus();
+        this.$toast({
+          type: "fail",
+          message: "详细地址存在不规范的文字或字符，请重新输入。",
+          duration: 1000
+        });
+        return;
+      }
       let reg5 = /^[\u4e00-\u9fa5]{2,4}$/;
       if (!reg5.test(this.zxname)) {
         this.zxname = "";
         this.$refs.input10.focus();
         this.$toast({
           type: "fail",
-          message: "请输入正确直系亲属姓名",
+          message: "请输入正确直系亲属姓名。",
           duration: 1000
         });
         return;
@@ -627,15 +657,15 @@ export default {
         this.$refs.input11.focus();
         this.$toast({
           type: "fail",
-          message: "请输入正确直系亲属手机号",
+          message: "请输入正确直系亲属手机号。",
           duration: 1000
         });
         return;
       }
-      if (this.zxgx == '请选择') {
+      if (!this.zxgx) {
         this.$toast({
           type: "fail",
-          message: "请选择直系亲属关系",
+          message: "请选择直系亲属关系。",
           duration: 1000
         });
         return;
@@ -645,7 +675,7 @@ export default {
         this.$refs.input12.focus();
         this.$toast({
           type: "fail",
-          message: "请输入正确其他联系人姓名",
+          message: "请输入正确其他联系人姓名。",
           duration: 1000
         });
         return;
@@ -655,15 +685,15 @@ export default {
         this.$refs.input13.focus();
         this.$toast({
           type: "fail",
-          message: "请输入正确其他联系人手机号",
+          message: "请输入正确其他联系人手机号。",
           duration: 1000
         });
         return;
       }
-      if (this.qtgx == '请选择') {
+      if (!this.qtgx) {
         this.$toast({
           type: "fail",
-          message: "请选择其他联系人关系",
+          message: "请选择其他联系人关系。",
           duration: 1000
         });
         return;
@@ -714,7 +744,7 @@ export default {
             duration: 1000
           });
           setTimeout(() => {
-            this.$router.push("myinfo");
+            this.$router.push("/myinfo");
           }, 500);
         } else {
           this.$toast({
@@ -732,16 +762,7 @@ export default {
 };
 </script>
 
-<style>
-/* .workinfo .banner .banneritemcolor .bannerinput .van-cell .van-field__control:disabled{
-  -webkit-text-fill-color:#969799;
-  color: #969799;
-} */
-.workinfo .banner .banneritemcolor .bannerinput .van-cell .van-field__control:disabled{
-  /* -webkit-text-fill-color:#323233; */
-  color: #323233;
-}
-</style>
+
 
 <style lang='less' scoped>
 .workinfo {
@@ -782,7 +803,7 @@ export default {
       }
       .bannerinput {
         width: 80%;
-        padding-left: 0.6rem;
+        padding-left: 0.4rem;
         box-sizing: border-box;
         .inputbox {
           //   border-bottom: 1px solid #f7f7f7;
@@ -801,18 +822,6 @@ export default {
         .inputbox1 {
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          padding-left: 16px;
-          padding-right: 16px;
-          font-size: 14px;
-          .inputdiv{
-            color: #969799;
-          }
-        }
-        .inputbox2{
-          .inputdiv{
-            color: #323233;
-          }
         }
       }
     }

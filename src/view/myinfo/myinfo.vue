@@ -110,7 +110,9 @@ export default {
   },
   created() {
     this.jclogin();
-    this.queryjk();
+    if(this.userId){
+      this.queryjk();
+    }
   },
   methods: {
     //下拉刷新

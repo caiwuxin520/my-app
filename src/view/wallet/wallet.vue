@@ -68,7 +68,9 @@ export default {
   },
   created() {
     this.jclogin();
-    this.queryjk();
+    if(this.userId){
+      this.queryjk();
+    }
   },
   methods: {
     //检查登陆状态
@@ -91,7 +93,9 @@ export default {
     //下拉刷新
     onRefresh() {
       setTimeout(() => {
-        this.queryjk();
+         if(this.userId){
+      this.queryjk();
+    }
         this.isLoading = false;
       }, 500);
     },
@@ -144,7 +148,7 @@ export default {
               if (res.data.code == 0) {
                 this.$toast({
                   type: "success",
-                  message: res.data.msg,
+                  message: "提现已提交",
                   duration: 1000
                 });
                 this.queryjk();

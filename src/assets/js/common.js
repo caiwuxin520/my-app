@@ -1,4 +1,4 @@
-
+﻿
 //设置本地存储
 export function setLocalStorage(key, value){
     var curTime = new Date().getTime();
